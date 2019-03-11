@@ -83,7 +83,7 @@ public class PlayController : IPlayController
         try
         {
             playUI = UIManager.Instance.ShowUI(ViewID.PlayWindow) as IPlayUIController;
-            playUI.Init();
+            playUI.Init(this);
             state = GameState.Play;
         }
         catch (System.Exception e)
@@ -309,7 +309,8 @@ public class PlayController : IPlayController
                             continue;
                         }
                     }
-                    if (listIndex >= mapDatas[mapDatas.Count - 1].gridDatas.Count)
+
+                    if (mapDatas.Count == 0 || listIndex >= mapDatas[mapDatas.Count - 1].gridDatas.Count)
                     {
                         gridData.ID = indexID;
                         break;

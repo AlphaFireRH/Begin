@@ -6,5 +6,5 @@ public interface IPlayUIController
     /// <summary>
     /// 初始化
     /// </summary>
-    void Init();
+    void Init(IPlayController IPlayController);
 }

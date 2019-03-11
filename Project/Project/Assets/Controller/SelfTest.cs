@@ -58,7 +58,9 @@ public class SelfTest : MonoBehaviour {
             GUILayout.Space(10);
             if (GUILayout.Button("ShowInsertAd", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
             {
-                AdController.Instance.ShowInsertAd();
+                AdController.Instance.ShowInsertAd((int result)=> {
+                    Debug.Log("Insert:   "+ result.ToString());
+                });
             }
             GUILayout.EndHorizontal();
 
@@ -78,7 +80,9 @@ public class SelfTest : MonoBehaviour {
             GUILayout.Space(10);
             if (GUILayout.Button("ShowRewardVideoAd", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
             {
-                AdController.Instance.ShowRewardVideoAd();
+                AdController.Instance.ShowRewardVideoAd((int result) => {
+                    Debug.Log("RewardVideo:   " + result.ToString());
+                });
             }
             GUILayout.EndHorizontal();
         }

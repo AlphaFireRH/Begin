@@ -48,6 +48,7 @@ public class AdEventListener : MonoBehaviour
         MoPubManager.OnRewardedVideoFailedEvent += OnRewardedVideoFailedEvent;
         MoPubManager.OnRewardedVideoFailedToPlayEvent += OnRewardedVideoFailedToPlayEvent;
         MoPubManager.OnRewardedVideoClosedEvent += OnRewardedVideoClosedEvent;
+        MoPubManager.OnRewardedVideoReceivedRewardEvent += OnRewardedVideoReceivedRewardEvent;
     }
 
     /// <summary>
@@ -74,6 +75,7 @@ public class AdEventListener : MonoBehaviour
         MoPubManager.OnRewardedVideoFailedEvent -= OnRewardedVideoFailedEvent;
         MoPubManager.OnRewardedVideoFailedToPlayEvent -= OnRewardedVideoFailedToPlayEvent;
         MoPubManager.OnRewardedVideoClosedEvent -= OnRewardedVideoClosedEvent;
+        MoPubManager.OnRewardedVideoReceivedRewardEvent -= OnRewardedVideoReceivedRewardEvent;
     }
 
 
@@ -91,7 +93,7 @@ public class AdEventListener : MonoBehaviour
             errorMsg += ": " + error;
         }
 
-        Debug.Log(errorMsg);
+        _ctrl.AdDismissed(adUnitId);
     }
 
     /// <summary>
@@ -162,6 +164,7 @@ public class AdEventListener : MonoBehaviour
     private void OnAdFailedEvent(string adUnitId, string error)
     {
         AdFailed(adUnitId, "load banner", error);
+        TryFetch(adUnitId);
     }
     #endregion
 
@@ -184,6 +187,7 @@ public class AdEventListener : MonoBehaviour
     private void OnInterstitialFailedEvent(string adUnitId, string error)
     {
         AdFailed(adUnitId, "load interstitial", error);
+        TryFetch(adUnitId);
     }
 
     /// <summary>
@@ -193,6 +197,7 @@ public class AdEventListener : MonoBehaviour
     private void OnInterstitialDismissedEvent(string adUnitId)
     {
         _ctrl.AdDismissed(adUnitId);
+        TryFetch(adUnitId);
     }
     #endregion
 
@@ -216,7 +221,8 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnRewardedVideoFailedEvent(string adUnitId, string error)
     {
-        AdFailed(adUnitId, "load rewarded video", error);
+        //AdFailed(adUnitId, "load rewarded video", error);
+        TryFetch(adUnitId);
     }
 
     /// <summary>
@@ -227,6 +233,7 @@ public class AdEventListener : MonoBehaviour
     private void OnRewardedVideoFailedToPlayEvent(string adUnitId, string error)
     {
         AdFailed(adUnitId, "play rewarded video", error);
+        TryFetch(adUnitId);
     }
 
     /// <summary>
@@ -236,6 +243,25 @@ public class AdEventListener : MonoBehaviour
     private void OnRewardedVideoClosedEvent(string adUnitId)
     {
         _ctrl.AdDismissed(adUnitId);
+        TryFetch(adUnitId);
+    }
+
+    /// <summary>
+    /// 奖励视频播放完毕时，执行Show时传进来的Action
+    /// </summary>
+    /// <param name="adUnitId"></param>
+    /// <param name="label"></param>
+    /// <param name="amount"></param>
+    private void OnRewardedVideoReceivedRewardEvent(string adUnitId, string label, float amount)
+    {
+        _ctrl.SendReward(adUnitId, label);
+        TryFetch(adUnitId);
     }
     #endregion
+
+
+    private void TryFetch(string adUnitId)
+    {
+        _ctrl.TryFetch(adUnitId);
+    }
 }

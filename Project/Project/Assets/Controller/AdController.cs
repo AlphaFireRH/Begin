@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ public class AdController
 
     private static void CreateObj()
     {
-        GameObject go = Object.Instantiate(Resources.Load<GameObject>("AdEventListner")) as GameObject;
+        GameObject go = GameObject.Instantiate(Resources.Load<GameObject>("AdEventListner")) as GameObject;
     }
 
 
@@ -53,12 +54,29 @@ public class AdController
     /// </summary>
     public string[] insterIdList = new string[] { "24534e1901884e398f1253216226017e" };
 
+
+    ///// <summary>
+    ///// bannerID
+    ///// </summary>
+    //public string[] bannerIdList = new string[] { "c1391aa68a6940b1bed2048a5e2031a1" };
+    ///// <summary>
+    ///// 激励视频ID
+    ///// </summary>
+    //public string[] rvIdList = new string[] { "daec5a34709f4a13b6094ebef0b389e0" };
+    ///// <summary>
+    ///// 插屏ID
+    ///// </summary>
+    //public string[] insterIdList = new string[] { "6d9dfd073d0a483fa6552dc86b1fb8f6" };
+
     #region Init
     public void Init()
     {
         AddUnitToList();
 
         SDKInit();
+
+        FetchInsertAd();
+        FetchRewardVideoAd();
     }
 
     /// <summary>
@@ -188,6 +206,11 @@ public class AdController
         _adUnitToLoadedMapping[adUnit] = true;
     }
 
+    public void AdUnLoad(string adUnit)
+    {
+        _adUnitToLoadedMapping[adUnit] = false;
+    }
+
     public void LoadAvailableRewards(string adUnitId, List<MoPub.Reward> availableRewards)
     {
         // Remove any existing available rewards associated with this AdUnit from previous ad requests
@@ -207,9 +230,37 @@ public class AdController
 
     public void AdDismissed(string adUnit)
     {
-        _adUnitToLoadedMapping[adUnit] = false;
+        PlayFail(adUnit);
     }
-#endregion
+
+    public void PlayFail(string adUnit)
+    {
+        if (adUnit == currentRewardedVideoAdUnits)
+        {
+            PlayAction(RVPlayResult,0);
+        }
+        else if (adUnit == currentInterstitialAdUnits)
+        {
+            PlayAction(InsertPlayResult, 0);
+        }
+    }
+
+    public void TryFetch(string adUnit)
+    {
+        if (adUnit == currentRewardedVideoAdUnits)
+        {
+            FetchRewardVideoAd();
+        }
+        else if (adUnit == currentInterstitialAdUnits)
+        {
+            FetchInsertAd();
+        }
+        else if (adUnit == currentBannerAdUnits)
+        {
+            RequestBanner();
+        }
+    }
+    #endregion
 
     #region 隐私状态信息
     /// <summary>
@@ -267,11 +318,13 @@ public class AdController
     #endregion
 
     #region Banner
+    private string currentBannerAdUnits = string.Empty;
     /// <summary>
     /// 请求banner
     /// </summary>
     public void RequestBanner()
     {
+        currentBannerAdUnits = GetBannerId();
         MoPub.CreateBanner(GetBannerId(), MoPub.AdPosition.BottomCenter);
     }
 
@@ -280,7 +333,7 @@ public class AdController
     /// </summary>
     public void ShowBannerAd()
     {
-        MoPub.ShowBanner(GetBannerId(), true);
+        MoPub.ShowBanner(currentBannerAdUnits, true);
     }
 
     /// <summary>
@@ -288,7 +341,7 @@ public class AdController
     /// </summary>
     public void HideBanner()
     {
-        MoPub.ShowBanner(GetBannerId(), false);
+        MoPub.ShowBanner(currentBannerAdUnits, false);
     }
 
     /// <summary>
@@ -296,7 +349,7 @@ public class AdController
     /// </summary>
     public void DestoryBanner()
     {
-        MoPub.DestroyBanner(GetBannerId());
+        MoPub.DestroyBanner(currentBannerAdUnits);
     }
 
     private string GetBannerId()
@@ -306,12 +359,17 @@ public class AdController
     #endregion
 
     #region Insert
+
+    private string currentInterstitialAdUnits = string.Empty;
+    private static Action<int> InsertPlayResult = null;
+
     /// <summary>
     /// 开始缓冲插屏
     /// </summary>
     public void FetchInsertAd()
     {
-        MoPub.RequestInterstitialAd(GetInsertId());
+        currentInterstitialAdUnits = GetInsertId();
+        MoPub.RequestInterstitialAd(currentInterstitialAdUnits);
     }
 
     /// <summary>
@@ -319,26 +377,26 @@ public class AdController
     /// </summary>
     public bool InsertAdCanShow()
     {
-        bool state = false;
-        for (int i=0,iMax= insterIdList.Length;i<iMax;i++)
-        {
-            string tempKey = insterIdList[i];
-            if (_adUnitToLoadedMapping.ContainsKey(tempKey) && _adUnitToLoadedMapping[tempKey])
-            {
-                state = true;
-                break;
-            }
-        }
-
-        return state;
+        return _adUnitToLoadedMapping[currentInterstitialAdUnits];
     }
 
     /// <summary>
     /// 展示插屏
     /// </summary>
-    public void ShowInsertAd()
+    public void ShowInsertAd(Action<int> playResult)
     {
-        MoPub.ShowInterstitialAd(GetInsertId());
+        InsertPlayResult = playResult;
+
+        if (InsertAdCanShow())
+        {
+            MoPub.ShowInterstitialAd(currentInterstitialAdUnits);
+            AdUnLoad(currentInterstitialAdUnits);
+        }
+        else
+        {
+            PlayAction(InsertPlayResult,0);
+        }
+        
     }
 
     private string GetInsertId()
@@ -349,41 +407,50 @@ public class AdController
     #endregion
 
     #region RewardVideo
+
+    private string currentRewardedVideoAdUnits = string.Empty;
+    private static Action<int> RVPlayResult = null;
+
     /// <summary>
     /// 开始缓冲激励视频
     /// </summary>
     public void FetchRewardVideoAd()
     {
-        MoPub.RequestRewardedVideo(
-                        adUnitId: GetRVId(), keywords: "rewarded, video, mopub",
-                        latitude: 37.7833, longitude: 122.4167, customerId: "customer101");
+        currentRewardedVideoAdUnits = GetRVId();
+        MoPub.RequestRewardedVideo(currentRewardedVideoAdUnits);
     }
 
-    /// <summary>
-    /// 激励视频是否已经缓冲好了
-    /// </summary>
     public bool RewardVideoAdCanShow()
     {
-        bool state = false;
-        for (int i = 0, iMax = rvIdList.Length; i < iMax; i++)
-        {
-            string tempKey = rvIdList[i];
-            if (_adUnitToLoadedMapping.ContainsKey(tempKey) && _adUnitToLoadedMapping[tempKey])
-            {
-                state = true;
-                break;
-            }
-        }
-
-        return state;
+        return MoPub.HasRewardedVideo(currentRewardedVideoAdUnits);
     }
 
     /// <summary>
     /// 展示激励视频
     /// </summary>
-    public void ShowRewardVideoAd()
+    public void ShowRewardVideoAd(Action<int> playResult)
     {
-        MoPub.ShowRewardedVideo(GetRVId());
+        RVPlayResult = playResult;
+
+        if (RewardVideoAdCanShow())
+        {
+            MoPub.ShowRewardedVideo(currentRewardedVideoAdUnits);
+            AdUnLoad(currentRewardedVideoAdUnits);
+        }
+        else
+        {
+            PlayAction(RVPlayResult,0);
+        }
+    }
+
+    /// <summary>
+    /// 播放成功，发奖
+    /// </summary>
+    /// <param name="adUnit"></param>
+    /// <param name="info"></param>
+    public void SendReward(string adUnit,string info)
+    {
+        PlayAction(RVPlayResult, 1);
     }
 
     private string GetRVId()
@@ -392,6 +459,15 @@ public class AdController
     }
 
     #endregion
+
+
+    private void PlayAction(Action<int> tempAction,int result)
+    {
+        if (tempAction!=null)
+        {
+            tempAction(result);
+        }
+    }
 }
 
 

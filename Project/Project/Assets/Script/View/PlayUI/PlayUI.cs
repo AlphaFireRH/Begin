@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayUI : UIViewBase, IPlayUIController
 {
+    #region 预设
+
     /// <summary>
     /// 地块预设
     /// </summary>
@@ -11,9 +13,20 @@ public class PlayUI : UIViewBase, IPlayUIController
     private GameObject mapItem;
 
     /// <summary>
+    /// 地块预设
+    /// </summary>
+    [SerializeField]
+    private GameObject mapBGItem;
+
+    /// <summary>
     /// 玩法控制器
     /// </summary>
     private IPlayController playCtrl;
+
+    #endregion
+
+
+    #region 挂点
 
     /// <summary>
     /// 挂点
@@ -22,12 +35,26 @@ public class PlayUI : UIViewBase, IPlayUIController
     private RectTransform point;
 
     /// <summary>
+    /// 挂点
+    /// </summary>
+    [SerializeField]
+    private RectTransform bgPoint;
+    #endregion
+
+    #region 组件
+    /// <summary>
     /// 地图块
     /// </summary>
     private Dictionary<int, MapGrid> mapGrids = new Dictionary<int, MapGrid>();
 
     /// <summary>
     /// 
+    /// </summary>
+    private List<RectTransform> mapBgs = new List<RectTransform>();
+    #endregion
+
+    /// <summary>
+    /// 当前地图信息
     /// </summary>
     private MapData mapData;
 
@@ -38,6 +65,7 @@ public class PlayUI : UIViewBase, IPlayUIController
     public void Init(IPlayController IPlayController)
     {
         playCtrl = IPlayController;
+        InitMapBG();
         InitMap();
 
     }
@@ -49,8 +77,28 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// </summary>
     private void InitMap()
     {
+        CleanMap();
         mapData = playCtrl.GetMapDatas();
+        InitMapBG();
         RefreshMap(mapData.gridDatas);
+    }
+
+    public void InitMapBG()
+    {
+        for (int i = 1; i <= playCtrl.MapSize(); i++)
+        {
+            for (int j = 1; j <= playCtrl.MapSize(); j++)
+            {
+                var bg = GameObject.Instantiate(mapBGItem);
+                RectTransform bgRectTransform = bg.GetComponent<RectTransform>();
+                bgRectTransform.SetParent(bgPoint);
+                bgRectTransform.localScale = Vector3.one;
+                //bgRectTransform.localPosition = Vector3.zero;
+                bgRectTransform.localRotation = Quaternion.identity;
+                bgRectTransform.anchoredPosition = MapTool.GetPosition(i, j);
+                mapBgs.Add(bgRectTransform);
+            }
+        }
     }
 
     /// <summary>
@@ -81,4 +129,19 @@ public class PlayUI : UIViewBase, IPlayUIController
 
     }
     #endregion
+
+    private void CleanMap()
+    {
+        for (int i = 0; i < mapBgs.Count; i++)
+        {
+            Destroy(mapBgs[i].gameObject);
+        }
+        mapBgs.Clear();
+
+        foreach (var item in mapGrids)
+        {
+            item.Value.MyDestroy();
+        }
+        mapGrids.Clear();
+    }
 }

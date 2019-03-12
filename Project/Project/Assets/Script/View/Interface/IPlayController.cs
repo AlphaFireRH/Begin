@@ -3,6 +3,12 @@
 public interface IPlayController
 {
     /// <summary>
+    /// 地图大小
+    /// </summary>
+    /// <returns></returns>
+    int MapSize();
+
+    /// <summary>
     /// 是否结束
     /// </summary>
     /// <returns></returns>

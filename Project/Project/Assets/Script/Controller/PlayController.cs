@@ -80,16 +80,12 @@ public class PlayController : IPlayController
         }
         mapSize = size;
         SetDefaultMap();
-        //try
-        //{
+
         playUI = UIManager.Instance.ShowUI(ViewID.PlayWindow) as IPlayUIController;
         playUI.Init(this);
         state = GameState.Play;
-        //}
-        //catch (System.Exception e)
-        //{
-        //    Debug.Log(e.ToString());
-        //}
+
+        MapTool.SetMapSize(size);
     }
 
     /// <summary>
@@ -209,6 +205,11 @@ public class PlayController : IPlayController
     {
         this.isPause = isPause;
     }
+
+    public int MapSize()
+    {
+        return mapSize;
+    }
     #endregion
 
 
@@ -224,26 +225,26 @@ public class PlayController : IPlayController
         curMapData.lastMoveDirection = PlayerOperate.None;
         InsertANumber();
         InsertANumber();
-        return;
-        if (mapSize > 0)
-        {
-            int startID = 1;
-            for (int i = startID; i <= mapSize; i++)
-            {
-                for (int j = startID; j <= mapSize; j++)
-                {
-                    GridData item = new GridData(i, j);
-                    item.Ladder = 0;
-                    curMapData.gridDatas.Add(item);
-                }
-            }
+        //return;
+        //if (mapSize > 0)
+        //{
+        //    int startID = 1;
+        //    for (int i = startID; i <= mapSize; i++)
+        //    {
+        //        for (int j = startID; j <= mapSize; j++)
+        //        {
+        //            GridData item = new GridData(i, j);
+        //            item.Ladder = 0;
+        //            curMapData.gridDatas.Add(item);
+        //        }
+        //    }
 
-            //随机两个开始点，可能重复
-            int index1 = Random.Range(0, curMapData.gridDatas.Count);
-            int index2 = Random.Range(0, curMapData.gridDatas.Count);
-            curMapData.gridDatas[index1].Ladder = 1;
-            curMapData.gridDatas[index2].Ladder = 1;
-        }
+        //    //随机两个开始点，可能重复
+        //    int index1 = Random.Range(0, curMapData.gridDatas.Count);
+        //    int index2 = Random.Range(0, curMapData.gridDatas.Count);
+        //    curMapData.gridDatas[index1].Ladder = 1;
+        //    curMapData.gridDatas[index2].Ladder = 1;
+        //}
     }
 
     /// <summary>
@@ -255,9 +256,9 @@ public class PlayController : IPlayController
         {
             List<Vector2Int> position = new List<Vector2Int>();
             //找到所有空缺位置
-            for (int x = 0; x < mapSize; x++)
+            for (int x = 1; x <= mapSize; x++)
             {
-                for (int y = 0; y < mapSize; y++)
+                for (int y = 1; y <= mapSize; y++)
                 {
                     bool isNull = true;
                     for (int i = 0; i < curMapData.gridDatas.Count; i++)
@@ -638,6 +639,7 @@ public class PlayController : IPlayController
         }
         curMapData = mapData;
     }
+
     #endregion
 }
 

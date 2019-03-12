@@ -26,7 +26,7 @@ public class SelfTest : MonoBehaviour {
                 init = true;
             }
         }
-        else if(false)
+        else
         {
             GUILayout.BeginHorizontal();
 

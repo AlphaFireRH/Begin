@@ -41,32 +41,32 @@ public class AdController
     private readonly Dictionary<string, List<MoPub.Reward>> _adUnitToRewardsMapping =
         new Dictionary<string, List<MoPub.Reward>>();
 
-    /// <summary>
-    /// bannerID
-    /// </summary>
-    public string[] bannerIdList = new string[] { "b195f8dd8ded45fe847ad89ed1d016da" };
-    /// <summary>
-    /// 激励视频ID
-    /// </summary>
-    public string[] rvIdList = new string[] { "920b6145fb1546cf8b5cf2ac34638bb7" };
-    /// <summary>
-    /// 插屏ID
-    /// </summary>
-    public string[] insterIdList = new string[] { "24534e1901884e398f1253216226017e" };
-
-
     ///// <summary>
     ///// bannerID
     ///// </summary>
-    //public string[] bannerIdList = new string[] { "c1391aa68a6940b1bed2048a5e2031a1" };
+    //public string[] bannerIdList = new string[] { "b195f8dd8ded45fe847ad89ed1d016da" };
     ///// <summary>
     ///// 激励视频ID
     ///// </summary>
-    //public string[] rvIdList = new string[] { "daec5a34709f4a13b6094ebef0b389e0" };
+    //public string[] rvIdList = new string[] { "920b6145fb1546cf8b5cf2ac34638bb7" };
     ///// <summary>
     ///// 插屏ID
     ///// </summary>
-    //public string[] insterIdList = new string[] { "6d9dfd073d0a483fa6552dc86b1fb8f6" };
+    //public string[] insterIdList = new string[] { "24534e1901884e398f1253216226017e" };
+
+
+    /// <summary>
+    /// bannerID
+    /// </summary>
+    public string[] bannerIdList = new string[] { "e02f3328546442a0b57c36e49f29a1b1" };
+    /// <summary>
+    /// 激励视频ID
+    /// </summary>
+    public string[] rvIdList = new string[] { "031f925cb81642d7b9e8a0c40c806930" };
+    /// <summary>
+    /// 插屏ID
+    /// </summary>
+    public string[] insterIdList = new string[] { "a2ff4eadef394ed39387e50c5dc84f9e" };
 
     #region Init
     public void Init()

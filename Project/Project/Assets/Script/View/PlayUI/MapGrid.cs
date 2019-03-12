@@ -53,31 +53,29 @@ public class MapGrid : MonoBehaviour
             if (isNew)
             {
                 //新的直接展示出来就行
-                var vec = GetPosition(grid.Position.x, grid.Position.y);
+                var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                 rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
             }
             else
             {
                 //之前的可能需要移动位子，需要判断
-                var vec = GetPosition(grid.Position.x, grid.Position.y);
+                var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                 rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
             }
-            text.text = grid.ID.ToString();
+            text.text = grid.Ladder.ToString();
             gridData = grid;
+            Debug.Log(grid.Position);
         }
     }
 
     /// <summary>
-    /// 获取坐标
+    /// 
     /// </summary>
-    /// <returns>The position.</returns>
-    /// <param name="x">The x coordinate.</param>
-    /// <param name="y">The y coordinate.</param>
-    private Vector2 GetPosition(int x, int y)
+    public void MyDestroy()
     {
-        Vector2 ret = new Vector2();
-        ret.x = (mapSize + 1 - x) * ConfigData.MAP_SIZE;
-        ret.y = (mapSize + 1 - y) * ConfigData.MAP_SIZE;
-        return ret;
+        if (gameObject != null)
+        {
+            Destroy(gameObject);
+        }
     }
 }

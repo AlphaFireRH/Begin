@@ -228,10 +228,7 @@ public class AdController
         _adUnitToShownMapping[adUnitId] = true;
     }
 
-    public void AdDismissed(string adUnit)
-    {
-        PlayFail(adUnit);
-    }
+
 
     public void PlayFail(string adUnit)
     {
@@ -242,6 +239,18 @@ public class AdController
         else if (adUnit == currentInterstitialAdUnits)
         {
             PlayAction(InsertPlayResult, 0);
+        }
+    }
+
+    public void PlayFinish(string adUnit)
+    {
+        if (adUnit == currentRewardedVideoAdUnits)
+        {
+            PlayAction(RVPlayResult, 1);
+        }
+        else if (adUnit == currentInterstitialAdUnits)
+        {
+            PlayAction(InsertPlayResult, 1);
         }
     }
 
@@ -331,7 +340,7 @@ public class AdController
     /// <summary>
     /// 展示banner
     /// </summary>
-    public void ShowBannerAd()
+    private void ShowBannerAd()
     {
         MoPub.ShowBanner(currentBannerAdUnits, true);
     }
@@ -339,7 +348,7 @@ public class AdController
     /// <summary>
     /// 隐藏banner
     /// </summary>
-    public void HideBanner()
+    private void HideBanner()
     {
         MoPub.ShowBanner(currentBannerAdUnits, false);
     }
@@ -347,7 +356,7 @@ public class AdController
     /// <summary>
     /// 摧毁banner
     /// </summary>
-    public void DestoryBanner()
+    private void DestoryBanner()
     {
         MoPub.DestroyBanner(currentBannerAdUnits);
     }
@@ -441,16 +450,6 @@ public class AdController
         {
             PlayAction(RVPlayResult,0);
         }
-    }
-
-    /// <summary>
-    /// 播放成功，发奖
-    /// </summary>
-    /// <param name="adUnit"></param>
-    /// <param name="info"></param>
-    public void SendReward(string adUnit,string info)
-    {
-        PlayAction(RVPlayResult, 1);
     }
 
     private string GetRVId()

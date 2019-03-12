@@ -47,6 +47,8 @@ public class AdEventListener : MonoBehaviour
         MoPubManager.OnRewardedVideoLoadedEvent += OnRewardedVideoLoadedEvent;
         MoPubManager.OnRewardedVideoFailedEvent += OnRewardedVideoFailedEvent;
         MoPubManager.OnRewardedVideoFailedToPlayEvent += OnRewardedVideoFailedToPlayEvent;
+        MoPubManager.OnRewardedVideoClickedEvent += OnRewardedVideoClickedEvent;
+        MoPubManager.OnRewardedVideoLeavingApplicationEvent += OnRewardedVideoLeavingApplicationEvent;
         MoPubManager.OnRewardedVideoClosedEvent += OnRewardedVideoClosedEvent;
         MoPubManager.OnRewardedVideoReceivedRewardEvent += OnRewardedVideoReceivedRewardEvent;
     }
@@ -74,26 +76,10 @@ public class AdEventListener : MonoBehaviour
         MoPubManager.OnRewardedVideoLoadedEvent -= OnRewardedVideoLoadedEvent;
         MoPubManager.OnRewardedVideoFailedEvent -= OnRewardedVideoFailedEvent;
         MoPubManager.OnRewardedVideoFailedToPlayEvent -= OnRewardedVideoFailedToPlayEvent;
+        MoPubManager.OnRewardedVideoClickedEvent -= OnRewardedVideoClickedEvent;
+        MoPubManager.OnRewardedVideoLeavingApplicationEvent -= OnRewardedVideoLeavingApplicationEvent;
         MoPubManager.OnRewardedVideoClosedEvent -= OnRewardedVideoClosedEvent;
         MoPubManager.OnRewardedVideoReceivedRewardEvent -= OnRewardedVideoReceivedRewardEvent;
-    }
-
-
-    /// <summary>
-    /// 广告播放失败
-    /// </summary>
-    /// <param name="adUnitId"></param>
-    /// <param name="action"></param>
-    /// <param name="error"></param>
-    private void AdFailed(string adUnitId, string action, string error)
-    {
-        var errorMsg = "Failed to " + action + " ad unit " + adUnitId;
-        if (!string.IsNullOrEmpty(error))
-        {
-            errorMsg += ": " + error;
-        }
-
-        _ctrl.AdDismissed(adUnitId);
     }
 
     /// <summary>
@@ -157,14 +143,13 @@ public class AdEventListener : MonoBehaviour
     }
 
     /// <summary>
-    /// banner展示失败
+    /// banner加载失败
     /// </summary>
     /// <param name="adUnitId"></param>
     /// <param name="error"></param>
     private void OnAdFailedEvent(string adUnitId, string error)
     {
-        AdFailed(adUnitId, "load banner", error);
-        TryFetch(adUnitId);
+        StartCoroutine(WaitTryFetch(adUnitId));
     }
     #endregion
 
@@ -186,8 +171,7 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnInterstitialFailedEvent(string adUnitId, string error)
     {
-        AdFailed(adUnitId, "load interstitial", error);
-        TryFetch(adUnitId);
+        StartCoroutine(WaitTryFetch(adUnitId));
     }
 
     /// <summary>
@@ -196,22 +180,44 @@ public class AdEventListener : MonoBehaviour
     /// <param name="adUnitId"></param>
     private void OnInterstitialDismissedEvent(string adUnitId)
     {
-        _ctrl.AdDismissed(adUnitId);
-        TryFetch(adUnitId);
+        _ctrl.PlayFinish(adUnitId);
+
+        StartCoroutine(WaitTryFetch(adUnitId));
     }
     #endregion
 
     #region Rewarded Video Events
+    /// <summary>
+    /// rv加载请求队列
+    /// </summary>
+    private Coroutine rvWait = null;
+    /// <summary>
+    /// rv播放结果，是否可以领奖
+    /// </summary>
+    private RvResult rvGetRewardState = RvResult.NoResult;
+    /// <summary>
+    /// 激励视频已关闭
+    /// </summary>
+    private bool rvClose = false;
 
+    private Coroutine rvCloseWait = null;
     /// <summary>
     /// RV已加载
     /// </summary>
     /// <param name="adUnitId"></param>
     private void OnRewardedVideoLoadedEvent(string adUnitId)
     {
-        var availableRewards = MoPub.GetAvailableRewards(adUnitId);
+        rvGetRewardState = RvResult.NoResult;
+        rvClose = false;
+        if (rvCloseWait!=null)
+        {
+            StopCoroutine(rvCloseWait);
+        }
+        rvCloseWait = null;
+
+        //var availableRewards = MoPub.GetAvailableRewards(adUnitId);
         _ctrl.AdLoaded(adUnitId);
-        _ctrl.LoadAvailableRewards(adUnitId, availableRewards);
+        //_ctrl.LoadAvailableRewards(adUnitId, availableRewards);
     }
 
     /// <summary>
@@ -221,8 +227,11 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnRewardedVideoFailedEvent(string adUnitId, string error)
     {
-        //AdFailed(adUnitId, "load rewarded video", error);
-        TryFetch(adUnitId);
+        if (rvWait != null)
+        {
+            StopCoroutine(rvWait);
+        }
+        rvWait =StartCoroutine(WaitTryFetch(adUnitId));
     }
 
     /// <summary>
@@ -232,8 +241,21 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnRewardedVideoFailedToPlayEvent(string adUnitId, string error)
     {
-        AdFailed(adUnitId, "play rewarded video", error);
-        TryFetch(adUnitId);
+        rvGetRewardState = RvResult.Fail;
+    }
+
+    // Fired when an rewarded video is clicked
+    // 单击RV视频时激发 
+    public void OnRewardedVideoClickedEvent(string adUnitId)
+    {
+        
+    }
+
+    // iOS only. Fired when a rewarded video event causes another application to open
+    // 仅iOS。当RV视频事件导致另一个应用程序打开时激发 
+    public void OnRewardedVideoLeavingApplicationEvent(string adUnitId)
+    {
+        rvGetRewardState = RvResult.Success;
     }
 
     /// <summary>
@@ -242,8 +264,23 @@ public class AdEventListener : MonoBehaviour
     /// <param name="adUnitId"></param>
     private void OnRewardedVideoClosedEvent(string adUnitId)
     {
-        _ctrl.AdDismissed(adUnitId);
-        TryFetch(adUnitId);
+        rvClose = true;
+
+        rvCloseWait = StartCoroutine(CloseWait(adUnitId));
+        PushRvPlayResult(adUnitId);
+    }
+
+    /// <summary>
+    /// 等待2s 如果还没有返回结果，则认为本次播放失败
+    /// </summary>
+    /// <param name="adUnitId"></param>
+    /// <returns></returns>
+    private IEnumerator CloseWait(string adUnitId)
+    {
+        yield return new WaitForSeconds(2);
+
+        rvGetRewardState = RvResult.Fail;
+        PushRvPlayResult(adUnitId);
     }
 
     /// <summary>
@@ -254,14 +291,91 @@ public class AdEventListener : MonoBehaviour
     /// <param name="amount"></param>
     private void OnRewardedVideoReceivedRewardEvent(string adUnitId, string label, float amount)
     {
-        _ctrl.SendReward(adUnitId, label);
-        TryFetch(adUnitId);
+        rvGetRewardState = RvResult.Success;
+
+        PushRvPlayResult(adUnitId);
     }
+
+    /// <summary>
+    /// 尝试返回本次播放结果
+    /// </summary>
+    /// <param name="adUnitId"></param>
+    private void PushRvPlayResult(string adUnitId)
+    {
+        if (rvGetRewardState!= RvResult.NoResult && rvClose)
+        {
+            if (rvCloseWait != null)
+            {
+                StopCoroutine(rvCloseWait);
+                rvCloseWait = null;
+            }
+            switch (rvGetRewardState)
+            {
+                case RvResult.NoResult:
+                    break;
+                case RvResult.Fail:
+                    _ctrl.PlayFail(adUnitId);
+                    break;
+                case RvResult.Success:
+                    _ctrl.PlayFinish(adUnitId);
+                    break;
+                default:
+                    break;
+            }
+
+            if (rvWait != null)
+            {
+                StopCoroutine(rvWait);
+            }
+            rvWait = StartCoroutine(WaitTryFetch(adUnitId));
+        }
+    }
+
     #endregion
 
 
-    private void TryFetch(string adUnitId)
+    WaitForSeconds loadWait = new WaitForSeconds(1.0f);
+    IEnumerator WaitTryFetch(string adUnitId)
     {
+        yield return loadWait;
+
         _ctrl.TryFetch(adUnitId);
     }
+
+
+
+
+
+
+
+
+
+
+
+    //string showInfo = "";
+
+    //private void OnGUI()
+    //{
+    //    GUILayout.Label(showInfo);
+
+    //    if (GUILayout.Button("clean", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
+    //    {
+    //        showInfo = "";
+    //    }
+
+    //    if (GUILayout.Button("play", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
+    //    {
+    //        _ctrl.ShowRewardVideoAd((int result) => {
+    //            Debug.Log("RewardVideo:   " + result.ToString());
+    //        });
+    //    }
+
+    //}
+}
+
+public enum RvResult
+{
+    NoResult,
+    Fail,
+    Success
 }

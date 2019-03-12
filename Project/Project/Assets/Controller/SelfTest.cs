@@ -26,7 +26,7 @@ public class SelfTest : MonoBehaviour {
                 init = true;
             }
         }
-        else
+        else if(false)
         {
             GUILayout.BeginHorizontal();
 
@@ -36,10 +36,10 @@ public class SelfTest : MonoBehaviour {
                 AdController.Instance.RequestBanner();
             }
             GUILayout.Space(10);
-            if (GUILayout.Button("HideBanner", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
-            {
-                AdController.Instance.HideBanner();
-            }
+            //if (GUILayout.Button("HideBanner", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
+            //{
+            //    AdController.Instance.HideBanner();
+            //}
             GUILayout.EndHorizontal();
 
 

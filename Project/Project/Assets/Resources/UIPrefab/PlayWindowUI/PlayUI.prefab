@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapItem: {fileID: 1339054237818244, guid: 8c20644e2e971704784d9a3a0ed8d56e, type: 2}
   mapBGItem: {fileID: 1339054237818244, guid: 37660a2fdd61e3844aac9cc2a34cf4d4, type: 2}
+  touchTool: {fileID: 114408087572157730}
   point: {fileID: 224495116008080326}
   bgPoint: {fileID: 224363640992765566}
 --- !u!222 &222122405304610940

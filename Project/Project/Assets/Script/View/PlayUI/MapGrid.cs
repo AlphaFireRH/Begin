@@ -48,7 +48,7 @@ public class MapGrid : MonoBehaviour
     /// <param name="gridMaps">Grid maps.</param>
     public void RefreshData(GridData grid, Dictionary<int, MapGrid> gridMaps, bool isNew = false)
     {
-        if (gridData == null || grid.ID != gridData.ID)
+        if (gridData == null || true)
         {
             if (isNew)
             {
@@ -61,10 +61,19 @@ public class MapGrid : MonoBehaviour
                 //之前的可能需要移动位子，需要判断
                 var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                 rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
+                if (grid.MergeID > 0 && gridMaps.ContainsKey(grid.MergeID))
+                {
+                    var gridItem = gridMaps[grid.MergeID];
+                    gridItem.MyDestroy();
+                    gridMaps.Remove(grid.MergeID);
+                }
             }
-            text.text = grid.Ladder.ToString();
+            //text.text = (grid.ID + "|" + grid.Ladder).ToString();
             gridData = grid;
-            Debug.Log(grid.Position);
+        }
+        if (grid != null)
+        {
+            //Debug.Log(grid.ID + "        " + grid.Position);
         }
     }
 

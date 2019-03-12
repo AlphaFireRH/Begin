@@ -130,6 +130,7 @@ public class PlayController : IPlayController
     /// <returns></returns>
     public MapData Move(PlayerOperate md)
     {
+        //Debug.Log(md.ToString());
         if (!isPause)
         {
             MapData mapData = new MapData();
@@ -225,26 +226,10 @@ public class PlayController : IPlayController
         curMapData.lastMoveDirection = PlayerOperate.None;
         InsertANumber();
         InsertANumber();
-        //return;
-        //if (mapSize > 0)
-        //{
-        //    int startID = 1;
-        //    for (int i = startID; i <= mapSize; i++)
-        //    {
-        //        for (int j = startID; j <= mapSize; j++)
-        //        {
-        //            GridData item = new GridData(i, j);
-        //            item.Ladder = 0;
-        //            curMapData.gridDatas.Add(item);
-        //        }
-        //    }
-
-        //    //随机两个开始点，可能重复
-        //    int index1 = Random.Range(0, curMapData.gridDatas.Count);
-        //    int index2 = Random.Range(0, curMapData.gridDatas.Count);
-        //    curMapData.gridDatas[index1].Ladder = 1;
-        //    curMapData.gridDatas[index2].Ladder = 1;
-        //}
+        for (int i = 0; i < 14; i++)
+        {
+            InsertANumber();
+        }
     }
 
     /// <summary>
@@ -263,7 +248,7 @@ public class PlayController : IPlayController
                     bool isNull = true;
                     for (int i = 0; i < curMapData.gridDatas.Count; i++)
                     {
-                        if (curMapData.gridDatas[i].Position.x == x && curMapData.gridDatas[i].Position.y != y)
+                        if (curMapData.gridDatas[i].Position.x == x && curMapData.gridDatas[i].Position.y == y)
                         {
                             isNull = false;
                             break;
@@ -287,36 +272,38 @@ public class PlayController : IPlayController
                 gridData.Ladder = 1;
                 curMapData.gridDatas.Add(gridData);
 
-                int indexID = 1;
-                int listIndex = 0;
-                while (curMapData.gridDatas.Count > 0
-                    && indexID < mapSize * mapSize * 2 + 10)
-                {
-                    if (listIndex < curMapData.gridDatas.Count)
-                    {
-                        if (curMapData.gridDatas[listIndex].ID == indexID)
-                        {
-                            listIndex = 0;
-                            indexID++;
-                            continue;
-                        }
-                    }
-                    if (mapDatas.Count > 0 && listIndex < mapDatas[mapDatas.Count - 1].gridDatas.Count)
-                    {
-                        if (mapDatas[mapDatas.Count - 1].gridDatas[listIndex].ID == indexID)
-                        {
-                            listIndex = 0;
-                            indexID++;
-                            continue;
-                        }
-                    }
+                List<int> allID = new List<int>();
 
-                    if (mapDatas.Count == 0 || listIndex >= mapDatas[mapDatas.Count - 1].gridDatas.Count)
+                for (int i = 0; i < curMapData.gridDatas.Count; i++)
+                {
+                    if (!allID.Contains(curMapData.gridDatas[i].ID))
                     {
-                        gridData.ID = indexID;
-                        break;
+                        allID.Add(curMapData.gridDatas[i].ID);
                     }
                 }
+
+                if (mapDatas.Count > 0)
+                {
+                    for (int i = 0; i < mapDatas[mapDatas.Count - 1].gridDatas.Count; i++)
+                    {
+                        if (!allID.Contains(mapDatas[mapDatas.Count - 1].gridDatas[i].ID))
+                        {
+                            allID.Add(mapDatas[mapDatas.Count - 1].gridDatas[i].ID);
+                        }
+                    }
+                }
+
+                int id = 1;
+                do
+                {
+                    if (!allID.Contains(id))
+                    {
+                        break;
+                    }
+                    id++;
+                } while (true);
+
+                gridData.ID = id;
             }
         }
     }
@@ -351,52 +338,56 @@ public class PlayController : IPlayController
                 {
                     for (int x = 1; x <= mapSize; x++)
                     {
-                        int targetX = x + 1;
-                        if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
-                            && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y))
+                        for (int targetX = x - 1; targetX > 0; targetX--)
                         {
-                            if (allMapData[x][y].MergeID > 0
-                                && allMapData[targetX][y].MergeID > 0
-                                && allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
-                                && allMapData[x][y].Ladder > 0)
+                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
+                                && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null)
                             {
-                                allMapData[x][y].Ladder++;
-                                allMapData[targetX][y] = new GridData(targetX, y);
-                            }
-                        }
-                    }
-                }
-
-                //移动
-                for (int y = 1; y <= mapSize; y++)
-                {
-                    for (int x = 1; x <= mapSize; x++)
-                    {
-                        for (int tempx = x + 1; tempx <= mapSize; tempx++)
-                        {
-                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
-                                && allMapData.ContainsKey(tempx) && allMapData[tempx].ContainsKey(y))
-                            {
-                                if (allMapData[x][y].Ladder <= 0
-                                    && allMapData[tempx][y].Ladder > 0)
+                                if (allMapData[x][y].MergeID <= 0
+                                    && allMapData[targetX][y].MergeID <= 0
+                                    && allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
+                                    && allMapData[x][y].Ladder > 0)
                                 {
-                                    allMapData[x][y].FromID = allMapData[tempx][y].ID;
-                                    allMapData[x][y].Ladder = allMapData[tempx][y].Ladder;
-                                    allMapData[tempx][y] = new GridData(tempx, y);
+                                    allMapData[targetX][y].Ladder++;
+                                    allMapData[targetX][y].MergeID = allMapData[x][y].ID;
+                                    allMapData[x][y] = null;
                                     break;
                                 }
                             }
                         }
                     }
                 }
+
+                ////移动
+                //for (int y = 1; y <= mapSize; y++)
+                //{
+                //    for (int x = 1; x <= mapSize; x++)
+                //    {
+                //        for (int tempx = x + 1; tempx <= mapSize; tempx++)
+                //        {
+                //            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
+                //                && allMapData.ContainsKey(tempx) && allMapData[tempx].ContainsKey(y))
+                //            {
+                //                if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
+                //               && allMapData.ContainsKey(tempx) && allMapData[tempx].ContainsKey(y) && allMapData[tempx][y] != null)
+                //                {
+                //                    allMapData[x][y].FromID = allMapData[tempx][y].ID;
+                //                    allMapData[x][y].Ladder = allMapData[tempx][y].Ladder;
+                //                    allMapData[tempx][y] = new GridData(tempx, y);
+                //                    break;
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
                 break;
             case PlayerOperate.ToRight:
                 //合并
                 for (int y = 1; y <= mapSize; y++)
                 {
                     for (int x = mapSize - 1; x >= 0; x--)
-                    //for (int x = 1; x <= mapSize; x++)
                     {
+
                         int targetX = x - 1;
                         if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
                             && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y))
@@ -633,7 +624,7 @@ public class PlayController : IPlayController
         {
             mapDatas.Add(curMapData);
         }
-        while (mapDatas.Count != 0 && mapDatas.Count > recordCount)
+        while (mapDatas.Count != 0 || mapDatas.Count > recordCount)
         {
             mapDatas.RemoveAt(0);
         }

@@ -36,7 +36,7 @@ public interface IPlayController
     /// 获取地图数据
     /// </summary>
     /// <returns></returns>
-    List<GridData> GetMapDatas();
+    MapData GetMapDatas();
 
     /// <summary>
     /// 移动地图

@@ -80,16 +80,16 @@ public class PlayController : IPlayController
         }
         mapSize = size;
         SetDefaultMap();
-        try
-        {
-            playUI = UIManager.Instance.ShowUI(ViewID.PlayWindow) as IPlayUIController;
-            playUI.Init(this);
-            state = GameState.Play;
-        }
-        catch (System.Exception e)
-        {
-            Debug.Log(e.ToString());
-        }
+        //try
+        //{
+        playUI = UIManager.Instance.ShowUI(ViewID.PlayWindow) as IPlayUIController;
+        playUI.Init(this);
+        state = GameState.Play;
+        //}
+        //catch (System.Exception e)
+        //{
+        //    Debug.Log(e.ToString());
+        //}
     }
 
     /// <summary>
@@ -109,13 +109,13 @@ public class PlayController : IPlayController
     /// 获取地图数据
     /// </summary>
     /// <returns></returns>
-    public List<GridData> GetMapDatas()
+    public MapData GetMapDatas()
     {
-        if (mapDatas == null || mapDatas.Count == 0)
+        if (curMapData == null)
         {
             return null;
         }
-        return mapDatas[0].gridDatas;
+        return curMapData.Clone();
     }
 
     /// <summary>
@@ -145,11 +145,11 @@ public class PlayController : IPlayController
             mapData = MergeMove(md);
             RecoradOperate(mapData);
             InsertANumber();
-            return curMapData;
+            return curMapData.Clone();
         }
         else
         {
-            return curMapData;
+            return curMapData.Clone();
         }
     }
 
@@ -170,11 +170,11 @@ public class PlayController : IPlayController
 
             mapData = Boom();
             RecoradOperate(mapData);
-            return curMapData;
+            return curMapData.Clone();
         }
         else
         {
-            return curMapData;
+            return curMapData.Clone();
         }
     }
 
@@ -193,11 +193,11 @@ public class PlayController : IPlayController
             }
 
             curMapData = GoBack();
-            return curMapData;
+            return curMapData.Clone();
         }
         else
         {
-            return curMapData;
+            return curMapData.Clone();
         }
     }
 

@@ -68,12 +68,8 @@ public class MapGrid : MonoBehaviour
                     gridMaps.Remove(grid.MergeID);
                 }
             }
-            //text.text = (grid.ID + "|" + grid.Ladder).ToString();
+            text.text = (1 << grid.Ladder).ToString();
             gridData = grid;
-        }
-        if (grid != null)
-        {
-            //Debug.Log(grid.ID + "        " + grid.Position);
         }
     }
 

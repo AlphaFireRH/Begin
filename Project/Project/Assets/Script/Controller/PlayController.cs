@@ -130,7 +130,6 @@ public class PlayController : IPlayController
     /// <returns></returns>
     public MapData Move(PlayerOperate md)
     {
-        //Debug.Log(md.ToString());
         if (!isPause)
         {
             MapData mapData = new MapData();
@@ -140,8 +139,11 @@ public class PlayController : IPlayController
             }
 
             mapData = MergeMove(md);
-            RecoradOperate(mapData);
-            //InsertANumber();
+            if (mapData != curMapData)
+            {
+                RecoradOperate(mapData);
+                InsertANumber();
+            }
             return curMapData.Clone();
         }
         else
@@ -331,6 +333,7 @@ public class PlayController : IPlayController
             }
             allMapData[item.Position.x][item.Position.y] = item;
         }
+        bool isMove = false;
         //滑动的时候先合并在进行移动
         switch (MoveDirection)
         {
@@ -346,8 +349,6 @@ public class PlayController : IPlayController
                                 && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null)
                             {
                                 if (
-                                    //allMapData[x][y].MergeID <= 0
-                                    //&& allMapData[targetX][y].MergeID <= 0
                                     !mergeIDs.Contains(allMapData[targetX][y].ID)
                                     && !mergeIDs.Contains(allMapData[x][y].ID)
                                     && allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
@@ -364,170 +365,204 @@ public class PlayController : IPlayController
                         }
                     }
                 }
-
                 //移动
                 for (int y = 1; y <= mapSize; y++)
                 {
                     for (int x = 1; x <= mapSize; x++)
                     {
-                        for (int tempx = 1; tempx <= mapSize; tempx++)
+                        for (int tempx = 1; tempx <= x; tempx++)
                         {
-                            //if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
-                            //    && allMapData.ContainsKey(tempx) && allMapData[tempx].ContainsKey(y))
-                            //{
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                            && (!allMapData.ContainsKey(tempx) || !allMapData[tempx].ContainsKey(y) || allMapData[tempx][y] == null))
                             {
-                                //allMapData[x][y].FromID = allMapData[tempx][y].ID;
-                                //allMapData[x][y].Ladder = allMapData[tempx][y].Ladder;
                                 if (!allMapData.ContainsKey(tempx))
                                 {
                                     allMapData.Add(tempx, new Dictionary<int, GridData>());
                                 }
-
+                                isMove = true;
                                 allMapData[tempx][y] = allMapData[x][y];
+                                allMapData[tempx][y].Position = new Vector2Int(tempx, y);
+                                allMapData[tempx][y].FromPosition = allMapData[tempx][y].Position;
                                 allMapData[x][y] = null;
                                 break;
                             }
-                            //}
                         }
                     }
+                }
+                if (mergeIDs.Count == 0 && !isMove)
+                {
+                    ret = curMapData;
                 }
                 break;
             case PlayerOperate.ToRight:
                 //合并
                 for (int y = 1; y <= mapSize; y++)
                 {
-                    for (int x = mapSize - 1; x >= 0; x--)
+                    for (int x = mapSize; x > 0; x--)
                     {
-
-                        int targetX = x - 1;
-                        if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
-                            && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y))
+                        for (int targetX = x + 1; targetX <= mapSize; targetX++)
                         {
-                            if (allMapData[x][y].MergeID > 0
-                                && allMapData[targetX][y].MergeID > 0
-                                && allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
-                                && allMapData[x][y].Ladder > 0)
+                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
+                                && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null)
                             {
-                                allMapData[x][y].Ladder++;
-                                allMapData[targetX][y] = new GridData(targetX, y);
-                            }
-                        }
-                    }
-                }
-
-                //移动
-                for (int y = 1; y <= mapSize; y++)
-                {
-                    for (int x = mapSize - 1; x >= 0; x--)
-                    {
-                        for (int tempx = x - 1; tempx >= 0; tempx--)
-                        {
-                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
-                                && allMapData.ContainsKey(tempx) && allMapData[tempx].ContainsKey(y))
-                            {
-                                if (allMapData[x][y].Ladder <= 0
-                                   && allMapData[tempx][y].Ladder > 0)
+                                if (
+                                    !mergeIDs.Contains(allMapData[targetX][y].ID)
+                                    && !mergeIDs.Contains(allMapData[x][y].ID)
+                                    && allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
+                                    && allMapData[x][y].Ladder > 0)
                                 {
-                                    allMapData[x][y].FromID = allMapData[tempx][y].ID;
-                                    allMapData[x][y].Ladder = allMapData[tempx][y].Ladder;
-                                    allMapData[tempx][y] = new GridData(tempx, y);
+                                    allMapData[targetX][y].Ladder++;
+                                    allMapData[targetX][y].MergeID = allMapData[x][y].ID;
+                                    mergeIDs.Add(allMapData[targetX][y].ID);
+                                    mergeIDs.Add(allMapData[x][y].ID);
+                                    allMapData[x][y] = null;
                                     break;
                                 }
                             }
                         }
                     }
+                }
+                //移动
+                for (int y = 1; y <= mapSize; y++)
+                {
+                    for (int x = mapSize; x >= 1; x--)
+                    {
+                        for (int tempx = mapSize; tempx >= 1; tempx--)
+                        {
+                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
+                           && (!allMapData.ContainsKey(tempx) || !allMapData[tempx].ContainsKey(y) || allMapData[tempx][y] == null))
+                            {
+                                if (!allMapData.ContainsKey(tempx))
+                                {
+                                    allMapData.Add(tempx, new Dictionary<int, GridData>());
+                                }
+                                isMove = true;
+                                allMapData[tempx][y] = allMapData[x][y];
+                                allMapData[tempx][y].Position = new Vector2Int(tempx, y);
+                                allMapData[tempx][y].FromPosition = allMapData[tempx][y].Position;
+                                allMapData[x][y] = null;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (mergeIDs.Count == 0 && !isMove)
+                {
+                    ret = curMapData;
                 }
                 break;
             case PlayerOperate.ToUp:
                 //合并
-                for (int x = 0; x < mapSize; x++)
+                for (int x = mapSize; x > 0; x--)
                 {
-                    for (int y = mapSize - 1; y >= 0; y--)
+                    for (int y = 1; y <= mapSize; y++)
                     {
-                        int targetY = y - 1;
-                        if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
-                            && allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY))
+                        for (int targetY = y + 1; targetY <= mapSize; targetY++)
                         {
-                            if (allMapData[x][y].MergeID > 0
-                                && allMapData[x][targetY].MergeID > 0
-                                && allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
-                                && allMapData[x][y].Ladder > 0)
+                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
+                                && allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
                             {
-                                allMapData[x][y].Ladder++;
-                                allMapData[x][targetY] = new GridData(x, targetY);
-                            }
-                        }
-                    }
-                }
-
-                //移动
-                for (int x = 0; x <= mapSize; x++)
-                {
-                    for (int y = mapSize; y >= 0; y--)
-                    {
-                        for (int tempy = y - 1; tempy >= 0; tempy--)
-                        {
-                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
-                               && allMapData[x].ContainsKey(tempy))
-                            {
-                                if (allMapData[x][y].Ladder <= 0
-                                   && allMapData[x][tempy].Ladder > 0)
+                                if (
+                                    !mergeIDs.Contains(allMapData[x][targetY].ID)
+                                    && !mergeIDs.Contains(allMapData[x][y].ID)
+                                    && allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
+                                    && allMapData[x][y].Ladder > 0)
                                 {
-                                    allMapData[x][y].FromID = allMapData[x][tempy].ID;
-                                    allMapData[x][y].Ladder = allMapData[x][tempy].Ladder;
-                                    allMapData[x][tempy] = new GridData(x, tempy);
+                                    allMapData[x][targetY].Ladder++;
+                                    allMapData[x][targetY].MergeID = allMapData[x][y].ID;
+                                    mergeIDs.Add(allMapData[x][targetY].ID);
+                                    mergeIDs.Add(allMapData[x][y].ID);
+                                    allMapData[x][y] = null;
                                     break;
                                 }
                             }
                         }
                     }
+                }
+                //移动
+                for (int x = mapSize; x >= 1; x--)
+                {
+                    for (int y = 1; y <= mapSize; y++)
+                    {
+                        for (int tempY = y + 1; tempY >= 1; tempY--)
+                        {
+                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
+                           && (!allMapData.ContainsKey(x) || !allMapData[x].ContainsKey(tempY) || allMapData[x][tempY] == null))
+                            {
+                                if (!allMapData.ContainsKey(x))
+                                {
+                                    allMapData.Add(x, new Dictionary<int, GridData>());
+                                }
+                                isMove = true;
+                                allMapData[x][tempY] = allMapData[x][y];
+                                allMapData[x][tempY].Position = new Vector2Int(x, tempY);
+                                allMapData[x][tempY].FromPosition = allMapData[x][tempY].Position;
+                                allMapData[x][y] = null;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (mergeIDs.Count == 0 && !isMove)
+                {
+                    ret = curMapData;
                 }
                 break;
             case PlayerOperate.ToDown:
                 //合并
-                for (int x = 0; x < mapSize; x++)
+                for (int x = 1; x <= mapSize; x++)
                 {
-                    for (int y = 0; y < mapSize; y++)
+                    for (int y = 1; y <= mapSize; y++)
                     {
-                        int targetY = y + 1;
-                        if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
-                            && allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY))
+                        for (int targetY = y + 1; targetY <= mapSize; targetY++)
                         {
-                            if (allMapData[x][y].MergeID > 0
-                                && allMapData[x][targetY].MergeID > 0
-                                && allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
-                                && allMapData[x][y].Ladder > 0)
+                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
+                                && allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
                             {
-                                allMapData[x][y].Ladder++;
-                                allMapData[x][targetY] = new GridData(x, targetY);
-                            }
-                        }
-                    }
-                }
-
-                //移动
-                for (int x = 0; x <= mapSize; x++)
-                {
-                    for (int y = 0; y <= mapSize; y++)
-                    {
-                        for (int tempy = y + 1; tempy <= mapSize; tempy++)
-                        {
-                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y)
-                            && allMapData[x].ContainsKey(tempy))
-                            {
-                                if (allMapData[x][y].Ladder <= 0
-                                 && allMapData[x][tempy].Ladder > 0)
+                                if (
+                                    !mergeIDs.Contains(allMapData[x][targetY].ID)
+                                    && !mergeIDs.Contains(allMapData[x][y].ID)
+                                    && allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
+                                    && allMapData[x][y].Ladder > 0)
                                 {
-                                    allMapData[x][y].FromID = allMapData[x][tempy].ID;
-                                    allMapData[x][y].Ladder = allMapData[x][tempy].Ladder;
-                                    allMapData[x][tempy] = new GridData(x, tempy);
+                                    allMapData[x][targetY].Ladder++;
+                                    allMapData[x][targetY].MergeID = allMapData[x][y].ID;
+                                    mergeIDs.Add(allMapData[x][targetY].ID);
+                                    mergeIDs.Add(allMapData[x][y].ID);
+                                    allMapData[x][y] = null;
                                     break;
                                 }
                             }
                         }
                     }
+                }
+                //移动
+                for (int x = 1; x <= mapSize; x++)
+                {
+                    for (int y = 1; y <= mapSize; y++)
+                    {
+                        for (int tempY = 1; tempY < y; tempY++)
+                        {
+                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
+                           && (!allMapData.ContainsKey(x) || !allMapData[x].ContainsKey(tempY) || allMapData[x][tempY] == null))
+                            {
+                                if (!allMapData.ContainsKey(x))
+                                {
+                                    allMapData.Add(x, new Dictionary<int, GridData>());
+                                }
+                                isMove = true;
+                                allMapData[x][tempY] = allMapData[x][y];
+                                allMapData[x][tempY].Position = new Vector2Int(x, tempY);
+                                allMapData[x][tempY].FromPosition = allMapData[x][y].Position;
+                                allMapData[x][y] = null;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (mergeIDs.Count == 0 && !isMove)
+                {
+                    ret = curMapData;
                 }
                 break;
             case PlayerOperate.None:

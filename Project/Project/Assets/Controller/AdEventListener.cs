@@ -6,7 +6,7 @@ public class AdEventListener : MonoBehaviour
 {
 
     [SerializeField]
-    private AdController _ctrl=null;
+    private AdController _ctrl = null;
 
 
     private void Awake()
@@ -149,7 +149,8 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnAdFailedEvent(string adUnitId, string error)
     {
-        StartCoroutine(WaitTryFetch(adUnitId));
+        ShowError(error);
+        StartCoroutine(WaitTryFetch(adUnitId, 10));
     }
     #endregion
 
@@ -171,7 +172,8 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnInterstitialFailedEvent(string adUnitId, string error)
     {
-        StartCoroutine(WaitTryFetch(adUnitId));
+        ShowError(error);
+        StartCoroutine(WaitTryFetch(adUnitId, 10));
     }
 
     /// <summary>
@@ -209,7 +211,7 @@ public class AdEventListener : MonoBehaviour
     {
         rvGetRewardState = RvResult.NoResult;
         rvClose = false;
-        if (rvCloseWait!=null)
+        if (rvCloseWait != null)
         {
             StopCoroutine(rvCloseWait);
         }
@@ -227,11 +229,12 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnRewardedVideoFailedEvent(string adUnitId, string error)
     {
+        ShowError(error);
         if (rvWait != null)
         {
             StopCoroutine(rvWait);
         }
-        rvWait =StartCoroutine(WaitTryFetch(adUnitId));
+        rvWait = StartCoroutine(WaitTryFetch(adUnitId, 10));
     }
 
     /// <summary>
@@ -241,6 +244,7 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnRewardedVideoFailedToPlayEvent(string adUnitId, string error)
     {
+        ShowError(error);
         rvGetRewardState = RvResult.Fail;
     }
 
@@ -248,7 +252,7 @@ public class AdEventListener : MonoBehaviour
     // 单击RV视频时激发 
     public void OnRewardedVideoClickedEvent(string adUnitId)
     {
-        
+
     }
 
     // iOS only. Fired when a rewarded video event causes another application to open
@@ -302,7 +306,7 @@ public class AdEventListener : MonoBehaviour
     /// <param name="adUnitId"></param>
     private void PushRvPlayResult(string adUnitId)
     {
-        if (rvGetRewardState!= RvResult.NoResult && rvClose)
+        if (rvGetRewardState != RvResult.NoResult && rvClose)
         {
             if (rvCloseWait != null)
             {
@@ -342,8 +346,17 @@ public class AdEventListener : MonoBehaviour
         _ctrl.TryFetch(adUnitId);
     }
 
+    IEnumerator WaitTryFetch(string adUnitId, float waitTime)
+    {
+        yield return waitTime;
 
+        _ctrl.TryFetch(adUnitId);
+    }
 
+    private void ShowError(string error)
+    {
+        Debug.LogError(error);
+    }
 
 
 

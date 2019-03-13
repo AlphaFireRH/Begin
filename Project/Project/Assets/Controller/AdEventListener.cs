@@ -131,7 +131,10 @@ public class AdEventListener : MonoBehaviour
     #endregion
 
     #region Banner Events
-
+    /// <summary>
+    /// rv加载请求队列
+    /// </summary>
+    private Coroutine bannerWait = null;
     /// <summary>
     /// banner已加载
     /// </summary>
@@ -150,12 +153,19 @@ public class AdEventListener : MonoBehaviour
     private void OnAdFailedEvent(string adUnitId, string error)
     {
         ShowError(error);
-        StartCoroutine(WaitTryFetch(adUnitId, 10));
+        if (bannerWait != null)
+        {
+            StopCoroutine(insertWait);
+        }
+        bannerWait =StartCoroutine(WaitTryFetch(adUnitId, 10));
     }
     #endregion
 
     #region Interstitial Events
-
+    /// <summary>
+    /// rv加载请求队列
+    /// </summary>
+    private Coroutine insertWait = null;
     /// <summary>
     /// 插屏已加载
     /// </summary>
@@ -173,7 +183,12 @@ public class AdEventListener : MonoBehaviour
     private void OnInterstitialFailedEvent(string adUnitId, string error)
     {
         ShowError(error);
-        StartCoroutine(WaitTryFetch(adUnitId, 10));
+
+        if (insertWait != null)
+        {
+            StopCoroutine(insertWait);
+        }
+        insertWait =StartCoroutine(WaitTryFetch(adUnitId, 10));
     }
 
     /// <summary>
@@ -184,7 +199,11 @@ public class AdEventListener : MonoBehaviour
     {
         _ctrl.PlayFinish(adUnitId);
 
-        StartCoroutine(WaitTryFetch(adUnitId));
+        if (insertWait != null)
+        {
+            StopCoroutine(insertWait);
+        }
+        insertWait =StartCoroutine(WaitTryFetch(adUnitId));
     }
     #endregion
 
@@ -338,7 +357,7 @@ public class AdEventListener : MonoBehaviour
     #endregion
 
 
-    WaitForSeconds loadWait = new WaitForSeconds(1.0f);
+    WaitForSeconds loadWait = new WaitForSeconds(60.0f);
     IEnumerator WaitTryFetch(string adUnitId)
     {
         yield return loadWait;
@@ -346,9 +365,10 @@ public class AdEventListener : MonoBehaviour
         _ctrl.TryFetch(adUnitId);
     }
 
+    WaitForSeconds playWait = new WaitForSeconds(60.0f);
     IEnumerator WaitTryFetch(string adUnitId, float waitTime)
     {
-        yield return waitTime;
+        yield return playWait;
 
         _ctrl.TryFetch(adUnitId);
     }

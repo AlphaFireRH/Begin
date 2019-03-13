@@ -7,6 +7,6 @@ public static class ConfigData
     /// <summary>
     /// 地图大小
     /// </summary>
-    public const float MAP_SIZE = 130f;
+    public const float MAP_SIZE = 165f;
 
 }

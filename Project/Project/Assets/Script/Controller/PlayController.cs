@@ -427,7 +427,7 @@ public class PlayController : IPlayController
                 {
                     for (int x = mapSize; x >= 1; x--)
                     {
-                        for (int tempx = mapSize; tempx >= 1; tempx--)
+                        for (int tempx = mapSize; tempx > x; tempx--)
                         {
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                            && (!allMapData.ContainsKey(tempx) || !allMapData[tempx].ContainsKey(y) || allMapData[tempx][y] == null))
@@ -453,11 +453,11 @@ public class PlayController : IPlayController
                 break;
             case PlayerOperate.ToUp:
                 //合并
-                for (int x = mapSize; x > 0; x--)
+                for (int x = 1; x <= mapSize; x++)
                 {
-                    for (int y = 1; y <= mapSize; y++)
+                    for (int y = mapSize; y >= 1; y--)
                     {
-                        for (int targetY = y + 1; targetY <= mapSize; targetY++)
+                        for (int targetY = y - 1; targetY >= 1; targetY--)
                         {
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                                 && allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
@@ -480,11 +480,11 @@ public class PlayController : IPlayController
                     }
                 }
                 //移动
-                for (int x = mapSize; x >= 1; x--)
+                for (int x = 1; x <= mapSize; x++)
                 {
-                    for (int y = 1; y <= mapSize; y++)
+                    for (int y = mapSize; y >= 1; y--)
                     {
-                        for (int tempY = y + 1; tempY >= 1; tempY--)
+                        for (int tempY = mapSize; tempY > y; tempY--)
                         {
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                            && (!allMapData.ContainsKey(x) || !allMapData[x].ContainsKey(tempY) || allMapData[x][tempY] == null))
@@ -496,7 +496,7 @@ public class PlayController : IPlayController
                                 isMove = true;
                                 allMapData[x][tempY] = allMapData[x][y];
                                 allMapData[x][tempY].Position = new Vector2Int(x, tempY);
-                                allMapData[x][tempY].FromPosition = allMapData[x][tempY].Position;
+                                allMapData[x][tempY].FromPosition = allMapData[x][y].Position;
                                 allMapData[x][y] = null;
                                 break;
                             }
@@ -681,5 +681,3 @@ public class PlayController : IPlayController
 
     #endregion
 }
-
-

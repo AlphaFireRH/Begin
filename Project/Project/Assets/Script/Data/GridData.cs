@@ -13,6 +13,8 @@ public class GridData
         }
         Position.x = x;
         Position.y = y;
+
+        FromPosition = Position;
     }
 
     /// <summary>
@@ -30,10 +32,15 @@ public class GridData
     /// </summary>
     public int Ladder = 0;
 
+    ///// <summary>
+    ///// 移动来的ID,如果是小于等于0自己则没有动
+    ///// </summary>
+    //public int FromID = -1;
+
     /// <summary>
-    /// 移动来的ID,如果是小于等于0自己则没有动
+    /// From position.
     /// </summary>
-    public int FromID = -1;
+    public Vector2Int FromPosition;
 
     /// <summary>
     /// 合并的ID(如果是小于等于0则上次没有合并)
@@ -49,7 +56,7 @@ public class GridData
         GridData grid = new GridData(Position.x, Position.y);
         grid.ID = ID;
         grid.Ladder = Ladder;
-        grid.FromID = FromID;
+        //grid.FromID = FromID;
         grid.MergeID = MergeID;
 
         return grid;

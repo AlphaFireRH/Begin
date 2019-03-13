@@ -23,6 +23,11 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// </summary>
     private IPlayController playCtrl;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private TouchTool touchTool;
     #endregion
 
 
@@ -77,6 +82,8 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// </summary>
     private void InitMap()
     {
+        touchTool.UngegisterCallBack(PlayOperate);
+        touchTool.RegisterCallBack(PlayOperate);
         CleanMap();
         mapData = playCtrl.GetMapDatas();
         InitMapBG();
@@ -111,8 +118,10 @@ public class PlayUI : UIViewBase, IPlayUIController
         {
             for (int i = 0; i < gridData.Count; i++)
             {
+                bool isNew = false;
                 if (!mapGrids.ContainsKey(gridData[i].ID))
                 {
+                    isNew = true;
                     GameObject obj = Instantiate(mapItem);
                     obj.name = mapItem.name + "_" + gridData[i].ID;
                     RectTransform rectTransform = obj.GetComponent<RectTransform>();
@@ -123,20 +132,36 @@ public class PlayUI : UIViewBase, IPlayUIController
                     MapGrid grid = obj.GetComponent<MapGrid>();
                     mapGrids.Add(gridData[i].ID, grid);
                 }
-                mapGrids[gridData[i].ID].RefreshData(gridData[i], mapGrids);
+                isNew = true;
+                mapGrids[gridData[i].ID].RefreshData(gridData[i], mapGrids, isNew);
             }
         }
 
+    }
+
+    private void PlayOperate(PlayerOperate playerOperate)
+    {
+        switch (playerOperate)
+        {
+            case PlayerOperate.ToLeft:
+            case PlayerOperate.ToRight:
+            case PlayerOperate.ToUp:
+            case PlayerOperate.ToDown:
+                mapData = playCtrl.Move(playerOperate);
+                CleanMap();
+                RefreshMap(mapData.gridDatas);
+                break;
+        }
     }
     #endregion
 
     private void CleanMap()
     {
-        for (int i = 0; i < mapBgs.Count; i++)
-        {
-            Destroy(mapBgs[i].gameObject);
-        }
-        mapBgs.Clear();
+        //for (int i = 0; i < mapBgs.Count; i++)
+        //{
+        //    Destroy(mapBgs[i].gameObject);
+        //}
+        //mapBgs.Clear();
 
         foreach (var item in mapGrids)
         {

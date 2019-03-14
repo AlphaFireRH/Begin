@@ -136,10 +136,31 @@ public class PlayUI : UIViewBase, IPlayUIController
                     MapGrid grid = obj.GetComponent<MapGrid>();
                     mapGrids.Add(gridData[i].ID, grid);
                 }
-                mapGrids[gridData[i].ID].RefreshData(gridData[i], ref mapGrids, isNew);
+                mapGrids[gridData[i].ID].RefreshData(gridData[i], ref mapGrids, isNew, showAnimation);
             }
         }
-
+        List<int> allDeleteID = new List<int>();
+        foreach (var item in mapGrids)
+        {
+            bool isContain = false;
+            for (int i = 0; i < gridData.Count; i++)
+            {
+                if (gridData[i].ID == item.Value.GetGridData().ID)
+                {
+                    isContain = true;
+                    break;
+                }
+            }
+            if (!isContain)
+            {
+                allDeleteID.Add(item.Value.GetGridData().ID);
+            }
+        }
+        for (int i = 0; i < allDeleteID.Count; i++)
+        {
+            mapGrids[allDeleteID[i]].MyDestroy();
+            mapGrids.Remove(allDeleteID[i]);
+        }
     }
 
     private void PlayOperate(PlayerOperate playerOperate)
@@ -161,14 +182,12 @@ public class PlayUI : UIViewBase, IPlayUIController
         if (Input.GetKeyDown(KeyCode.A))
         {
             mapData = playCtrl.UseBoom();
-            CleanMap();
-            RefreshMap(mapData.gridDatas);
+            RefreshMap(mapData.gridDatas, false);
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
             mapData = playCtrl.UseGoBack();
-            CleanMap();
-            RefreshMap(mapData.gridDatas);
+            RefreshMap(mapData.gridDatas, false);
         }
     }
     #endregion

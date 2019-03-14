@@ -45,6 +45,11 @@ public class MapGrid : MonoBehaviour
         this.mapSize = mapSize;
     }
 
+    public GridData GetGridData()
+    {
+        return gridData;
+    }
+
     /// <summary>
     /// 刷新数据
     /// </summary>
@@ -56,13 +61,16 @@ public class MapGrid : MonoBehaviour
         {
             if (isNew)
             {
+                gridData = grid;
                 if (showAnimation)
                 {
                     StartCoroutine(DelayCall(ConfigData.GRID_MOVE_TIME));
                 }
                 else
                 {
-                    DelayCall(-1);
+                    //新的直接展示出来就行
+                    var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
+                    rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
                 }
             }
             else
@@ -70,14 +78,19 @@ public class MapGrid : MonoBehaviour
                 gameObject.SetActive(true);
                 //之前的可能需要移动位子，需要判断
                 var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
-                //rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
-                rectTransform.DOAnchorPos(new Vector2(vec.x, vec.y), ConfigData.GRID_MOVE_TIME);
-                if (grid.MergeID > 0 && gridMaps.ContainsKey(grid.MergeID))
+                if (showAnimation)
                 {
-                    var gridItem = gridMaps[grid.MergeID];
-                    gridItem.DoTweenAndDestroy(new Vector2(vec.x, vec.y));
-                    gridMaps.Remove(grid.MergeID);
-                    //Debug.Log("删除的:" + grid.MergeID);
+                    rectTransform.DOAnchorPos(new Vector2(vec.x, vec.y), ConfigData.GRID_MOVE_TIME);
+                    if (grid.MergeID > 0 && gridMaps.ContainsKey(grid.MergeID))
+                    {
+                        var gridItem = gridMaps[grid.MergeID];
+                        gridItem.DoTweenAndDestroy(new Vector2(vec.x, vec.y));
+                        gridMaps.Remove(grid.MergeID);
+                    }
+                }
+                else
+                {
+                    rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
                 }
             }
             //text.text = ((1 << grid.Ladder) + " " + grid.ID).ToString();

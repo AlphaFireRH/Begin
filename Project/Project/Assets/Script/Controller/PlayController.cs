@@ -362,7 +362,7 @@ public class PlayController : IPlayController
                         for (int targetX = x + 1; targetX <= mapSize; targetX++)
                         {
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
-                                && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null)
+                                && (allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null))
                             {
                                 if (
                                    //!mergeIDs.Contains(allMapData[targetX][y].ID)
@@ -377,6 +377,10 @@ public class PlayController : IPlayController
                                     allMapData[targetX][y] = null;
                                     break;
                                 }
+                            }
+                            if (allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null)
+                            {
+                                break;
                             }
                         }
                     }
@@ -419,7 +423,7 @@ public class PlayController : IPlayController
                         for (int targetX = x - 1; targetX >= 0; targetX--)
                         {
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
-                                && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null)
+                                && (allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null))
                             {
                                 if (
                                     //!mergeIDs.Contains(allMapData[targetX][y].ID)
@@ -435,6 +439,11 @@ public class PlayController : IPlayController
                                     break;
                                 }
                             }
+                            if (allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null)
+                            {
+                                break;
+                            }
+
                         }
                     }
                 }
@@ -476,7 +485,7 @@ public class PlayController : IPlayController
                         for (int targetY = y - 1; targetY >= 1; targetY--)
                         {
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
-                                && allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
+                                && (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null))
                             {
                                 if (
                                     //!mergeIDs.Contains(allMapData[x][targetY].ID)
@@ -492,6 +501,11 @@ public class PlayController : IPlayController
                                     allMapData[x][targetY] = null;
                                     break;
                                 }
+
+                            }
+                            if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
+                            {
+                                break;
                             }
                         }
                     }
@@ -534,7 +548,7 @@ public class PlayController : IPlayController
                         for (int targetY = y + 1; targetY <= mapSize; targetY++)
                         {
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
-                                && allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
+                                && (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null))
                             {
                                 if (
                                     //!mergeIDs.Contains(allMapData[x][targetY].ID)
@@ -548,6 +562,10 @@ public class PlayController : IPlayController
                                     mergeIDs.Add(allMapData[x][targetY].ID);
                                     //mergeIDs.Add(allMapData[x][y].ID);
                                     allMapData[x][targetY] = null;
+                                    break;
+                                }
+                                if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
+                                {
                                     break;
                                 }
                             }

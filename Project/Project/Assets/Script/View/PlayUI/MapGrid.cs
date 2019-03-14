@@ -9,6 +9,7 @@ using System.Collections;
 /// </summary>
 public class MapGrid : MonoBehaviour
 {
+    #region 组件
     /// <summary>
     /// recttransform
     /// </summary>
@@ -26,21 +27,21 @@ public class MapGrid : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject point;
+    #endregion
 
+    #region 数据
     /// <summary>
     /// The grid.
     /// </summary>
     private GridData gridData;
 
     /// <summary>
-    /// 获取展示数据
+    /// 是否正在播放动画
     /// </summary>
-    /// <returns></returns>
-    public GridData GetGridData()
-    {
-        return gridData;
-    }
+    private bool isPlayAnimation;
+    #endregion
 
+    #region 刷新数据
     /// <summary>
     /// 刷新数据
     /// </summary>
@@ -52,9 +53,9 @@ public class MapGrid : MonoBehaviour
     {
         if (gridData == null || true)
         {
+            gridData = grid;
             if (isNew)
             {
-                gridData = grid;
                 if (showAnimation)
                 {
                     StartCoroutine(DelayCall(ConfigData.GRID_MOVE_TIME));
@@ -76,9 +77,11 @@ public class MapGrid : MonoBehaviour
                     var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                     if (showAnimation)
                     {
+                        isPlayAnimation = true;
                         rectTransform.DOAnchorPos(new Vector2(vec.x, vec.y), ConfigData.GRID_MOVE_TIME).onComplete +=
                         () =>
                         {
+                            isPlayAnimation = false;
                             RefreshData();
                         };
                         if (grid.MergeID > 0 && gridMaps.ContainsKey(grid.MergeID))
@@ -97,11 +100,10 @@ public class MapGrid : MonoBehaviour
                 {
                     var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                     rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
+                    gridData = grid;
                     RefreshData();
                 }
             }
-            //text.text = (1 << grid.Ladder).ToString();
-            gridData = grid;
         }
     }
 
@@ -115,7 +117,10 @@ public class MapGrid : MonoBehaviour
             text.text = (1 << gridData.Ladder).ToString();
         }
     }
+    #endregion
 
+
+    #region 动画相关
     /// <summary>
     /// 延迟播放展示动画
     /// </summary>
@@ -123,6 +128,7 @@ public class MapGrid : MonoBehaviour
     /// <returns></returns>
     private IEnumerator DelayCall(float time)
     {
+        isPlayAnimation = true;
         if (point != null)
         {
             point.SetActive(false);
@@ -143,6 +149,7 @@ public class MapGrid : MonoBehaviour
             var vec = MapTool.GetPosition(gridData.Position.x, gridData.Position.y);
             rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
         }
+        isPlayAnimation = false;
     }
 
     /// <summary>
@@ -153,11 +160,45 @@ public class MapGrid : MonoBehaviour
     {
         if (rectTransform != null)
         {
+            isPlayAnimation = true;
             rectTransform.DOAnchorPos(position, ConfigData.GRID_MOVE_TIME).onComplete += () =>
             {
+                isPlayAnimation = false;
                 MyDestroy();
             };
         }
+    }
+
+    /// <summary>
+    /// 销毁动画
+    /// </summary>
+    public void DoDestroy()
+    {
+        point.transform.localScale = Vector3.one;
+        point.transform.DOScale(Vector3.zero, ConfigData.GRID_SHOW_TIME).onComplete += () =>
+        {
+            MyDestroy();
+        };
+    }
+    #endregion
+
+    #region 其他
+    /// <summary>
+    /// 是否正在播放动画
+    /// </summary>
+    /// <returns></returns>
+    public bool IsPlayAnimation()
+    {
+        return isPlayAnimation;
+    }
+
+    /// <summary>
+    /// 获取展示数据
+    /// </summary>
+    /// <returns></returns>
+    public GridData GetGridData()
+    {
+        return gridData;
     }
 
     /// <summary>
@@ -170,4 +211,6 @@ public class MapGrid : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    #endregion
+
 }

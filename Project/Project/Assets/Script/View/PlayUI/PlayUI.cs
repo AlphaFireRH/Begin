@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class PlayUI : UIViewBase, IPlayUIController
 {
     #region 预设
-
     /// <summary>
     /// 地块预设
     /// </summary>
@@ -25,27 +24,35 @@ public class PlayUI : UIViewBase, IPlayUIController
     private IPlayController playCtrl;
 
     /// <summary>
-    /// 
+    /// 触控工具
     /// </summary>
     [SerializeField]
     private TouchTool touchTool;
 
     /// <summary>
-    /// 
+    /// 回退按钮
     /// </summary>
     [SerializeField]
     private Button GobackBtn;
 
     /// <summary>
-    /// 
+    /// 爆炸按钮
     /// </summary>
     [SerializeField]
     private Button BoomBtn;
+
+    /// <summary>
+    /// 地图块
+    /// </summary>
+    private Dictionary<int, MapGrid> mapGrids = new Dictionary<int, MapGrid>();
+
+    /// <summary>
+    /// 所有地块背景
+    /// </summary>
+    private List<RectTransform> mapBgs = new List<RectTransform>();
     #endregion
 
-
     #region 挂点
-
     /// <summary>
     /// 挂点
     /// </summary>
@@ -59,24 +66,14 @@ public class PlayUI : UIViewBase, IPlayUIController
     private RectTransform bgPoint;
     #endregion
 
-    #region 组件
-    /// <summary>
-    /// 地图块
-    /// </summary>
-    private Dictionary<int, MapGrid> mapGrids = new Dictionary<int, MapGrid>();
-
-    /// <summary>
-    /// 
-    /// </summary>
-    private List<RectTransform> mapBgs = new List<RectTransform>();
-    #endregion
-
+    #region 数据
     /// <summary>
     /// 当前地图信息
     /// </summary>
     private MapData mapData;
+    #endregion
 
-    #region 玩法接口
+    #region 初始化
     /// <summary>
     /// 初始化
     /// </summary>
@@ -87,20 +84,14 @@ public class PlayUI : UIViewBase, IPlayUIController
         InitMap();
 
     }
-    #endregion
 
-    #region 初始化
     /// <summary>
     /// 初始化地图
     /// </summary>
     private void InitMap()
     {
-        touchTool.UngegisterCallBack(PlayOperate);
-        touchTool.RegisterCallBack(PlayOperate);
-        CleanMap();
-        mapData = playCtrl.GetMapDatas();
+        BindBtn();
         InitMapBG();
-        RefreshMap(mapData.gridDatas, false);
     }
 
     /// <summary>
@@ -108,6 +99,9 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// </summary>
     private void BindBtn()
     {
+        touchTool.UngegisterCallBack(PlayOperate);
+        touchTool.RegisterCallBack(PlayOperate);
+
         BoomBtn.onClick.RemoveAllListeners();
         BoomBtn.onClick.AddListener(() =>
         {
@@ -129,6 +123,9 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// </summary>
     public void InitMapBG()
     {
+        CleanMap();
+        mapData = playCtrl.GetMapDatas();
+
         for (int i = 1; i <= playCtrl.MapSize(); i++)
         {
             for (int j = 1; j <= playCtrl.MapSize(); j++)
@@ -137,14 +134,16 @@ public class PlayUI : UIViewBase, IPlayUIController
                 RectTransform bgRectTransform = bg.GetComponent<RectTransform>();
                 bgRectTransform.SetParent(bgPoint);
                 bgRectTransform.localScale = Vector3.one;
-                //bgRectTransform.localPosition = Vector3.zero;
                 bgRectTransform.localRotation = Quaternion.identity;
                 bgRectTransform.anchoredPosition = MapTool.GetPosition(i, j);
                 mapBgs.Add(bgRectTransform);
             }
         }
+        RefreshMap(mapData.gridDatas, false);
     }
+    #endregion
 
+    #region 刷新
     /// <summary>
     /// 刷新地图
     /// </summary>
@@ -176,7 +175,9 @@ public class PlayUI : UIViewBase, IPlayUIController
                 mapGrids[gridData[i].ID].RefreshData(gridData[i], ref mapGrids, isNew, showAnimation);
             }
         }
+
         List<int> allDeleteID = new List<int>();
+
         foreach (var item in mapGrids)
         {
             bool isContain = false;
@@ -195,34 +196,64 @@ public class PlayUI : UIViewBase, IPlayUIController
         }
         for (int i = 0; i < allDeleteID.Count; i++)
         {
-            mapGrids[allDeleteID[i]].MyDestroy();
+            mapGrids[allDeleteID[i]].DoDestroy();
             mapGrids.Remove(allDeleteID[i]);
-        }
-    }
-
-    private void PlayOperate(PlayerOperate playerOperate)
-    {
-        switch (playerOperate)
-        {
-            case PlayerOperate.ToLeft:
-            case PlayerOperate.ToRight:
-            case PlayerOperate.ToUp:
-            case PlayerOperate.ToDown:
-                mapData = playCtrl.Move(playerOperate);
-                RefreshMap(mapData.gridDatas);
-                break;
         }
     }
 
     #endregion
 
+    #region 其他
+    /// <summary>
+    /// 是否正在播放动画
+    /// </summary>
+    /// <returns></returns>
+    private bool IsHasItemPlayAnimation()
+    {
+        if (mapGrids != null && mapGrids.Count > 0)
+        {
+            foreach (var item in mapGrids)
+            {
+                if (item.Value.IsPlayAnimation())
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 玩家操作回调
+    /// </summary>
+    /// <param name="playerOperate"></param>
+    private void PlayOperate(PlayerOperate playerOperate)
+    {
+        if (!IsHasItemPlayAnimation())
+        {
+            switch (playerOperate)
+            {
+                case PlayerOperate.ToLeft:
+                case PlayerOperate.ToRight:
+                case PlayerOperate.ToUp:
+                case PlayerOperate.ToDown:
+                    mapData = playCtrl.Move(playerOperate);
+                    RefreshMap(mapData.gridDatas);
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 销毁
+    /// </summary>
     private void CleanMap()
     {
-        //for (int i = 0; i < mapBgs.Count; i++)
-        //{
-        //    Destroy(mapBgs[i].gameObject);
-        //}
-        //mapBgs.Clear();
+        for (int i = 0; i < mapBgs.Count; i++)
+        {
+            Destroy(mapBgs[i].gameObject);
+        }
+        mapBgs.Clear();
 
         foreach (var item in mapGrids)
         {
@@ -230,4 +261,6 @@ public class PlayUI : UIViewBase, IPlayUIController
         }
         mapGrids.Clear();
     }
+    #endregion
+
 }

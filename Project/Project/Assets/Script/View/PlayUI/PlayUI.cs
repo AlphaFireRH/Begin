@@ -42,6 +42,12 @@ public class PlayUI : UIViewBase, IPlayUIController
     private Button BoomBtn;
 
     /// <summary>
+    /// 爆炸按钮
+    /// </summary>
+    [SerializeField]
+    private Button SettingBtn;
+
+    /// <summary>
     /// 地图块
     /// </summary>
     private Dictionary<int, MapGrid> mapGrids = new Dictionary<int, MapGrid>();
@@ -107,6 +113,14 @@ public class PlayUI : UIViewBase, IPlayUIController
         {
             mapData = playCtrl.UseBoom();
             RefreshMap(mapData.gridDatas, false);
+        });
+
+        SettingBtn.onClick.RemoveAllListeners();
+        SettingBtn.onClick.AddListener(() =>
+        {
+            playCtrl.StartGame();
+            //mapData = playCtrl.UseBoom();
+            //RefreshMap(mapData.gridDatas, false);
         });
 
 

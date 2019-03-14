@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayUI : UIViewBase, IPlayUIController
 {
@@ -28,6 +29,18 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// </summary>
     [SerializeField]
     private TouchTool touchTool;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private Button GobackBtn;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private Button BoomBtn;
     #endregion
 
 
@@ -90,6 +103,30 @@ public class PlayUI : UIViewBase, IPlayUIController
         RefreshMap(mapData.gridDatas, false);
     }
 
+    /// <summary>
+    /// 绑定按钮事件
+    /// </summary>
+    private void BindBtn()
+    {
+        BoomBtn.onClick.RemoveAllListeners();
+        BoomBtn.onClick.AddListener(() =>
+        {
+            mapData = playCtrl.UseBoom();
+            RefreshMap(mapData.gridDatas, false);
+        });
+
+
+        GobackBtn.onClick.RemoveAllListeners();
+        GobackBtn.onClick.AddListener(() =>
+        {
+            mapData = playCtrl.UseGoBack();
+            RefreshMap(mapData.gridDatas, false);
+        });
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void InitMapBG()
     {
         for (int i = 1; i <= playCtrl.MapSize(); i++)
@@ -177,19 +214,6 @@ public class PlayUI : UIViewBase, IPlayUIController
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            mapData = playCtrl.UseBoom();
-            RefreshMap(mapData.gridDatas, false);
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            mapData = playCtrl.UseGoBack();
-            RefreshMap(mapData.gridDatas, false);
-        }
-    }
     #endregion
 
     private void CleanMap()

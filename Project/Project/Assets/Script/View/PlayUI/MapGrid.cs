@@ -69,26 +69,35 @@ public class MapGrid : MonoBehaviour
             }
             else
             {
-                gameObject.SetActive(true);
-                //之前的可能需要移动位子，需要判断
-                var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                 if (showAnimation)
                 {
-                    rectTransform.DOAnchorPos(new Vector2(vec.x, vec.y), ConfigData.GRID_MOVE_TIME).onComplete +=
-                    () =>
+                    gameObject.SetActive(true);
+                    //之前的可能需要移动位子，需要判断
+                    var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
+                    if (showAnimation)
                     {
-                        RefreshData();
-                    };
-                    if (grid.MergeID > 0 && gridMaps.ContainsKey(grid.MergeID))
+                        rectTransform.DOAnchorPos(new Vector2(vec.x, vec.y), ConfigData.GRID_MOVE_TIME).onComplete +=
+                        () =>
+                        {
+                            RefreshData();
+                        };
+                        if (grid.MergeID > 0 && gridMaps.ContainsKey(grid.MergeID))
+                        {
+                            var gridItem = gridMaps[grid.MergeID];
+                            gridItem.DoTweenAndDestroy(new Vector2(vec.x, vec.y));
+                            gridMaps.Remove(grid.MergeID);
+                        }
+                    }
+                    else
                     {
-                        var gridItem = gridMaps[grid.MergeID];
-                        gridItem.DoTweenAndDestroy(new Vector2(vec.x, vec.y));
-                        gridMaps.Remove(grid.MergeID);
+                        rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
                     }
                 }
                 else
                 {
+                    var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                     rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
+                    RefreshData();
                 }
             }
             //text.text = (1 << grid.Ladder).ToString();

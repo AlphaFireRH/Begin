@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 222436729620466822}
   - component: {fileID: 114003825687380122}
   - component: {fileID: 114986047779367420}
+  - component: {fileID: 114080238595819192}
   m_Layer: 5
   m_Name: GoBackBtn
   m_TagString: Untagged
@@ -227,6 +228,7 @@ GameObject:
   - component: {fileID: 222153368552598784}
   - component: {fileID: 114138405672088728}
   - component: {fileID: 114778867571502012}
+  - component: {fileID: 114383386810640978}
   m_Layer: 5
   m_Name: BoomBtn
   m_TagString: Untagged
@@ -329,6 +331,7 @@ GameObject:
   - component: {fileID: 222011194085806540}
   - component: {fileID: 114111857726035280}
   - component: {fileID: 114553749767076326}
+  - component: {fileID: 114986025611656988}
   m_Layer: 5
   m_Name: SettingBtn
   m_TagString: Untagged
@@ -430,6 +433,108 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114080238595819192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1154532068336220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d43138ef9d82e7a4f89ea5368d74d055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setAllCoroutineNullOnDisable: 0
+  m_OwnAnim: 0
+  m_StartBreath: 0
+  m_CanClick: 1
+  scaleXYOnSameValue: 1
+  m_NeedBreath: 0
+  m_HasChild: 0
+  m_DelayTime: 2
+  m_LoopInterval: 1
+  m_Duration: 0.3
+  pressCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shakeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shakeCurve1:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_LoopAnim: 0
+  CanResumeBreath: 1
+  rotateLeft: 0
+  rotateSpeed: 5
+  ownAnimType: 0
+  btnNormalScale: 1
+  btnPressScale: 1.1
+  scaleOnPressObj: {fileID: 0}
+  scaleTime: 0.08
 --- !u!114 &114111857726035280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -651,6 +756,108 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114383386810640978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1523821083064052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d43138ef9d82e7a4f89ea5368d74d055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setAllCoroutineNullOnDisable: 0
+  m_OwnAnim: 0
+  m_StartBreath: 0
+  m_CanClick: 1
+  scaleXYOnSameValue: 1
+  m_NeedBreath: 0
+  m_HasChild: 0
+  m_DelayTime: 2
+  m_LoopInterval: 1
+  m_Duration: 0.3
+  pressCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shakeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shakeCurve1:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_LoopAnim: 0
+  CanResumeBreath: 1
+  rotateLeft: 0
+  rotateSpeed: 5
+  ownAnimType: 0
+  btnNormalScale: 1
+  btnPressScale: 1.1
+  scaleOnPressObj: {fileID: 0}
+  scaleTime: 0.08
 --- !u!114 &114408087572157730
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1121,8 +1328,112 @@ MonoBehaviour:
   mapItem: {fileID: 1358077668381846, guid: 8c20644e2e971704784d9a3a0ed8d56e, type: 2}
   mapBGItem: {fileID: 1339054237818244, guid: 37660a2fdd61e3844aac9cc2a34cf4d4, type: 2}
   touchTool: {fileID: 114408087572157730}
+  GobackBtn: {fileID: 114986047779367420}
+  BoomBtn: {fileID: 114778867571502012}
   point: {fileID: 224495116008080326}
   bgPoint: {fileID: 224363640992765566}
+--- !u!114 &114986025611656988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1788964937541102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d43138ef9d82e7a4f89ea5368d74d055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setAllCoroutineNullOnDisable: 0
+  m_OwnAnim: 0
+  m_StartBreath: 0
+  m_CanClick: 1
+  scaleXYOnSameValue: 1
+  m_NeedBreath: 0
+  m_HasChild: 0
+  m_DelayTime: 2
+  m_LoopInterval: 1
+  m_Duration: 0.3
+  pressCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shakeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shakeCurve1:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_LoopAnim: 0
+  CanResumeBreath: 1
+  rotateLeft: 0
+  rotateSpeed: 5
+  ownAnimType: 0
+  btnNormalScale: 1
+  btnPressScale: 1.1
+  scaleOnPressObj: {fileID: 0}
+  scaleTime: 0.08
 --- !u!114 &114986047779367420
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1377,7 +1688,7 @@ RectTransform:
   m_GameObject: {fileID: 1788964937541102}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0005001, y: 1.0005001, z: 1.0005001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224939611463140734}
   - {fileID: 224168452127051312}
@@ -1415,7 +1726,7 @@ RectTransform:
   m_GameObject: {fileID: 1523821083064052}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0005001, y: 1.0005001, z: 1.0005001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224257164589776808}
   - {fileID: 224964725159054590}
@@ -1489,7 +1800,7 @@ RectTransform:
   m_GameObject: {fileID: 1407361949203822}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0005, y: 1.0005, z: 1.0005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224167214945238162}
   m_Father: {fileID: 224410676480203934}

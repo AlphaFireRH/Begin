@@ -612,57 +612,60 @@ public class PlayController : IPlayController
     {
         MapData mapData = curMapData.Clone();
         int targetCount = 2;
-        List<List<GridData>> minGridData = new List<List<GridData>>();
-
-        //1.排序
-        for (int i = 0; i < mapData.gridDatas.Count; i++)
+        if (mapData.gridDatas.Count > targetCount)
         {
-            bool isInsert = false;
-            for (int j = 0; j < minGridData.Count; j++)
+            List<List<GridData>> minGridData = new List<List<GridData>>();
+            //1.排序
+            for (int i = 0; i < mapData.gridDatas.Count; i++)
             {
-                if (minGridData[j][0].Ladder > 0 && minGridData[j][0].Ladder == mapData.gridDatas[i].Ladder)
+                bool isInsert = false;
+                for (int j = 0; j < minGridData.Count; j++)
                 {
-                    minGridData[j].Add(mapData.gridDatas[i]);
-                    isInsert = true;
-                    break;
+                    if (minGridData[j][0].Ladder > 0 && minGridData[j][0].Ladder == mapData.gridDatas[i].Ladder)
+                    {
+                        minGridData[j].Add(mapData.gridDatas[i]);
+                        isInsert = true;
+                        break;
+                    }
+                }
+
+                if (!isInsert)
+                {
+                    List<GridData> datas = new List<GridData>();
+                    datas.Add(mapData.gridDatas[i]);
+                    minGridData.Add(datas);
                 }
             }
-
-            if (!isInsert)
+            for (int i = 0; i < minGridData.Count; i++)
             {
-                List<GridData> datas = new List<GridData>();
-                datas.Add(mapData.gridDatas[i]);
-                minGridData.Add(datas);
-            }
-        }
-        for (int i = 0; i < minGridData.Count; i++)
-        {
-            for (int j = i + 1; j < minGridData.Count; j++)
-            {
-                if (minGridData[i][0].Ladder > minGridData[j][0].Ladder)
+                for (int j = i + 1; j < minGridData.Count; j++)
                 {
-                    var temp = minGridData[i];
-                    minGridData[i] = minGridData[j];
-                    minGridData[j] = temp;
+                    if (minGridData[i][0].Ladder > minGridData[j][0].Ladder)
+                    {
+                        var temp = minGridData[i];
+                        minGridData[i] = minGridData[j];
+                        minGridData[j] = temp;
+                    }
                 }
             }
-        }
-        List<GridData> deletGridData = new List<GridData>();
+            List<GridData> deletGridData = new List<GridData>();
 
-        //2.随机取最小的两个,删除
-        while (deletGridData.Count < targetCount && minGridData.Count > 0)
-        {
-            if (minGridData[0].Count > 0)
+            //2.随机取最小的两个,删除
+            while (deletGridData.Count < targetCount && minGridData.Count > 0)
             {
-                int index = Random.Range(0, minGridData[0].Count);
-                deletGridData.Add(minGridData[0][index].Clone());
+                if (minGridData[0].Count > 0)
+                {
+                    int index = Random.Range(0, minGridData[0].Count);
+                    deletGridData.Add(minGridData[0][index].Clone());
 
-                var data = new GridData(minGridData[0][index].Position.x, minGridData[0][index].Position.y);
-                minGridData[0][index] = data;
-            }
-            else
-            {
-                minGridData.RemoveAt(0);
+                    var item = minGridData[0][index];
+                    minGridData[0].Remove(item);
+                    mapData.gridDatas.Remove(item);
+                }
+                else
+                {
+                    minGridData.RemoveAt(0);
+                }
             }
         }
         return mapData;
@@ -676,7 +679,9 @@ public class PlayController : IPlayController
     {
         if (mapDatas.Count > 0)
         {
-            return mapDatas[mapDatas.Count - 1];
+            var cur = mapDatas[mapDatas.Count - 1];
+            mapDatas.Remove(cur);
+            return cur;
         }
         return curMapData;
     }

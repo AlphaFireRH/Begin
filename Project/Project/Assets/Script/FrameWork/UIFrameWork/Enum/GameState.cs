@@ -11,18 +11,18 @@ public enum GameState
     /// </summary>
     Play = 1,
 
-    /// <summary>
-    /// 暂停
-    /// </summary>
-    Pause = 2,
+    ///// <summary>
+    ///// 暂停
+    ///// </summary>
+    //Pause = 2,
 
     /// <summary>
-    /// 游戏暂停
+    /// 游戏结束
     /// </summary>
     GameOver = 3,
 
-    /// <summary>
-    /// 胜利(没用)
-    /// </summary>
-    Victory = 4,
+    ///// <summary>
+    ///// 胜利(没用)
+    ///// </summary>
+    //Victory = 4,
 }

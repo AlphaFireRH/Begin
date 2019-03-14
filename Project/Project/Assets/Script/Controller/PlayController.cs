@@ -143,6 +143,7 @@ public class PlayController : IPlayController
             {
                 RecoradOperate(mapData);
                 InsertANumber();
+                CheckEndState();
             }
             return curMapData.Clone();
         }
@@ -661,6 +662,61 @@ public class PlayController : IPlayController
     #endregion
 
     #region 其他
+    /// <summary>
+    /// 检测游戏状态
+    /// </summary>
+    private void CheckEndState()
+    {
+        if (state == GameState.Play && curMapData.gridDatas != null && curMapData.gridDatas.Count == mapSize * mapSize)
+        {
+            Dictionary<int, Dictionary<int, GridData>> map = new Dictionary<int, Dictionary<int, GridData>>();
+            for (int i = 0; i < curMapData.gridDatas.Count; i++)
+            {
+                if (!map.ContainsKey(curMapData.gridDatas[i].Position.x))
+                {
+                    map.Add(curMapData.gridDatas[i].Position.x, new Dictionary<int, GridData>());
+                }
+                map[curMapData.gridDatas[i].Position.x][curMapData.gridDatas[i].Position.y] = curMapData.gridDatas[i];
+            }
+            bool isHas = false;
+            for (int i = 0; i < curMapData.gridDatas.Count; i++)
+            {
+                var item = curMapData.gridDatas[i];
+                if (map.ContainsKey(item.Position.x + 1)
+                    && map[item.Position.x + 1].ContainsKey(item.Position.y + 1)
+                    && map[item.Position.x + 1][item.Position.y + 1].Ladder == curMapData.gridDatas[i].Ladder)
+                {
+                    isHas = true;
+                    break;
+                }
+                if (map.ContainsKey(item.Position.x + 1)
+                  && map[item.Position.x + 1].ContainsKey(item.Position.y - 1)
+                  && map[item.Position.x + 1][item.Position.y - 1].Ladder == curMapData.gridDatas[i].Ladder)
+                {
+                    isHas = true;
+                    break;
+                }
+                if (map.ContainsKey(item.Position.x)
+                  && map[item.Position.x - 1].ContainsKey(item.Position.y + 1)
+                  && map[item.Position.x - 1][item.Position.y + 1].Ladder == curMapData.gridDatas[i].Ladder)
+                {
+                    isHas = true;
+                    break;
+                }
+                if (map.ContainsKey(item.Position.x)
+                  && map[item.Position.x - 1].ContainsKey(item.Position.y - 1)
+                  && map[item.Position.x - 1][item.Position.y - 1].Ladder == curMapData.gridDatas[i].Ladder)
+                {
+                    isHas = true;
+                    break;
+                }
+            }
+            if (!isHas)
+            {
+                state = GameState.GameOver;
+            }
+        }
+    }
 
     /// <summary>
     /// 记录操作

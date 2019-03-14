@@ -9,4 +9,9 @@ public static class ConfigData
     /// </summary>
     public const float MAP_SIZE = 165f;
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float GRID_MOVE_TIME = 0.2f;
 }

@@ -141,9 +141,22 @@ public class PlayController : IPlayController
             mapData = MergeMove(md);
             if (mapData != curMapData)
             {
+                //string last = "";
+                //for (int i = 0; i < curMapData.gridDatas.Count; i++)
+                //{
+                //    last += (string.Format("Ladder:{0} ID:{1}", curMapData.gridDatas[i].Ladder, curMapData.gridDatas[i].ID) + "  |  ");
+                //}
+                //Debug.Log("上一次:" + last);
+
                 RecoradOperate(mapData);
                 InsertANumber();
                 CheckEndState();
+                //string cur = "";
+                //for (int i = 0; i < curMapData.gridDatas.Count; i++)
+                //{
+                //    cur += (string.Format("Ladder:{0} ID:{1}", curMapData.gridDatas[i].Ladder, curMapData.gridDatas[i].ID) + "  |  ");
+                //}
+                //Debug.Log("当前次:" + cur);
             }
             return curMapData.Clone();
         }
@@ -328,6 +341,8 @@ public class PlayController : IPlayController
         for (int i = 0; i < curMapData.gridDatas.Count; i++)
         {
             var item = curMapData.gridDatas[i].Clone();
+            item.MergeID = 0;
+            item.FromPosition = new Vector2Int(0, 0);
             if (!allMapData.ContainsKey(item.Position.x))
             {
                 allMapData.Add(item.Position.x, new Dictionary<int, GridData>());
@@ -344,22 +359,22 @@ public class PlayController : IPlayController
                 {
                     for (int x = 1; x <= mapSize; x++)
                     {
-                        for (int targetX = x - 1; targetX > 0; targetX--)
+                        for (int targetX = x + 1; targetX <= mapSize; targetX++)
                         {
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                                 && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null)
                             {
                                 if (
-                                    !mergeIDs.Contains(allMapData[targetX][y].ID)
-                                    && !mergeIDs.Contains(allMapData[x][y].ID)
-                                    && allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
+                                   //!mergeIDs.Contains(allMapData[targetX][y].ID)
+                                   //&& !mergeIDs.Contains(allMapData[x][y].ID)
+                                   /* &&*/ allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
                                     && allMapData[x][y].Ladder > 0)
                                 {
-                                    allMapData[targetX][y].Ladder++;
-                                    allMapData[targetX][y].MergeID = allMapData[x][y].ID;
+                                    allMapData[x][y].Ladder++;
+                                    allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
-                                    mergeIDs.Add(allMapData[x][y].ID);
-                                    allMapData[x][y] = null;
+                                    //mergeIDs.Add(allMapData[x][y].ID);
+                                    allMapData[targetX][y] = null;
                                     break;
                                 }
                             }
@@ -401,22 +416,22 @@ public class PlayController : IPlayController
                 {
                     for (int x = mapSize; x > 0; x--)
                     {
-                        for (int targetX = x + 1; targetX <= mapSize; targetX++)
+                        for (int targetX = x - 1; targetX >= 0; targetX--)
                         {
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                                 && allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null)
                             {
                                 if (
-                                    !mergeIDs.Contains(allMapData[targetX][y].ID)
-                                    && !mergeIDs.Contains(allMapData[x][y].ID)
-                                    && allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
+                                    //!mergeIDs.Contains(allMapData[targetX][y].ID)
+                                    //&& !mergeIDs.Contains(allMapData[x][y].ID)
+                                    /*&&*/ allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
                                     && allMapData[x][y].Ladder > 0)
                                 {
-                                    allMapData[targetX][y].Ladder++;
-                                    allMapData[targetX][y].MergeID = allMapData[x][y].ID;
+                                    allMapData[x][y].Ladder++;
+                                    allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
-                                    mergeIDs.Add(allMapData[x][y].ID);
-                                    allMapData[x][y] = null;
+                                    //mergeIDs.Add(allMapData[x][y].ID);
+                                    allMapData[targetX][y] = null;
                                     break;
                                 }
                             }
@@ -464,16 +479,17 @@ public class PlayController : IPlayController
                                 && allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
                             {
                                 if (
-                                    !mergeIDs.Contains(allMapData[x][targetY].ID)
-                                    && !mergeIDs.Contains(allMapData[x][y].ID)
-                                    && allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
+                                    //!mergeIDs.Contains(allMapData[x][targetY].ID)
+                                    //&& !mergeIDs.Contains(allMapData[x][y].ID)
+                                    //&& 
+                                    allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
                                     && allMapData[x][y].Ladder > 0)
                                 {
-                                    allMapData[x][targetY].Ladder++;
-                                    allMapData[x][targetY].MergeID = allMapData[x][y].ID;
+                                    allMapData[x][y].Ladder++;
+                                    allMapData[x][y].MergeID = allMapData[x][targetY].ID;
                                     mergeIDs.Add(allMapData[x][targetY].ID);
-                                    mergeIDs.Add(allMapData[x][y].ID);
-                                    allMapData[x][y] = null;
+                                    //mergeIDs.Add(allMapData[x][y].ID);
+                                    allMapData[x][targetY] = null;
                                     break;
                                 }
                             }
@@ -521,16 +537,17 @@ public class PlayController : IPlayController
                                 && allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
                             {
                                 if (
-                                    !mergeIDs.Contains(allMapData[x][targetY].ID)
-                                    && !mergeIDs.Contains(allMapData[x][y].ID)
-                                    && allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
+                                    //!mergeIDs.Contains(allMapData[x][targetY].ID)
+                                    //&& !mergeIDs.Contains(allMapData[x][y].ID)
+                                    //&& 
+                                    allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
                                     && allMapData[x][y].Ladder > 0)
                                 {
-                                    allMapData[x][targetY].Ladder++;
-                                    allMapData[x][targetY].MergeID = allMapData[x][y].ID;
+                                    allMapData[x][y].Ladder++;
+                                    allMapData[x][y].MergeID = allMapData[x][targetY].ID;
                                     mergeIDs.Add(allMapData[x][targetY].ID);
-                                    mergeIDs.Add(allMapData[x][y].ID);
-                                    allMapData[x][y] = null;
+                                    //mergeIDs.Add(allMapData[x][y].ID);
+                                    allMapData[x][targetY] = null;
                                     break;
                                 }
                             }
@@ -570,13 +587,17 @@ public class PlayController : IPlayController
                 ret = curMapData;
                 break;
         }
-        foreach (var itemDic in allMapData)
+        if (ret != curMapData)
         {
-            foreach (var item in itemDic.Value)
+            ret.gridDatas = new List<GridData>();
+            foreach (var itemDic in allMapData)
             {
-                if (item.Value != null)
+                foreach (var item in itemDic.Value)
                 {
-                    ret.gridDatas.Add(item.Value);
+                    if (item.Value != null)
+                    {
+                        ret.gridDatas.Add(item.Value);
+                    }
                 }
             }
         }
@@ -728,7 +749,7 @@ public class PlayController : IPlayController
         {
             mapDatas.Add(curMapData);
         }
-        while (mapDatas.Count != 0 || mapDatas.Count > recordCount)
+        while (mapDatas != null && mapDatas.Count > 0 && mapDatas.Count > recordCount)
         {
             mapDatas.RemoveAt(0);
         }

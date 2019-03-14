@@ -87,7 +87,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         CleanMap();
         mapData = playCtrl.GetMapDatas();
         InitMapBG();
-        RefreshMap(mapData.gridDatas);
+        RefreshMap(mapData.gridDatas, false);
     }
 
     public void InitMapBG()
@@ -112,13 +112,17 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// 刷新地图
     /// </summary>
     /// <param name="mapDatas">Map datas.</param>
-    private void RefreshMap(List<GridData> gridData)
+    private void RefreshMap(List<GridData> gridData, bool showAnimation = true)
     {
         if (gridData != null && gridData.Count > 0)
         {
             for (int i = 0; i < gridData.Count; i++)
             {
                 bool isNew = false;
+                if (mapGrids == null)
+                {
+                    mapGrids = new Dictionary<int, MapGrid>();
+                }
                 if (!mapGrids.ContainsKey(gridData[i].ID))
                 {
                     isNew = true;
@@ -132,8 +136,7 @@ public class PlayUI : UIViewBase, IPlayUIController
                     MapGrid grid = obj.GetComponent<MapGrid>();
                     mapGrids.Add(gridData[i].ID, grid);
                 }
-                isNew = true;
-                mapGrids[gridData[i].ID].RefreshData(gridData[i], mapGrids, isNew);
+                mapGrids[gridData[i].ID].RefreshData(gridData[i], ref mapGrids, isNew);
             }
         }
 
@@ -148,9 +151,24 @@ public class PlayUI : UIViewBase, IPlayUIController
             case PlayerOperate.ToUp:
             case PlayerOperate.ToDown:
                 mapData = playCtrl.Move(playerOperate);
-                CleanMap();
                 RefreshMap(mapData.gridDatas);
                 break;
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            mapData = playCtrl.UseBoom();
+            CleanMap();
+            RefreshMap(mapData.gridDatas);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            mapData = playCtrl.UseGoBack();
+            CleanMap();
+            RefreshMap(mapData.gridDatas);
         }
     }
     #endregion

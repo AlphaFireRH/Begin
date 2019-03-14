@@ -9,8 +9,6 @@ using System.Collections;
 /// </summary>
 public class MapGrid : MonoBehaviour
 {
-
-
     /// <summary>
     /// recttransform
     /// </summary>
@@ -18,33 +16,26 @@ public class MapGrid : MonoBehaviour
     private RectTransform rectTransform;
 
     /// <summary>
-    /// 
+    /// 显示文字
     /// </summary>
     [SerializeField]
     private Text text;
 
     /// <summary>
-    /// 地图容量
+    /// 挂点
     /// </summary>
-    private int mapSize;
+    [SerializeField]
+    private GameObject point;
 
     /// <summary>
     /// The grid.
     /// </summary>
     private GridData gridData;
 
-    [SerializeField]
-    private GameObject Point;
-
     /// <summary>
-    /// 初始化
+    /// 获取展示数据
     /// </summary>
-    /// <param name="mapSize">Map size.</param>
-    public void Init(int mapSize)
-    {
-        this.mapSize = mapSize;
-    }
-
+    /// <returns></returns>
     public GridData GetGridData()
     {
         return gridData;
@@ -53,8 +44,10 @@ public class MapGrid : MonoBehaviour
     /// <summary>
     /// 刷新数据
     /// </summary>
-    /// <param name="grid">Grid.</param>
-    /// <param name="gridMaps">Grid maps.</param>
+    /// <param name="grid">当前数据</param>
+    /// <param name="gridMaps">所有地块</param>
+    /// <param name="isNew">是否是新的</param>
+    /// <param name="showAnimation">是否有动画</param>
     public void RefreshData(GridData grid, ref Dictionary<int, MapGrid> gridMaps, bool isNew = false, bool showAnimation = true)
     {
         if (gridData == null || true)
@@ -71,6 +64,7 @@ public class MapGrid : MonoBehaviour
                     //新的直接展示出来就行
                     var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                     rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
+                    RefreshData();
                 }
             }
             else
@@ -80,7 +74,11 @@ public class MapGrid : MonoBehaviour
                 var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                 if (showAnimation)
                 {
-                    rectTransform.DOAnchorPos(new Vector2(vec.x, vec.y), ConfigData.GRID_MOVE_TIME);
+                    rectTransform.DOAnchorPos(new Vector2(vec.x, vec.y), ConfigData.GRID_MOVE_TIME).onComplete +=
+                    () =>
+                    {
+                        RefreshData();
+                    };
                     if (grid.MergeID > 0 && gridMaps.ContainsKey(grid.MergeID))
                     {
                         var gridItem = gridMaps[grid.MergeID];
@@ -93,32 +91,55 @@ public class MapGrid : MonoBehaviour
                     rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
                 }
             }
-            //text.text = ((1 << grid.Ladder) + " " + grid.ID).ToString();
-            text.text = (1 << grid.Ladder).ToString();
+            //text.text = (1 << grid.Ladder).ToString();
             gridData = grid;
         }
     }
 
+    /// <summary>
+    /// 刷新显示数据
+    /// </summary>
+    private void RefreshData()
+    {
+        if (gridData != null)
+        {
+            text.text = (1 << gridData.Ladder).ToString();
+        }
+    }
+
+    /// <summary>
+    /// 延迟播放展示动画
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
     private IEnumerator DelayCall(float time)
     {
-        if (Point != null)
+        if (point != null)
         {
-            Point.SetActive(false);
+            point.SetActive(false);
         }
         if (time > 0)
         {
             yield return new WaitForSeconds(time);
         }
-        if (Point != null)
+        if (point != null)
         {
-            Point.SetActive(true);
+            point.SetActive(true);
+            point.transform.localScale = Vector3.zero;
+            point.transform.DOScale(Vector3.one, ConfigData.GRID_SHOW_TIME).onComplete += () =>
+            {
+                RefreshData();
+            };
             //新的直接展示出来就行
             var vec = MapTool.GetPosition(gridData.Position.x, gridData.Position.y);
             rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
         }
     }
 
-
+    /// <summary>
+    /// 播放移动动画并销毁
+    /// </summary>
+    /// <param name="position"></param>
     public void DoTweenAndDestroy(Vector3 position)
     {
         if (rectTransform != null)
@@ -131,7 +152,7 @@ public class MapGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 销毁
     /// </summary>
     public void MyDestroy()
     {

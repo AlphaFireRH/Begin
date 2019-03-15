@@ -60,10 +60,11 @@ public class GameController : SingleMono<GameController>
             if (isInit) break;
 
             /*
-             * 1.读取存档
-             * 2.设置定期存档
-             * 3.UI控制器初始化
-             * 4.弹出开始界面
+             * 读取存档
+             * 设置定期存档
+             * UI控制器初始化
+             * 广告初始化
+             * 弹出开始界面
              */
             if (!ReadSaveData())
             {
@@ -82,6 +83,8 @@ public class GameController : SingleMono<GameController>
             }
 
             uimanager.Init();
+
+            AdController.Instance.Init();
             StartGame();
 
             isInit = true;

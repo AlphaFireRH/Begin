@@ -15,7 +15,7 @@ public class PlayController : IPlayController
     private List<MapData> mapDatas = new List<MapData>();
 
     /// <summary>
-    /// 
+    /// 当前地图
     /// </summary>
     private MapData curMapData;
 
@@ -23,11 +23,6 @@ public class PlayController : IPlayController
     /// 地图大小
     /// </summary>
     private int mapSize;
-
-    /// <summary>
-    /// 记录地图次数
-    /// </summary>
-    private int recordCount = 10;
 
     /// <summary>
     /// 是否暂停
@@ -38,13 +33,14 @@ public class PlayController : IPlayController
     /// 当前游戏状态
     /// </summary>
     private GameState state = GameState.None;
+
     #region 接口
 
     /// <summary>
     /// 开始游戏
     /// </summary>
     /// <param name="size"></param>
-    public void StartGame(int size = 4)
+    public void StartGame(int size = ConfigData.MAP_SIZE)
     {
         if (playUI != null)
         {
@@ -340,7 +336,7 @@ public class PlayController : IPlayController
                                 if (allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
                                     && allMapData[x][y].Ladder > 0)
                                 {
-                                    AddScore(ret, allMapData[x][y]. Ladder);
+                                    AddScore(ret, allMapData[x][y].Ladder);
                                     allMapData[x][y].Ladder++;
                                     allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
@@ -601,7 +597,7 @@ public class PlayController : IPlayController
     private MapData Boom()
     {
         MapData mapData = curMapData.Clone();
-        if (mapData.gridDatas.Count > ConfigData.BoomMinGrid)
+        if (mapData.gridDatas.Count > ConfigData.BOOM_MIN_GRID)
         {
             List<List<GridData>> minGridData = new List<List<GridData>>();
             //1.排序
@@ -640,7 +636,7 @@ public class PlayController : IPlayController
             List<GridData> deletGridData = new List<GridData>();
 
             //2.随机取最小的两个,删除
-            while (deletGridData.Count < ConfigData.BoomGridCount && minGridData.Count > 0)
+            while (deletGridData.Count < ConfigData.BOOM_GRID_COUNT && minGridData.Count > 0)
             {
                 if (minGridData[0].Count > 0)
                 {
@@ -681,7 +677,7 @@ public class PlayController : IPlayController
     /// <returns><c>true</c>, if can use boom was ised, <c>false</c> otherwise.</returns>
     public bool IsCanUseBoom()
     {
-        return curMapData.gridDatas.Count >= ConfigData.BoomMinGrid;
+        return curMapData.gridDatas.Count >= ConfigData.BOOM_MIN_GRID;
     }
 
     /// <summary>
@@ -761,7 +757,7 @@ public class PlayController : IPlayController
         {
             mapDatas.Add(curMapData);
         }
-        while (mapDatas != null && mapDatas.Count > 0 && mapDatas.Count > recordCount)
+        while (mapDatas != null && mapDatas.Count > 0 && mapDatas.Count > ConfigData.RECORD_COUNT)
         {
             mapDatas.RemoveAt(0);
         }

@@ -24,8 +24,8 @@ public static class MapTool
     public static Vector2 GetPosition(int x, int y)
     {
         Vector2 ret = new Vector2();
-        ret.x = (x - mapSize / 2 - 0.5f) * ConfigData.MAP_SIZE;
-        ret.y = (y - mapSize / 2 - 0.5f) * ConfigData.MAP_SIZE;
+        ret.x = (x - mapSize / 2 - 0.5f) * ConfigData.MAP_UI_SIZE;
+        ret.y = (y - mapSize / 2 - 0.5f) * ConfigData.MAP_UI_SIZE;
         return ret;
     }
 }

@@ -357,7 +357,7 @@ public class AdEventListener : MonoBehaviour
     #endregion
 
 
-    WaitForSeconds loadWait = new WaitForSeconds(60.0f);
+    WaitForSeconds loadWait = new WaitForSeconds(10.0f);
     IEnumerator WaitTryFetch(string adUnitId)
     {
         yield return loadWait;

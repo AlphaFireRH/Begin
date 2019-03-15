@@ -42,15 +42,15 @@ public class UIManager : MonoBehaviour
         {
             case ViewID.PlayWindow:
                 path = "UIPrefab/PlayWindowUI/PlayUI";
-                //ret = new PlayUI();
                 break;
         }
         //防止有空异常
         if (!string.IsNullOrEmpty(path))
         {
-            GameObject prefab = Resources.Load(path) as GameObject;
-            if (prefab != null)
+            var prefabObj = Resources.Load(path);
+            if (prefabObj != null)
             {
+                GameObject prefab = prefabObj as GameObject;
                 GameObject obj = GameObject.Instantiate(prefab);
                 obj.name = prefab.name;
                 ret = obj.GetComponent<UIViewBase>();

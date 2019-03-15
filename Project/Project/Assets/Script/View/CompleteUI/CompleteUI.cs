@@ -7,22 +7,25 @@ public class CompleteUI : UIViewBase
 {
     public Text scoreLabel;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     /// <summary>
     /// 初始化
     /// </summary>
     public void Init(ViewData viewData)
     {
-        scoreLabel.text = "";
+        clickLock = false;
+        scoreLabel.text = GameController.Instance.CurScore().ToString();
     }
 
     public void OnClickAgain()
@@ -30,8 +33,17 @@ public class CompleteUI : UIViewBase
         GameController.Instance.StartGame();
     }
 
+    private bool clickLock = false;
     public void OnClickContinue()
     {
-
+        clickLock = true;
+        AdController.Instance.ShowRewardVideoAd((int value) =>
+        {
+            clickLock = false;
+            if (value == 1)
+            {
+                GameController.Instance.Continue();
+            }
+        });
     }
 }

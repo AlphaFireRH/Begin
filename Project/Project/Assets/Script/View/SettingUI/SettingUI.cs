@@ -14,4 +14,34 @@ public class SettingUI : UIViewBase
 	void Update () {
 		
 	}
+
+    public void OnClickMusic()
+    {
+        
+    }
+
+    public void OnClickSound()
+    {
+
+    }
+
+    public void OnClickAgain()
+    {
+        GameController.Instance.StartGame();
+    }
+
+    public void OnClickContinue()
+    {
+
+    }
+
+    public void OnClickPrivate()
+    {
+        
+    }
+
+    public void OnClickMyData()
+    {
+
+    }
 }

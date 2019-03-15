@@ -14,4 +14,14 @@ public class PrivateUI : UIViewBase
 	void Update () {
 		
 	}
+
+    public void OnClickTrems()
+    {
+        GameController.Instance.StartGame();
+    }
+
+    public void OnClickOK()
+    {
+
+    }
 }

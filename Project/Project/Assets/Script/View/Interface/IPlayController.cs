@@ -78,5 +78,5 @@ public interface IPlayController
     /// 
     /// </summary>
     /// <returns></returns>
-    List<MapData> GetOtherCurSaveData();
+    List<MapData> GetCurSaveDatas();
 }

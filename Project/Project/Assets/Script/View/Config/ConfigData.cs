@@ -49,12 +49,12 @@ public static class ConfigData
 
 
     /// <summary>
-    /// 
+    /// 默认的炸弹数量
     /// </summary>
     public const int DEFAULT_BOOM_COUNT = 3;
 
     /// <summary>
-    /// 
+    /// 默认的回退储量
     /// </summary>
     public const int DEFAULT_GOBACK_COUNT = 3;
 

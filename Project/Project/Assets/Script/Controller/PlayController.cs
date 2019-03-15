@@ -59,6 +59,42 @@ public class PlayController : IPlayController
     }
 
     /// <summary>
+    /// 开始游戏
+    /// </summary>
+    /// <param name="size"></param>
+    public void StartGame(MapData mapData, List<MapData> mapDatas, int size = ConfigData.MAP_SIZE)
+    {
+        if (playUI != null)
+        {
+            UIManager.Instance.CloseUI(ViewID.PlayWindow);
+            playUI = null;
+        }
+        mapSize = size;
+        if (mapData != null)
+        {
+            curMapData = mapData;
+            if (mapDatas != null)
+            {
+                this.mapDatas = mapDatas;
+            }
+            else
+            {
+                this.mapDatas = new List<MapData>();
+            }
+        }
+        else
+        {
+            SetDefaultMap();
+        }
+
+        playUI = UIManager.Instance.ShowUI(ViewID.PlayWindow) as IPlayUIController;
+        playUI.Init(this);
+        state = GameState.Play;
+
+        MapTool.SetMapSize(size);
+    }
+
+    /// <summary>
     /// 结束游戏
     /// </summary>
     public void EndGame()
@@ -111,22 +147,9 @@ public class PlayController : IPlayController
             mapData = MergeMove(md);
             if (mapData != curMapData)
             {
-                //string last = "";
-                //for (int i = 0; i < curMapData.gridDatas.Count; i++)
-                //{
-                //    last += (string.Format("Ladder:{0} ID:{1}", curMapData.gridDatas[i].Ladder, curMapData.gridDatas[i].ID) + "  |  ");
-                //}
-                //Debug.Log("上一次:" + last);
-
                 RecoradOperate(mapData);
                 InsertANumber();
                 CheckEndState();
-                //string cur = "";
-                //for (int i = 0; i < curMapData.gridDatas.Count; i++)
-                //{
-                //    cur += (string.Format("Ladder:{0} ID:{1}", curMapData.gridDatas[i].Ladder, curMapData.gridDatas[i].ID) + "  |  ");
-                //}
-                //Debug.Log("当前次:" + cur);
             }
             return curMapData.Clone();
         }
@@ -589,6 +612,7 @@ public class PlayController : IPlayController
     private void AddScore(MapData data, int ladder)
     {
         data.Score += (1 << ladder);
+        GameController.Instance.SetScore(data.Score);
     }
 
     /// <summary>
@@ -678,7 +702,7 @@ public class PlayController : IPlayController
     /// <returns><c>true</c>, if can use boom was ised, <c>false</c> otherwise.</returns>
     public bool IsCanUseBoom()
     {
-        return curMapData.gridDatas.Count >= ConfigData.BOOM_MIN_GRID;
+        return state == GameState.Play && curMapData.gridDatas.Count >= ConfigData.BOOM_MIN_GRID;
     }
 
     /// <summary>
@@ -687,7 +711,7 @@ public class PlayController : IPlayController
     /// <returns><c>true</c>, if can use go back was ised, <c>false</c> otherwise.</returns>
     public bool IsCanUseGoBack()
     {
-        return mapDatas.Count > 0;
+        return state == GameState.Play && mapDatas.Count > 0;
     }
     #endregion
 
@@ -782,7 +806,7 @@ public class PlayController : IPlayController
     /// 
     /// </summary>
     /// <returns></returns>
-    public List<MapData> GetOtherCurSaveData()
+    public List<MapData> GetCurSaveDatas()
     {
         if (state == GameState.GameOver)
         {

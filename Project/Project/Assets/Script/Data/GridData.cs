@@ -51,7 +51,6 @@ public class GridData
         GridData grid = new GridData(Position.x, Position.y);
         grid.ID = ID;
         grid.Ladder = Ladder;
-        //grid.FromID = FromID;
         grid.MergeID = MergeID;
 
         return grid;

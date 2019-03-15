@@ -115,7 +115,15 @@ public class GameController : SingleMono<GameController>
         EndGame();
 
         playCtrl = new PlayController();
-        playCtrl.StartGame();
+        if (mapData == null)
+        {
+            playCtrl.StartGame();
+        }
+        else
+        {
+            playCtrl.StartGame(mapData, historyMap);
+        }
+
     }
 
     /// <summary>
@@ -139,6 +147,8 @@ public class GameController : SingleMono<GameController>
         {
             playCtrl.EndGame();
             playCtrl = null;
+            mapData = null;
+            historyMap = new List<MapData>();
         }
     }
     private JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects };
@@ -155,8 +165,13 @@ public class GameController : SingleMono<GameController>
         }
         SaveData saveData = new SaveData();
         saveData.itemDic = itemDic;
-        saveData.mapData = mapData;
-        saveData.historyMap = historyMap;
+        saveData.mapData = null;
+        saveData.historyMap = null;
+        if (playCtrl != null)
+        {
+            saveData.mapData = playCtrl.GetCurSaveData();
+            saveData.historyMap = playCtrl.GetCurSaveDatas();
+        }
         saveData.MaxScore = MaxScore;
         saveData.isOpenMusic = isOpenMusic;
         saveData.isOpenSound = isOpenSound;
@@ -203,7 +218,11 @@ public class GameController : SingleMono<GameController>
         itemDic.Add((int)ItemID.Goback, ConfigData.DEFAULT_GOBACK_COUNT);
         mapData = null;
         historyMap = new List<MapData>();
-        MaxScore = MaxScore = 0;
+        if (playCtrl != null)
+        {
+            mapData = playCtrl.GetCurSaveData();
+            historyMap = playCtrl.GetCurSaveDatas();
+        }
         isOpenMusic = true;
         isOpenSound = true;
     }

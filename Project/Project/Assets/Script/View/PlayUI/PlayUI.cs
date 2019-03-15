@@ -231,7 +231,7 @@ public class PlayUI : UIViewBase, IPlayUIController
     {
         if (maxScore != null)
         {
-
+            maxScore.text = GameController.Instance.MaxScore.ToString();
         }
 
         if (curScore != null)
@@ -239,7 +239,6 @@ public class PlayUI : UIViewBase, IPlayUIController
             curScore.text = mapData.Score.ToString();
         }
     }
-
     #endregion
 
     #region 其他

@@ -46,8 +46,6 @@ public static class ConfigData
     #endregion
 
     #region 存档相关
-
-
     /// <summary>
     /// 默认的炸弹数量
     /// </summary>

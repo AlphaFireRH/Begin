@@ -231,7 +231,7 @@ public class PlayUI : UIViewBase, IPlayUIController
     {
         if (maxScore != null)
         {
-            maxScore.text = GameController.Instance.MaxScore.ToString();
+            maxScore.text = GameController.Instance.MaxScore().ToString();
         }
 
         if (curScore != null)

@@ -37,7 +37,7 @@ public class GameController : SingleMono<GameController>
     /// <summary>
     /// 最高分数
     /// </summary>
-    public int MaxScore;
+    private int maxScore;
 
     /// <summary>
     /// 
@@ -48,6 +48,7 @@ public class GameController : SingleMono<GameController>
     /// 
     /// </summary>
     public bool isOpenSound;
+
     #endregion
     /// <summary>
     /// 初始化游戏
@@ -94,9 +95,9 @@ public class GameController : SingleMono<GameController>
     /// <param name="curScore"></param>
     public void SetScore(int curScore)
     {
-        if (MaxScore < curScore)
+        if (maxScore < curScore)
         {
-            MaxScore = curScore;
+            maxScore = curScore;
         }
     }
 
@@ -121,9 +122,15 @@ public class GameController : SingleMono<GameController>
         }
         else
         {
+
             playCtrl.StartGame(mapData, historyMap);
         }
 
+    }
+
+    public void Continue() 
+    {
+        UseBoom();
     }
 
     /// <summary>
@@ -172,7 +179,7 @@ public class GameController : SingleMono<GameController>
             saveData.mapData = playCtrl.GetCurSaveData();
             saveData.historyMap = playCtrl.GetCurSaveDatas();
         }
-        saveData.MaxScore = MaxScore;
+        saveData.MaxScore = maxScore;
         saveData.isOpenMusic = isOpenMusic;
         saveData.isOpenSound = isOpenSound;
         string saveInfo = JsonConvert.SerializeObject(saveData, JsonSerializerSettings);
@@ -195,7 +202,7 @@ public class GameController : SingleMono<GameController>
                 itemDic = saveData.itemDic;
                 mapData = saveData.mapData;
                 historyMap = saveData.historyMap;
-                MaxScore = saveData.MaxScore;
+                maxScore = saveData.MaxScore;
                 isOpenMusic = saveData.isOpenMusic;
                 isOpenSound = saveData.isOpenSound;
                 return true;
@@ -207,6 +214,52 @@ public class GameController : SingleMono<GameController>
         }
         return false;
     }
+
+    /// <summary>
+    /// 最大分数
+    /// </summary>
+    /// <returns>The score.</returns>
+    public int MaxScore()
+    {
+        return maxScore;
+    }
+
+    /// <summary>
+    /// 当前分数
+    /// </summary>
+    /// <returns>The score.</returns>
+    public int CurScore()
+    {
+        if (playCtrl != null)
+        {
+            playCtrl.Score();
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// Uses the boom.
+    /// </summary>
+    public void UseBoom()
+    {
+        if (playCtrl != null)
+        {
+            playCtrl.UseBoom();
+        }
+    }
+
+    /// <summary>
+    /// Uses the goback.
+    /// </summary>
+    public void UseGoback()
+    {
+        if (playCtrl != null)
+        {
+            playCtrl.UseGoBack();
+        }
+    }
+
+
 
     /// <summary>
     /// 设置默认存档

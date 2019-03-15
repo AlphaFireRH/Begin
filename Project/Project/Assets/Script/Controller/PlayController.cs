@@ -173,7 +173,7 @@ public class PlayController : IPlayController
             {
                 mapDatas = new List<MapData>();
             }
-
+            state = GameState.Play;
             mapData = Boom();
             RecoradOperate(mapData);
             return curMapData.Clone();
@@ -197,7 +197,10 @@ public class PlayController : IPlayController
             {
                 mapDatas = new List<MapData>();
             }
-
+            if (mapDatas != null && mapDatas.Count > 0)
+            {
+                state = GameState.Play;
+            }
             curMapData = GoBack();
             return curMapData.Clone();
         }
@@ -423,7 +426,6 @@ public class PlayController : IPlayController
                                     allMapData[x][y].Ladder++;
                                     allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
-                                    //mergeIDs.Add(allMapData[x][y].ID);
                                     allMapData[targetX][y] = null;
                                     break;
                                 }
@@ -712,6 +714,15 @@ public class PlayController : IPlayController
     public bool IsCanUseGoBack()
     {
         return state == GameState.Play && mapDatas.Count > 0;
+    }
+
+    /// <summary>
+    /// 分数
+    /// </summary>
+    /// <returns>The score.</returns>
+    public int Score()
+    {
+        return curMapData.Score;
     }
     #endregion
 

@@ -4,8 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public enum TouchType
 {
+    Normal,
+    Auto,
+}
+
+public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+{
+    private TouchType touchType;
+
     /// <summary>
     /// 屏幕距离
     /// </summary>
@@ -56,8 +64,10 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
+        finishTouch = false;
         pointerEventDataPosition = eventData.position;
     }
+
 
     /// <summary>
     /// 实现接口
@@ -65,7 +75,17 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
-        var delaMove = eventData.position - pointerEventDataPosition;
+        if (!finishTouch)
+        {
+            var delaMove = eventData.position - pointerEventDataPosition;
+
+            SendDir(delaMove);
+        }
+    }
+
+    private void SendDir(Vector2 curPosition)
+    {
+        var delaMove = curPosition - pointerEventDataPosition;
 
         float dictance = Mathf.Min(Mathf.Max(0, xDistance) * Screen.width, Mathf.Max(0, yDistance) * Screen.height);
         PlayerOperate operate = PlayerOperate.None;
@@ -97,7 +117,20 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         if (curCall != null && operate != PlayerOperate.None)
         {
+            finishTouch = true;
             curCall(operate);
+        }
+    }
+
+    private bool finishTouch = true;
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (touchType == TouchType.Auto && finishTouch == false)
+        {
+            var delaMove = eventData.position - pointerEventDataPosition;
+            SendDir(delaMove);
+
         }
     }
 }

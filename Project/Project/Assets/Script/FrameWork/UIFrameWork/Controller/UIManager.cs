@@ -37,35 +37,41 @@ public class UIManager : MonoBehaviour
     {
         UIViewBase ret = null;
         ViewData viewData = new ViewData();
+        viewData.ViewID = viewID;
         string path = "";
         switch (viewID)
         {
             case ViewID.PlayWindow:
                 {
                     path = "UIPrefab/PlayWindowUI/PlayUI";
+                    viewData.UIType = UIType.Window;
                 }
                 break;
             case ViewID.CompleteUI:
                 {
                     path = "UIPrefab/PlayWindowUI/CompleteUI";
+                    viewData.UIType = UIType.Tip;
                 }
                 break;
             case ViewID.PrivateUI:
                 {
                     path = "UIPrefab/PlayWindowUI/PrivateUI";
+                    viewData.UIType = UIType.Tip;
                 }
                 break;
             case ViewID.SettingUI:
                 {
                     path = "UIPrefab/PlayWindowUI/SettingUI";
+                    viewData.UIType = UIType.Tip;
                 }
                 break;
             case ViewID.WebViewUI:
                 {
                     path = "UIPrefab/PlayWindowUI/WebViewUI";
+                    viewData.UIType = UIType.Tip;
                 }
                 break;
-            default:break;
+            default: break;
         }
         //防止有空异常
         if (!string.IsNullOrEmpty(path))
@@ -128,7 +134,7 @@ public class UIManager : MonoBehaviour
         if (UIViews.Contains(view))
         {
             UIViews.Remove(view);
-            view.Close();
+            view.PlayHideAnimation();
         }
     }
 }

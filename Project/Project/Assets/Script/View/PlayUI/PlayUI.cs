@@ -45,19 +45,25 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// 回退按钮
     /// </summary>
     [SerializeField]
-    private Button GobackBtn;
+    private Button gobackBtn;
 
     /// <summary>
     /// 爆炸按钮
     /// </summary>
     [SerializeField]
-    private Button BoomBtn;
+    private Button boomBtn;
+
+    /// <summary>
+    /// 适配脚本
+    /// </summary>
+    [SerializeField]
+    private AdaptMove adapt;
 
     /// <summary>
     /// 爆炸按钮
     /// </summary>
     [SerializeField]
-    private Button SettingBtn;
+    private Button settingBtn;
 
     /// <summary>
     /// 地图块
@@ -101,6 +107,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         InitMapBG();
         BindBtnEvent();
         InitMapBG();
+        adapt.SetBanner(BannerType.Down);
     }
 
     /// <summary>
@@ -111,8 +118,8 @@ public class PlayUI : UIViewBase, IPlayUIController
         touchTool.UngegisterCallBack(PlayOperate);
         touchTool.RegisterCallBack(PlayOperate);
 
-        BoomBtn.onClick.RemoveAllListeners();
-        BoomBtn.onClick.AddListener(() =>
+        boomBtn.onClick.RemoveAllListeners();
+        boomBtn.onClick.AddListener(() =>
         {
             if (playCtrl.IsCanUseBoom())
             {
@@ -121,15 +128,15 @@ public class PlayUI : UIViewBase, IPlayUIController
             }
         });
 
-        SettingBtn.onClick.RemoveAllListeners();
-        SettingBtn.onClick.AddListener(() =>
+        settingBtn.onClick.RemoveAllListeners();
+        settingBtn.onClick.AddListener(() =>
         {
             playCtrl.StartGame();
         });
 
 
-        GobackBtn.onClick.RemoveAllListeners();
-        GobackBtn.onClick.AddListener(() =>
+        gobackBtn.onClick.RemoveAllListeners();
+        gobackBtn.onClick.AddListener(() =>
         {
             if (playCtrl.IsCanUseGoBack())
             {

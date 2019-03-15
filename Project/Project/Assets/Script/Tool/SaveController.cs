@@ -89,6 +89,18 @@ public class SaveController : SingleMono<SaveController>
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="focus"></param>
+    public void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+        {
+            CallBackAction();
+        }
+    }
+
+    /// <summary>
     /// 存档回调
     /// </summary>
     private void CallBackAction()
@@ -110,6 +122,4 @@ public class SaveController : SingleMono<SaveController>
             }
         }
     }
-
-
 }

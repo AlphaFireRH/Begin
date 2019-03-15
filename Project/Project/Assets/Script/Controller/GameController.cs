@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GameController : SingleMono<GameController>
@@ -37,6 +39,15 @@ public class GameController : SingleMono<GameController>
     /// </summary>
     public int MaxScore;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool isOpenMusic;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool isOpenSound;
     #endregion
     /// <summary>
     /// 初始化游戏
@@ -46,6 +57,20 @@ public class GameController : SingleMono<GameController>
         do
         {
             if (isInit) break;
+
+            /*
+             * 1.读取存档
+             * 2.设置定期存档
+             * 3.UI控制器初始化
+             * 4.弹出开始界面
+             */
+            if (!ReadSaveData())
+            {
+                //读取存档失败,设置默认存档
+                SetDefaultSave();
+            }
+            SaveController.Instance.Register(SaveData);
+
             if (uimanager == null)
             {
                 var go = GameObject.Find("UIRoot");
@@ -61,6 +86,18 @@ public class GameController : SingleMono<GameController>
             isInit = true;
 
         } while (false);
+    }
+
+    /// <summary>
+    /// 设置最高分数
+    /// </summary>
+    /// <param name="curScore"></param>
+    public void SetScore(int curScore)
+    {
+        if (MaxScore < curScore)
+        {
+            MaxScore = curScore;
+        }
     }
 
     #region 游戏进程控制
@@ -103,6 +140,72 @@ public class GameController : SingleMono<GameController>
             playCtrl.EndGame();
             playCtrl = null;
         }
+    }
+    private JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects };
+
+    /// <summary>
+    /// 存档
+    /// </summary>
+    private void SaveData()
+    {
+        string path = Application.persistentDataPath + ConfigData.SAVE_FILE_PATH;
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+        SaveData saveData = new SaveData();
+        saveData.itemDic = itemDic;
+        saveData.mapData = mapData;
+        saveData.historyMap = historyMap;
+        saveData.MaxScore = MaxScore;
+        saveData.isOpenMusic = isOpenMusic;
+        saveData.isOpenSound = isOpenSound;
+        string saveInfo = JsonConvert.SerializeObject(saveData, JsonSerializerSettings);
+        File.WriteAllText(path, saveInfo);
+    }
+
+    /// <summary>
+    /// 读取存档
+    /// </summary>
+    /// <returns></returns>
+    private bool ReadSaveData()
+    {
+        try
+        {
+            string path = Application.persistentDataPath + ConfigData.SAVE_FILE_PATH;
+            if (File.Exists(path))
+            {
+                var file = File.ReadAllText(path);
+                SaveData saveData = JsonConvert.DeserializeObject<SaveData>(file, JsonSerializerSettings);
+                itemDic = saveData.itemDic;
+                mapData = saveData.mapData;
+                historyMap = saveData.historyMap;
+                MaxScore = saveData.MaxScore;
+                isOpenMusic = saveData.isOpenMusic;
+                isOpenSound = saveData.isOpenSound;
+                return true;
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e.ToString());
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 设置默认存档
+    /// </summary>
+    private void SetDefaultSave()
+    {
+        itemDic = new Dictionary<int, int>();
+        itemDic.Add((int)ItemID.Boom, ConfigData.DEFAULT_BOOM_COUNT);
+        itemDic.Add((int)ItemID.Goback, ConfigData.DEFAULT_GOBACK_COUNT);
+        mapData = null;
+        historyMap = new List<MapData>();
+        MaxScore = MaxScore = 0;
+        isOpenMusic = true;
+        isOpenSound = true;
     }
 
     #endregion

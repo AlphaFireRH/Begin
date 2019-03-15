@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -764,5 +765,30 @@ public class PlayController : IPlayController
         curMapData = mapData;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public MapData GetCurSaveData()
+    {
+        if (state == GameState.GameOver)
+        {
+            return null;
+        }
+        return curMapData;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public List<MapData> GetOtherCurSaveData()
+    {
+        if (state == GameState.GameOver)
+        {
+            return null;
+        }
+        return mapDatas;
+    }
     #endregion
 }

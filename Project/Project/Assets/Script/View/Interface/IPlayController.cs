@@ -67,4 +67,16 @@ public interface IPlayController
     /// </summary>
     /// <returns></returns>
     MapData UseGoBack();
+
+    /// <summary>
+    /// 获取存档数据
+    /// </summary>
+    /// <returns></returns>
+    MapData GetCurSaveData();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    List<MapData> GetOtherCurSaveData();
 }

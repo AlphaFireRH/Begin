@@ -44,4 +44,24 @@ public static class ConfigData
     /// </summary>
     public const int MAP_SIZE = 4;
     #endregion
+
+    #region 存档相关
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int DEFAULT_BOOM_COUNT = 3;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int DEFAULT_GOBACK_COUNT = 3;
+
+    /// <summary>
+    /// 存档路径
+    /// </summary>
+    public const string SAVE_FILE_PATH = "/Save.txt";
+
+    #endregion
 }

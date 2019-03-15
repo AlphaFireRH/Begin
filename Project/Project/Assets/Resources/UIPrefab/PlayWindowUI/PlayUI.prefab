@@ -1327,6 +1327,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapItem: {fileID: 1358077668381846, guid: 8c20644e2e971704784d9a3a0ed8d56e, type: 2}
   mapBGItem: {fileID: 1339054237818244, guid: 37660a2fdd61e3844aac9cc2a34cf4d4, type: 2}
+  maxScore: {fileID: 114871719263105842}
+  curScore: {fileID: 114635307398895024}
   touchTool: {fileID: 114408087572157730}
   GobackBtn: {fileID: 114986047779367420}
   BoomBtn: {fileID: 114778867571502012}

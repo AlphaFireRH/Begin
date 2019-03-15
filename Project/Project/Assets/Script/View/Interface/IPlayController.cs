@@ -47,9 +47,20 @@ public interface IPlayController
     /// <summary>
     /// 移动地图
     /// </summary>
-    /// <param name="md"></param>
     /// <returns></returns>
     MapData UseBoom();
+
+    /// <summary>
+    /// 能否使用炸弹
+    /// </summary>
+    /// <returns></returns>
+    bool IsCanUseBoom();
+
+    /// <summary>
+    /// 能否使用goback
+    /// </summary>
+    /// <returns></returns>
+    bool IsCanUseGoBack();
 
     /// <summary>
     /// 使用退步道具

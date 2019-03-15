@@ -2,33 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- 
-                               _ooOoo_
-                              o8888888o 
-                              88" . "88
-                              (| -_- |)
-                              O\  =  /O
-                           ____/`---'\____
-                         .'  \\|     |//  `.
-                        /  \\|||  :  |||//  \
-                       /  _||||| -:- |||||-  \
-                       |   | \\\  -  /// |   |
-                       | \_|  ''\---/''  |   |
-                       \  .-\__  `-`  ___/-. /
-                     ___`. .'  /--.--\  `. . __
-                  ."" '<  `.___\_<|>_/___.'  >'"".
-                 | | :  `- \`.;`\ _ /`;.`/ - ` : | |
-                 \  \ `-.   \_ __\ /__ _/   .-` /  /
-            ======`-.____`-.___\_____/___.-`____.-'======
-                               `=---='
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                       佛祖保佑 永无BUG
-                       永不逆向 永不报错
-                       永不破解
-
-*/
-
 public class PlayController : IPlayController
 {
     /// <summary>
@@ -65,8 +38,8 @@ public class PlayController : IPlayController
     /// 当前游戏状态
     /// </summary>
     private GameState state = GameState.None;
-
     #region 接口
+
     /// <summary>
     /// 开始游戏
     /// </summary>
@@ -229,7 +202,6 @@ public class PlayController : IPlayController
     }
     #endregion
 
-
     #region 初始化
 
     /// <summary>
@@ -336,6 +308,7 @@ public class PlayController : IPlayController
         List<int> mergeIDs = new List<int>();
 
         MapData ret = new MapData();
+        ret.Score = curMapData.Score;
         ret.lastMoveDirection = MoveDirection;
         Dictionary<int, Dictionary<int, GridData>> allMapData = new Dictionary<int, Dictionary<int, GridData>>();
         for (int i = 0; i < curMapData.gridDatas.Count; i++)
@@ -364,12 +337,10 @@ public class PlayController : IPlayController
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                                 && (allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null))
                             {
-                                if (
-                                   //!mergeIDs.Contains(allMapData[targetX][y].ID)
-                                   //&& !mergeIDs.Contains(allMapData[x][y].ID)
-                                   /* &&*/ allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
+                                if (allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
                                     && allMapData[x][y].Ladder > 0)
                                 {
+                                    AddScore(ret, allMapData[x][y]. Ladder);
                                     allMapData[x][y].Ladder++;
                                     allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
@@ -425,12 +396,10 @@ public class PlayController : IPlayController
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                                 && (allMapData.ContainsKey(targetX) && allMapData[targetX].ContainsKey(y) && allMapData[targetX][y] != null))
                             {
-                                if (
-                                    //!mergeIDs.Contains(allMapData[targetX][y].ID)
-                                    //&& !mergeIDs.Contains(allMapData[x][y].ID)
-                                    /*&&*/ allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
+                                if (allMapData[x][y].Ladder == allMapData[targetX][y].Ladder
                                     && allMapData[x][y].Ladder > 0)
                                 {
+                                    AddScore(ret, allMapData[x][y].Ladder);
                                     allMapData[x][y].Ladder++;
                                     allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
@@ -487,13 +456,10 @@ public class PlayController : IPlayController
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                                 && (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null))
                             {
-                                if (
-                                    //!mergeIDs.Contains(allMapData[x][targetY].ID)
-                                    //&& !mergeIDs.Contains(allMapData[x][y].ID)
-                                    //&& 
-                                    allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
+                                if (allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
                                     && allMapData[x][y].Ladder > 0)
                                 {
+                                    AddScore(ret, allMapData[x][y].Ladder);
                                     allMapData[x][y].Ladder++;
                                     allMapData[x][y].MergeID = allMapData[x][targetY].ID;
                                     mergeIDs.Add(allMapData[x][targetY].ID);
@@ -550,17 +516,13 @@ public class PlayController : IPlayController
                             if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(y) && allMapData[x][y] != null
                                 && (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null))
                             {
-                                if (
-                                    //!mergeIDs.Contains(allMapData[x][targetY].ID)
-                                    //&& !mergeIDs.Contains(allMapData[x][y].ID)
-                                    //&& 
-                                    allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
+                                if (allMapData[x][y].Ladder == allMapData[x][targetY].Ladder
                                     && allMapData[x][y].Ladder > 0)
                                 {
+                                    AddScore(ret, allMapData[x][y].Ladder);
                                     allMapData[x][y].Ladder++;
                                     allMapData[x][y].MergeID = allMapData[x][targetY].ID;
                                     mergeIDs.Add(allMapData[x][targetY].ID);
-                                    //mergeIDs.Add(allMapData[x][y].ID);
                                     allMapData[x][targetY] = null;
                                     break;
                                 }
@@ -619,7 +581,17 @@ public class PlayController : IPlayController
                 }
             }
         }
+
         return ret;
+    }
+
+    /// <summary>
+    /// 增加分数
+    /// </summary>
+    /// <param name="ladder">Ladder.</param>
+    private void AddScore(MapData data, int ladder)
+    {
+        data.Score += (1 << ladder);
     }
 
     /// <summary>
@@ -629,8 +601,7 @@ public class PlayController : IPlayController
     private MapData Boom()
     {
         MapData mapData = curMapData.Clone();
-        int targetCount = 2;
-        if (mapData.gridDatas.Count > targetCount)
+        if (mapData.gridDatas.Count > ConfigData.BoomMinGrid)
         {
             List<List<GridData>> minGridData = new List<List<GridData>>();
             //1.排序
@@ -669,7 +640,7 @@ public class PlayController : IPlayController
             List<GridData> deletGridData = new List<GridData>();
 
             //2.随机取最小的两个,删除
-            while (deletGridData.Count < targetCount && minGridData.Count > 0)
+            while (deletGridData.Count < ConfigData.BoomGridCount && minGridData.Count > 0)
             {
                 if (minGridData[0].Count > 0)
                 {
@@ -702,6 +673,24 @@ public class PlayController : IPlayController
             return cur;
         }
         return curMapData;
+    }
+
+    /// <summary>
+    /// 能否使用炸弹
+    /// </summary>
+    /// <returns><c>true</c>, if can use boom was ised, <c>false</c> otherwise.</returns>
+    public bool IsCanUseBoom()
+    {
+        return curMapData.gridDatas.Count >= ConfigData.BoomMinGrid;
+    }
+
+    /// <summary>
+    /// 能否使用回退
+    /// </summary>
+    /// <returns><c>true</c>, if can use go back was ised, <c>false</c> otherwise.</returns>
+    public bool IsCanUseGoBack()
+    {
+        return mapDatas.Count > 0;
     }
     #endregion
 

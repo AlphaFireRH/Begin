@@ -15,7 +15,29 @@ public class GameController : SingleMono<GameController>
     [SerializeField]
     private UIManager uimanager;
 
+    #region 玩家数据
 
+    /// <summary>
+    /// 道具数量
+    /// </summary>
+    public Dictionary<int, int> itemDic = new Dictionary<int, int>();
+
+    /// <summary>
+    /// 当前地图
+    /// </summary>
+    public MapData mapData = null;
+
+    /// <summary>
+    /// 历史低于
+    /// </summary>
+    public List<MapData> historyMap = null;
+
+    /// <summary>
+    /// 最高分数
+    /// </summary>
+    public int MaxScore;
+
+    #endregion
     /// <summary>
     /// 初始化游戏
     /// </summary>

@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 224908448840587448}
   - component: {fileID: 222854101072981316}
   - component: {fileID: 114029573358533676}
+  - component: {fileID: 114551945665727736}
   m_Layer: 5
   m_Name: CompleteUI
   m_TagString: Untagged
@@ -334,7 +335,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 80
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 4
     m_MaxSize: 80
     m_Alignment: 4
@@ -464,6 +465,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: score
+--- !u!114 &114551945665727736
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1209803435312818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc68655227ade6e4b8b2c6fdb0e8de14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114770925660696642
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -669,7 +681,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1.612, y: -37.87}
-  m_SizeDelta: {x: 207.22, y: 100}
+  m_SizeDelta: {x: 610.2, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224545168278701340
 RectTransform:

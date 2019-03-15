@@ -41,8 +41,31 @@ public class UIManager : MonoBehaviour
         switch (viewID)
         {
             case ViewID.PlayWindow:
-                path = "UIPrefab/PlayWindowUI/PlayUI";
+                {
+                    path = "UIPrefab/PlayWindowUI/PlayUI";
+                }
                 break;
+            case ViewID.CompleteUI:
+                {
+                    path = "UIPrefab/PlayWindowUI/CompleteUI";
+                }
+                break;
+            case ViewID.PrivateUI:
+                {
+                    path = "UIPrefab/PlayWindowUI/PrivateUI";
+                }
+                break;
+            case ViewID.SettingUI:
+                {
+                    path = "UIPrefab/PlayWindowUI/SettingUI";
+                }
+                break;
+            case ViewID.WebViewUI:
+                {
+                    path = "UIPrefab/PlayWindowUI/WebViewUI";
+                }
+                break;
+            default:break;
         }
         //防止有空异常
         if (!string.IsNullOrEmpty(path))

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class WebViewUI : MonoBehaviour
+public class WebViewUI : UIViewBase
 {
 
     [SerializeField]

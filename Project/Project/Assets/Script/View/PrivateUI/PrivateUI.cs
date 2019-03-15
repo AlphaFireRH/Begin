@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrivateUI : MonoBehaviour {
+public class PrivateUI : UIViewBase
+{
 
 	// Use this for initialization
 	void Start () {

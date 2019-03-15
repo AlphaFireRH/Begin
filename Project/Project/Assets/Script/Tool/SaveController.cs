@@ -20,6 +20,9 @@ public class SaveController : SingleMono<SaveController>
     /// </summary>
     private WaitForSeconds wait = new WaitForSeconds(60);
 
+    /// <summary>
+    /// Awake this instance.
+    /// </summary>
     public void Awake()
     {
         RegisterCallback();

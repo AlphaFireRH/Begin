@@ -18,6 +18,11 @@ public class MapData
     public List<GridData> gridDatas = new List<GridData>();
 
     /// <summary>
+    /// 当前分数
+    /// </summary>
+    public int Score = 0;
+
+    /// <summary>
     /// 克隆数据
     /// </summary>
     /// <returns></returns>
@@ -25,6 +30,7 @@ public class MapData
     {
         MapData mapData = new MapData();
         mapData.lastMoveDirection = lastMoveDirection;
+        mapData.Score = Score;
         mapData.gridDatas = new List<GridData>();
         if (gridDatas != null)
         {

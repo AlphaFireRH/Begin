@@ -19,6 +19,18 @@ public class PlayUI : UIViewBase, IPlayUIController
     private GameObject mapBGItem;
 
     /// <summary>
+    /// 最高分数
+    /// </summary>
+    [SerializeField]
+    private Text maxScore;
+
+    /// <summary>
+    /// 当前分数
+    /// </summary>
+    [SerializeField]
+    private Text curScore;
+
+    /// <summary>
     /// 玩法控制器
     /// </summary>
     private IPlayController playCtrl;
@@ -87,23 +99,14 @@ public class PlayUI : UIViewBase, IPlayUIController
     {
         playCtrl = IPlayController;
         InitMapBG();
-        InitMap();
-
-    }
-
-    /// <summary>
-    /// 初始化地图
-    /// </summary>
-    private void InitMap()
-    {
-        BindBtn();
+        BindBtnEvent();
         InitMapBG();
     }
 
     /// <summary>
     /// 绑定按钮事件
     /// </summary>
-    private void BindBtn()
+    private void BindBtnEvent()
     {
         touchTool.UngegisterCallBack(PlayOperate);
         touchTool.RegisterCallBack(PlayOperate);
@@ -111,29 +114,33 @@ public class PlayUI : UIViewBase, IPlayUIController
         BoomBtn.onClick.RemoveAllListeners();
         BoomBtn.onClick.AddListener(() =>
         {
-            mapData = playCtrl.UseBoom();
-            RefreshMap(mapData.gridDatas, false);
+            if (playCtrl.IsCanUseBoom())
+            {
+                mapData = playCtrl.UseBoom();
+                RefreshMap(mapData.gridDatas, false);
+            }
         });
 
         SettingBtn.onClick.RemoveAllListeners();
         SettingBtn.onClick.AddListener(() =>
         {
             playCtrl.StartGame();
-            //mapData = playCtrl.UseBoom();
-            //RefreshMap(mapData.gridDatas, false);
         });
 
 
         GobackBtn.onClick.RemoveAllListeners();
         GobackBtn.onClick.AddListener(() =>
         {
-            mapData = playCtrl.UseGoBack();
-            RefreshMap(mapData.gridDatas, false);
+            if (playCtrl.IsCanUseGoBack())
+            {
+                mapData = playCtrl.UseGoBack();
+                RefreshMap(mapData.gridDatas, false);
+            }
         });
     }
 
     /// <summary>
-    /// 
+    /// 初始化地图
     /// </summary>
     public void InitMapBG()
     {
@@ -161,7 +168,8 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// <summary>
     /// 刷新地图
     /// </summary>
-    /// <param name="mapDatas">Map datas.</param>
+    /// <param name="gridData">Grid data.</param>
+    /// <param name="showAnimation">If set to <c>true</c> show animation.</param>
     private void RefreshMap(List<GridData> gridData, bool showAnimation = true)
     {
         if (gridData != null && gridData.Count > 0)
@@ -213,8 +221,24 @@ public class PlayUI : UIViewBase, IPlayUIController
             mapGrids[allDeleteID[i]].DoDestroy();
             mapGrids.Remove(allDeleteID[i]);
         }
+        RefreshScore();
     }
 
+    /// <summary>
+    /// 刷新分数
+    /// </summary>
+    private void RefreshScore()
+    {
+        if (maxScore != null)
+        {
+            maxScore.text = GameController.Instance.MaxScore.ToString();
+        }
+
+        if (curScore != null)
+        {
+            curScore.text = mapData.Score.ToString();
+        }
+    }
     #endregion
 
     #region 其他

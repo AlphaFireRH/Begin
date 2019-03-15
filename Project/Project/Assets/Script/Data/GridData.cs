@@ -18,7 +18,7 @@ public class GridData
     }
 
     /// <summary>
-    /// ID 从1开始
+    /// ID 从1开始(当前布局和上一次布局删除和添加的不会有相同ID)
     /// </summary>
     public int ID;
 
@@ -31,11 +31,6 @@ public class GridData
     /// 阶梯 如果是0则没有数字
     /// </summary>
     public int Ladder = 0;
-
-    ///// <summary>
-    ///// 移动来的ID,如果是小于等于0自己则没有动
-    ///// </summary>
-    //public int FromID = -1;
 
     /// <summary>
     /// From position.
@@ -56,7 +51,6 @@ public class GridData
         GridData grid = new GridData(Position.x, Position.y);
         grid.ID = ID;
         grid.Ladder = Ladder;
-        //grid.FromID = FromID;
         grid.MergeID = MergeID;
 
         return grid;

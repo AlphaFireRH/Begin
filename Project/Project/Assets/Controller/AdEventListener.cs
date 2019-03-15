@@ -6,7 +6,7 @@ public class AdEventListener : MonoBehaviour
 {
 
     [SerializeField]
-    private AdController _ctrl=null;
+    private AdController _ctrl = null;
 
 
     private void Awake()
@@ -131,7 +131,10 @@ public class AdEventListener : MonoBehaviour
     #endregion
 
     #region Banner Events
-
+    /// <summary>
+    /// rv加载请求队列
+    /// </summary>
+    private Coroutine bannerWait = null;
     /// <summary>
     /// banner已加载
     /// </summary>
@@ -149,12 +152,20 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnAdFailedEvent(string adUnitId, string error)
     {
-        StartCoroutine(WaitTryFetch(adUnitId));
+        ShowError(error);
+        if (bannerWait != null)
+        {
+            StopCoroutine(insertWait);
+        }
+        bannerWait =StartCoroutine(WaitTryFetch(adUnitId, 10));
     }
     #endregion
 
     #region Interstitial Events
-
+    /// <summary>
+    /// rv加载请求队列
+    /// </summary>
+    private Coroutine insertWait = null;
     /// <summary>
     /// 插屏已加载
     /// </summary>
@@ -171,7 +182,13 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnInterstitialFailedEvent(string adUnitId, string error)
     {
-        StartCoroutine(WaitTryFetch(adUnitId));
+        ShowError(error);
+
+        if (insertWait != null)
+        {
+            StopCoroutine(insertWait);
+        }
+        insertWait =StartCoroutine(WaitTryFetch(adUnitId, 10));
     }
 
     /// <summary>
@@ -182,7 +199,11 @@ public class AdEventListener : MonoBehaviour
     {
         _ctrl.PlayFinish(adUnitId);
 
-        StartCoroutine(WaitTryFetch(adUnitId));
+        if (insertWait != null)
+        {
+            StopCoroutine(insertWait);
+        }
+        insertWait =StartCoroutine(WaitTryFetch(adUnitId));
     }
     #endregion
 
@@ -209,7 +230,7 @@ public class AdEventListener : MonoBehaviour
     {
         rvGetRewardState = RvResult.NoResult;
         rvClose = false;
-        if (rvCloseWait!=null)
+        if (rvCloseWait != null)
         {
             StopCoroutine(rvCloseWait);
         }
@@ -227,11 +248,12 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnRewardedVideoFailedEvent(string adUnitId, string error)
     {
+        ShowError(error);
         if (rvWait != null)
         {
             StopCoroutine(rvWait);
         }
-        rvWait =StartCoroutine(WaitTryFetch(adUnitId));
+        rvWait = StartCoroutine(WaitTryFetch(adUnitId, 10));
     }
 
     /// <summary>
@@ -241,6 +263,7 @@ public class AdEventListener : MonoBehaviour
     /// <param name="error"></param>
     private void OnRewardedVideoFailedToPlayEvent(string adUnitId, string error)
     {
+        ShowError(error);
         rvGetRewardState = RvResult.Fail;
     }
 
@@ -248,7 +271,7 @@ public class AdEventListener : MonoBehaviour
     // 单击RV视频时激发 
     public void OnRewardedVideoClickedEvent(string adUnitId)
     {
-        
+
     }
 
     // iOS only. Fired when a rewarded video event causes another application to open
@@ -302,7 +325,7 @@ public class AdEventListener : MonoBehaviour
     /// <param name="adUnitId"></param>
     private void PushRvPlayResult(string adUnitId)
     {
-        if (rvGetRewardState!= RvResult.NoResult && rvClose)
+        if (rvGetRewardState != RvResult.NoResult && rvClose)
         {
             if (rvCloseWait != null)
             {
@@ -334,7 +357,7 @@ public class AdEventListener : MonoBehaviour
     #endregion
 
 
-    WaitForSeconds loadWait = new WaitForSeconds(1.0f);
+    WaitForSeconds loadWait = new WaitForSeconds(10.0f);
     IEnumerator WaitTryFetch(string adUnitId)
     {
         yield return loadWait;
@@ -342,8 +365,18 @@ public class AdEventListener : MonoBehaviour
         _ctrl.TryFetch(adUnitId);
     }
 
+    WaitForSeconds playWait = new WaitForSeconds(60.0f);
+    IEnumerator WaitTryFetch(string adUnitId, float waitTime)
+    {
+        yield return playWait;
 
+        _ctrl.TryFetch(adUnitId);
+    }
 
+    private void ShowError(string error)
+    {
+        Debug.LogError(error);
+    }
 
 
 

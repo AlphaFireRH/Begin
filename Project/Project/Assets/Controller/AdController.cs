@@ -325,7 +325,7 @@ public class AdController
         }
 
         _canCollectPersonalInfo = MoPub.CanCollectPersonalInfo= canCollect;
-        _currentConsentStatus = MoPub.CurrentConsentStatus= canCollect;
+        _currentConsentStatus = MoPub.CurrentConsentStatus;
         _shouldShowConsentDialog = MoPub.ShouldShowConsentDialog;
         _isGdprApplicable = MoPub.IsGdprApplicable= true;
     }

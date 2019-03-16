@@ -91,6 +91,7 @@ public class PlayController : IPlayController
         state = GameState.Play;
 
         MapTool.SetMapSize(size);
+        CheckEndState();
     }
 
     /// <summary>
@@ -328,7 +329,7 @@ public class PlayController : IPlayController
     private MapData MergeMove(PlayerOperate MoveDirection)
     {
         List<int> mergeIDs = new List<int>();
-
+        bool isMerge = false;
         MapData ret = new MapData();
         ret.Score = curMapData.Score;
         ret.lastMoveDirection = MoveDirection;
@@ -368,6 +369,7 @@ public class PlayController : IPlayController
                                     allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
                                     allMapData[targetX][y] = null;
+                                    isMerge = true;
                                     break;
                                 }
                             }
@@ -426,6 +428,7 @@ public class PlayController : IPlayController
                                     allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
                                     allMapData[targetX][y] = null;
+                                    isMerge = true;
                                     break;
                                 }
                             }
@@ -486,6 +489,7 @@ public class PlayController : IPlayController
                                     mergeIDs.Add(allMapData[x][targetY].ID);
                                     //mergeIDs.Add(allMapData[x][y].ID);
                                     allMapData[x][targetY] = null;
+                                    isMerge = true;
                                     break;
                                 }
 
@@ -545,6 +549,7 @@ public class PlayController : IPlayController
                                     allMapData[x][y].MergeID = allMapData[x][targetY].ID;
                                     mergeIDs.Add(allMapData[x][targetY].ID);
                                     allMapData[x][targetY] = null;
+                                    isMerge = true;
                                     break;
                                 }
                                 if (allMapData.ContainsKey(x) && allMapData[x].ContainsKey(targetY) && allMapData[x][targetY] != null)
@@ -601,6 +606,14 @@ public class PlayController : IPlayController
                     }
                 }
             }
+        }
+        if (isMerge)
+        {
+            AudioController.Instance.PlaySound(AudioType.merge);
+        }
+        else if (isMove)
+        {
+            AudioController.Instance.PlaySound(AudioType.move);
         }
 
         return ret;
@@ -737,6 +750,7 @@ public class PlayController : IPlayController
     private void CheckEndState()
     {
         if (state == GameState.Play && curMapData.gridDatas != null && curMapData.gridDatas.Count == mapSize * mapSize)
+        //if (state == GameState.Play && curMapData.gridDatas != null)
         {
             Dictionary<int, Dictionary<int, GridData>> map = new Dictionary<int, Dictionary<int, GridData>>();
             for (int i = 0; i < curMapData.gridDatas.Count; i++)
@@ -752,29 +766,29 @@ public class PlayController : IPlayController
             {
                 var item = curMapData.gridDatas[i];
                 if (map.ContainsKey(item.Position.x + 1)
-                    && map[item.Position.x + 1].ContainsKey(item.Position.y + 1)
-                    && map[item.Position.x + 1][item.Position.y + 1].Ladder == curMapData.gridDatas[i].Ladder)
+                    && map[item.Position.x + 1].ContainsKey(item.Position.y)
+                    && map[item.Position.x + 1][item.Position.y].Ladder == curMapData.gridDatas[i].Ladder)
                 {
                     isHas = true;
                     break;
                 }
-                if (map.ContainsKey(item.Position.x + 1)
-                  && map[item.Position.x + 1].ContainsKey(item.Position.y - 1)
-                  && map[item.Position.x + 1][item.Position.y - 1].Ladder == curMapData.gridDatas[i].Ladder)
-                {
-                    isHas = true;
-                    break;
-                }
-                if (map.ContainsKey(item.Position.x)
-                  && map[item.Position.x - 1].ContainsKey(item.Position.y + 1)
-                  && map[item.Position.x - 1][item.Position.y + 1].Ladder == curMapData.gridDatas[i].Ladder)
+                if (map.ContainsKey(item.Position.x - 1)
+                  && map[item.Position.x - 1].ContainsKey(item.Position.y)
+                  && map[item.Position.x - 1][item.Position.y].Ladder == curMapData.gridDatas[i].Ladder)
                 {
                     isHas = true;
                     break;
                 }
                 if (map.ContainsKey(item.Position.x)
-                  && map[item.Position.x - 1].ContainsKey(item.Position.y - 1)
-                  && map[item.Position.x - 1][item.Position.y - 1].Ladder == curMapData.gridDatas[i].Ladder)
+                  && map[item.Position.x].ContainsKey(item.Position.y + 1)
+                  && map[item.Position.x][item.Position.y + 1].Ladder == curMapData.gridDatas[i].Ladder)
+                {
+                    isHas = true;
+                    break;
+                }
+                if (map.ContainsKey(item.Position.x)
+                  && map[item.Position.x].ContainsKey(item.Position.y - 1)
+                  && map[item.Position.x][item.Position.y - 1].Ladder == curMapData.gridDatas[i].Ladder)
                 {
                     isHas = true;
                     break;

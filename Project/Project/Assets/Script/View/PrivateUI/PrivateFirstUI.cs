@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrivateUI : UIViewBase
+public class PrivateFirstUI : UIViewBase
 {
 
 	// Use this for initialization
@@ -15,14 +15,22 @@ public class PrivateUI : UIViewBase
 		
 	}
 
-    public void OnClickTrems()
+    public void OnClickClose()
     {
-        GameController.Instance.StartGame();
+        Close();
     }
 
-    public void OnClickOK()
+    public void OnClickOk()
     {
 
+        Close();
+    }
+
+    public void OnClickTerms()
+    {
+
+
+        Close();
     }
 
     private void Close()

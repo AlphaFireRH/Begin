@@ -28,9 +28,15 @@ public class CompleteUI : UIViewBase
         scoreLabel.text = GameController.Instance.CurScore().ToString();
     }
 
+    private void Close()
+    {
+        UIManager.Instance.CloseUI(this);
+    }
+
     public void OnClickAgain()
     {
         GameController.Instance.StartGame();
+        Close();
     }
 
     private bool clickLock = false;
@@ -43,6 +49,7 @@ public class CompleteUI : UIViewBase
             if (value == 1)
             {
                 GameController.Instance.Continue();
+                Close();
             }
         });
     }

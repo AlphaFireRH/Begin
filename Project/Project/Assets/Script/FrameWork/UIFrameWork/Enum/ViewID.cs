@@ -24,5 +24,13 @@ public enum ViewID
     /// 网页界面
     /// </summary>
     WebViewUI = 5,
+    /// <summary>
+    /// 隐私界面
+    /// </summary>
+    PrivateFirstUI = 6,
+    /// <summary>
+    /// 网页确认界面
+    /// </summary>
+    WebViewAgreeUI = 7,
 
 }

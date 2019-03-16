@@ -37,11 +37,18 @@ public class SettingUI : UIViewBase
 
     public void OnClickPrivate()
     {
-        
+        UIManager.Instance.ShowUI(ViewID.PrivateUI);
+        Close();
     }
 
     public void OnClickMyData()
     {
+        UIManager.Instance.ShowUI(ViewID.WebViewUI);
+        Close();
+    }
 
+    private void Close()
+    {
+        UIManager.Instance.CloseUI(this);
     }
 }

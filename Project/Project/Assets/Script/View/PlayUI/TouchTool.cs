@@ -6,23 +6,39 @@ using UnityEngine.EventSystems;
 
 public enum TouchType
 {
-    Normal,
-    Auto,
+    /// <summary>
+    /// 传统
+    /// </summary>
+    Normal = 0,
+    /// <summary>
+    /// 半自动
+    /// </summary>
+    Auto = 1,
 }
 
 public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-    private TouchType touchType;
+    private TouchType touchType = TouchType.Auto;
 
     /// <summary>
     /// 屏幕距离
     /// </summary>
-    private float xDistance = 0.06f;
+    private float xNormalDistance = 0.06f;
 
     /// <summary>
     /// 屏幕距离
     /// </summary>
-    private float yDistance = 0.03f;
+    private float yNormalDistance = 0.03f;
+
+    /// <summary>
+    /// 屏幕距离
+    /// </summary>
+    private float xAutoDistance = 0.08f;
+
+    /// <summary>
+    /// 屏幕距离
+    /// </summary>
+    private float yAutoDistance = 0.06f;
 
     /// <summary>
     /// 这一次按下的屏幕坐标
@@ -83,11 +99,18 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
         }
     }
 
-    private void SendDir(Vector2 curPosition)
+    private void SendDir(Vector2 delaMove)
     {
-        var delaMove = curPosition - pointerEventDataPosition;
 
-        float dictance = Mathf.Min(Mathf.Max(0, xDistance) * Screen.width, Mathf.Max(0, yDistance) * Screen.height);
+        float dictance = 0;
+        if (touchType == TouchType.Normal)
+        {
+            Mathf.Min(Mathf.Max(0, xNormalDistance) * Screen.width, Mathf.Max(0, yNormalDistance) * Screen.height);
+        }
+        else if (touchType == TouchType.Auto)
+        {
+            Mathf.Min(Mathf.Max(0, xAutoDistance) * Screen.width, Mathf.Max(0, yAutoDistance) * Screen.height);
+        }
         PlayerOperate operate = PlayerOperate.None;
         if ((Mathf.Abs(delaMove.x) >= dictance || Mathf.Abs(delaMove.y) >= dictance))
         {

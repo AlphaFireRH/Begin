@@ -85,6 +85,16 @@ public class UIManager : MonoBehaviour
                 break;
             default: break;
         }
+        if (viewData.UIType == UIType.Tip)
+        {
+            for (int i = UIViews.Count - 1; i >= 0; i--)
+            {
+                if (UIViews[i].UIType == UIType.Tip)
+                {
+                    UIViews[i].Close();
+                }
+            }
+        }
         //防止有空异常
         if (!string.IsNullOrEmpty(path))
         {

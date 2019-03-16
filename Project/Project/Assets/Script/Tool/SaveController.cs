@@ -89,6 +89,14 @@ public class SaveController : SingleMono<SaveController>
         {
             CallBackAction();
         }
+        else
+        {
+            AdController.Instance.ShowInsertAd((int call) =>
+            {
+
+            });
+        }
+
     }
 
     /// <summary>

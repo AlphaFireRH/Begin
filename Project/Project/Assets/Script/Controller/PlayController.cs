@@ -783,6 +783,7 @@ public class PlayController : IPlayController
             if (!isHas)
             {
                 state = GameState.GameOver;
+                UIManager.Instance.ShowUI(ViewID.CompleteUI);
             }
         }
     }

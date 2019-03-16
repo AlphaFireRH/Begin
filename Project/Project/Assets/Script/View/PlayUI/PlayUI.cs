@@ -131,7 +131,8 @@ public class PlayUI : UIViewBase, IPlayUIController
         settingBtn.onClick.RemoveAllListeners();
         settingBtn.onClick.AddListener(() =>
         {
-            playCtrl.StartGame();
+            UIManager.Instance.ShowUI(ViewID.SettingUI);
+            //playCtrl.StartGame();
         });
 
 
@@ -238,7 +239,7 @@ public class PlayUI : UIViewBase, IPlayUIController
     {
         if (maxScore != null)
         {
-            maxScore.text = GameController.Instance.MaxScore().ToString();
+            maxScore.text = GameController.Instance.MaxScore4Show();
         }
 
         if (curScore != null)

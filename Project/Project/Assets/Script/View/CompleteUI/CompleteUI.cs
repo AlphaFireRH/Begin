@@ -31,13 +31,29 @@ public class CompleteUI : UIViewBase
 
     public void OnClickAgain()
     {
-        GameController.Instance.StartGame();
-        Close();
+        if (clickLock)
+        {
+            return;
+        }
+        AudioController.Instance.PlaySound(AudioType.click);
+        clickLock = true;
+        AdController.Instance.ShowInsertAd((int value) =>
+        {
+            clickLock = false;
+
+            GameController.Instance.StartGame();
+            Close();
+        });
     }
 
     private bool clickLock = false;
     public void OnClickContinue()
     {
+        if (clickLock)
+        {
+            return;
+        }
+        AudioController.Instance.PlaySound(AudioType.click);
         clickLock = true;
         AdController.Instance.ShowRewardVideoAd((int value) =>
         {

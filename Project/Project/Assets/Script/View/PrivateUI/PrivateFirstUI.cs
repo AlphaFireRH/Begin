@@ -17,17 +17,20 @@ public class PrivateFirstUI : UIViewBase
 
     public void OnClickClose()
     {
+        AudioController.Instance.PlaySound(AudioType.click);
         Close();
     }
 
     public void OnClickOk()
     {
+        AudioController.Instance.PlaySound(AudioType.click);
         AdController.Instance.SetUserPrivateChoose(true);
         Close();
     }
 
     public void OnClickTerms()
     {
+        AudioController.Instance.PlaySound(AudioType.click);
         UIManager.Instance.ShowUI(ViewID.WebViewAgreeUI);
 
         Close();

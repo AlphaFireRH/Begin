@@ -17,6 +17,7 @@ public class PrivateUI : UIViewBase
 
     public void OnClickClose()
     {
+        AudioController.Instance.PlaySound(AudioType.click);
         Close();
     }
 

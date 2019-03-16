@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrivateUI : MonoBehaviour {
+public class PrivateUI : UIViewBase
+{
 
 	// Use this for initialization
 	void Start () {
@@ -13,4 +14,26 @@ public class PrivateUI : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void OnClickClose()
+    {
+        Close();
+    }
+
+    public void OnClickBtn0()
+    {
+        Application.OpenURL("https://youradchoices.com/");
+        Close();
+    }
+
+    public void OnClickBtn1()
+    {
+        Application.OpenURL("http://www.networkadvertising.org/");
+        Close();
+    }
+
+    private void Close()
+    {
+        UIManager.Instance.CloseUI(this);
+    }
 }

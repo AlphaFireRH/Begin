@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class WebViewUI : MonoBehaviour
+public class WebViewUI : UIViewBase
 {
 
     [SerializeField]
@@ -22,20 +22,20 @@ public class WebViewUI : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //Texture2D screen= ScreenCapture.CaptureScreenshotAsTexture();
-        //if (screen!=null)
-        //{
-        //    Debug.Log(screen.width);
-        //}
-
-        ScreenCapture.CaptureScreenshot("shot.jpg");
-        SetInfo();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    public void Init(ViewData viewData)
+    {
+        SetInfo();
     }
 
     private void OnApplicationPause(bool pauseStatus)
@@ -61,7 +61,10 @@ public class WebViewUI : MonoBehaviour
         Destroy(ViewContent);
     }
 
-
+    public void OnClickBack()
+    {
+        UIManager.Instance.CloseUI(this);
+    }
 
     private void SetInfo()
     {
@@ -79,8 +82,6 @@ public class WebViewUI : MonoBehaviour
         //topValue = Screen.safeArea.yMin / (float)Screen.height;
         topValue = GetSafeyMin() / (float)Screen.height;
         WebView.insets = GetRect(topValue, 0, 0, bottomValue);
-
-        Log();
 
         WebView.url = "http://gg.3951.com/privacy/";
         WebView.loadOnStart = true;

@@ -324,6 +324,31 @@ public class AdController
         _isGdprApplicable = MoPub.IsGdprApplicable;
     }
 
+    /// <summary>
+    /// 当前用户 是否需要展示 隐私界面
+    /// </summary>
+    /// <returns></returns>
+    public bool NeedShowPrivateFirstUI()
+    {
+        bool state = false;
+
+        if (!PlayerPrefs.HasKey("privateState"))
+        {
+            state = true;
+        }
+
+        return state;
+    }
+    /// <summary>
+    /// 设置用户对隐私的选择状态
+    /// </summary>
+    /// <returns></returns>
+    public void SetUserPrivateChoose(bool state)
+    {
+        PlayerPrefs.SetString("privateState", state?"1":"0");
+        UpdateConsentValues();
+    }
+
     #endregion
 
     #region Banner

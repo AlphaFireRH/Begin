@@ -337,6 +337,7 @@ public class PlayController : IPlayController
         {
             var item = curMapData.gridDatas[i].Clone();
             item.MergeID = 0;
+            item.GridType = GridType.Old;
             item.FromPosition = new Vector2Int(0, 0);
             if (!allMapData.ContainsKey(item.Position.x))
             {
@@ -366,7 +367,6 @@ public class PlayController : IPlayController
                                     allMapData[x][y].Ladder++;
                                     allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
-                                    //mergeIDs.Add(allMapData[x][y].ID);
                                     allMapData[targetX][y] = null;
                                     break;
                                 }
@@ -604,6 +604,11 @@ public class PlayController : IPlayController
         }
 
         return ret;
+    }
+
+    private int GetID()
+    {
+        return 0;
     }
 
     /// <summary>

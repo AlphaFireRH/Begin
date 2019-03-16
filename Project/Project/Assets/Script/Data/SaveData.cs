@@ -33,4 +33,9 @@ public class SaveData
     /// 
     /// </summary>
     public bool isOpenSound;
+
+    /// <summary>
+    /// The type of the touch.
+    /// </summary>
+    public TouchType touchType;
 }

@@ -4,17 +4,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public enum TouchType
 {
     /// <summary>
-    /// 屏幕距离
+    /// 传统
     /// </summary>
-    private float xDistance = 0.06f;
+    Normal = 0,
+    /// <summary>
+    /// 半自动
+    /// </summary>
+    Auto = 1,
+}
+
+public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+{
+    private TouchType touchType = TouchType.Auto;
 
     /// <summary>
     /// 屏幕距离
     /// </summary>
-    private float yDistance = 0.03f;
+    private float xNormalDistance = 0.06f;
+
+    /// <summary>
+    /// 屏幕距离
+    /// </summary>
+    private float yNormalDistance = 0.03f;
+
+    /// <summary>
+    /// 屏幕距离
+    /// </summary>
+    private float xAutoDistance = 0.08f;
+
+    /// <summary>
+    /// 屏幕距离
+    /// </summary>
+    private float yAutoDistance = 0.06f;
 
     /// <summary>
     /// 这一次按下的屏幕坐标
@@ -56,8 +80,10 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
+        finishTouch = false;
         pointerEventDataPosition = eventData.position;
     }
+
 
     /// <summary>
     /// 实现接口
@@ -65,9 +91,26 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     /// <param name="eventData"></param>
     public void OnPointerUp(PointerEventData eventData)
     {
-        var delaMove = eventData.position - pointerEventDataPosition;
+        if (!finishTouch)
+        {
+            var delaMove = eventData.position - pointerEventDataPosition;
 
-        float dictance = Mathf.Min(Mathf.Max(0, xDistance) * Screen.width, Mathf.Max(0, yDistance) * Screen.height);
+            SendDir(delaMove);
+        }
+    }
+
+    private void SendDir(Vector2 delaMove)
+    {
+
+        float dictance = 0;
+        if (touchType == TouchType.Normal)
+        {
+            Mathf.Min(Mathf.Max(0, xNormalDistance) * Screen.width, Mathf.Max(0, yNormalDistance) * Screen.height);
+        }
+        else if (touchType == TouchType.Auto)
+        {
+            Mathf.Min(Mathf.Max(0, xAutoDistance) * Screen.width, Mathf.Max(0, yAutoDistance) * Screen.height);
+        }
         PlayerOperate operate = PlayerOperate.None;
         if ((Mathf.Abs(delaMove.x) >= dictance || Mathf.Abs(delaMove.y) >= dictance))
         {
@@ -97,7 +140,20 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         if (curCall != null && operate != PlayerOperate.None)
         {
+            finishTouch = true;
             curCall(operate);
+        }
+    }
+
+    private bool finishTouch = true;
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (touchType == TouchType.Auto && finishTouch == false)
+        {
+            var delaMove = eventData.position - pointerEventDataPosition;
+            SendDir(delaMove);
+
         }
     }
 }

@@ -25,7 +25,7 @@ public class CompleteUI : UIViewBase
     public void Init(ViewData viewData)
     {
         clickLock = false;
-        scoreLabel.text = GameController.Instance.CurScore().ToString();
+        scoreLabel.text = GameController.Instance.CurScore4Show();
     }
 
     private void Close()

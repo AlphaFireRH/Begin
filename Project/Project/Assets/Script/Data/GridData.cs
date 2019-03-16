@@ -43,6 +43,11 @@ public class GridData
     public int MergeID = -1;
 
     /// <summary>
+    /// 当前块类型
+    /// </summary>
+    public GridType GridType = GridType.Old;
+
+    /// <summary>
     /// 克隆数据
     /// </summary>
     /// <returns></returns>
@@ -55,4 +60,23 @@ public class GridData
 
         return grid;
     }
+}
+
+/// <summary>
+/// 新创建的
+/// </summary>
+public enum GridType
+{
+    /// <summary>
+    /// 旧的
+    /// </summary>
+    Old = 0,
+    /// <summary>
+    /// 合并
+    /// </summary>
+    Merge = 1,
+    /// <summary>
+    /// 新创建的
+    /// </summary>
+    NewCreate = 2,
 }

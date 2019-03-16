@@ -15,7 +15,7 @@ public class GameController : SingleMono<GameController>
     /// ui控制器
     /// </summary>
     [SerializeField]
-    private UIManager uimanager;
+    private UIManager uiManager;
 
     #region 玩家数据
 
@@ -49,6 +49,11 @@ public class GameController : SingleMono<GameController>
     /// </summary>
     public bool isOpenSound;
 
+    /// <summary>
+    /// 触控类型
+    /// </summary>
+    /// <value>The type of the touch.</value>
+    public TouchType TouchType { get; set; }
     #endregion
     /// <summary>
     /// 初始化游戏
@@ -74,16 +79,16 @@ public class GameController : SingleMono<GameController>
 
             SaveController.Instance.Register(SaveData);
 
-            if (uimanager == null)
+            if (uiManager == null)
             {
                 var go = GameObject.Find("UIRoot");
                 if (go != null)
                 {
-                    uimanager = go.GetComponent<UIManager>();
+                    uiManager = go.GetComponent<UIManager>();
                 }
             }
-
-            uimanager.Init();
+            ConfigController.Instance.Init();
+            uiManager.Init();
 
             
             AdController.Instance.Init();
@@ -103,7 +108,7 @@ public class GameController : SingleMono<GameController>
     {
         if (AdController.Instance.NeedShowPrivateFirstUI())
         {
-            uimanager.ShowUI(ViewID.PrivateFirstUI);
+            uiManager.ShowUI(ViewID.PrivateFirstUI);
         }
     }
 
@@ -163,7 +168,12 @@ public class GameController : SingleMono<GameController>
         AdController.Instance.RequestBanner();
     }
 
-    public void Continue() 
+
+
+    /// <summary>
+    /// 继续
+    /// </summary>
+    public void Continue()
     {
         UseBoom();
     }
@@ -217,6 +227,7 @@ public class GameController : SingleMono<GameController>
         saveData.MaxScore = maxScore;
         saveData.isOpenMusic = isOpenMusic;
         saveData.isOpenSound = isOpenSound;
+        saveData.touchType = TouchType;
         string saveInfo = JsonConvert.SerializeObject(saveData, JsonSerializerSettings);
         File.WriteAllText(path, saveInfo);
     }
@@ -240,6 +251,7 @@ public class GameController : SingleMono<GameController>
                 maxScore = saveData.MaxScore;
                 isOpenMusic = saveData.isOpenMusic;
                 isOpenSound = saveData.isOpenSound;
+                TouchType = saveData.touchType;
                 return true;
             }
         }
@@ -260,6 +272,15 @@ public class GameController : SingleMono<GameController>
     }
 
     /// <summary>
+    /// 最大分数
+    /// </summary>
+    /// <returns>The score.</returns>
+    public string MaxScore4Show()
+    {
+        return maxScore.ToString();
+    }
+
+    /// <summary>
     /// 当前分数
     /// </summary>
     /// <returns>The score.</returns>
@@ -270,6 +291,19 @@ public class GameController : SingleMono<GameController>
             playCtrl.Score();
         }
         return 0;
+    }
+
+    /// <summary>
+    /// 当前分数
+    /// </summary>
+    /// <returns>The score.</returns>
+    public string CurScore4Show()
+    {
+        if (playCtrl != null)
+        {
+            playCtrl.Score().ToString();
+        }
+        return 0.ToString();
     }
 
     /// <summary>
@@ -313,6 +347,16 @@ public class GameController : SingleMono<GameController>
         }
         isOpenMusic = true;
         isOpenSound = true;
+    }
+
+    /// <summary>
+    /// 展示
+    /// </summary>
+    /// <returns>The score4 show.</returns>
+    /// <param name="Score">Score.</param>
+    private string GetScore4Show(int Score)
+    {
+        return Score.ToString();
     }
 
     #endregion

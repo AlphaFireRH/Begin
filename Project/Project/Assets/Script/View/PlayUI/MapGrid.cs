@@ -27,6 +27,12 @@ public class MapGrid : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject point;
+
+    /// <summary>
+    /// 字块背景颜色
+    /// </summary>
+    [SerializeField]
+    private Image gridImage;
     #endregion
 
     #region 数据
@@ -114,7 +120,10 @@ public class MapGrid : MonoBehaviour
     {
         if (gridData != null)
         {
-            text.text = (1 << gridData.Ladder).ToString();
+            //text.text = (1 << gridData.Ladder).ToString();
+            var item = ConfigController.Instance.GetGridConfigData(gridData.Ladder);
+            gridImage.color = item.GridColor;
+            text.text = item.ShowInfo;
         }
     }
     #endregion

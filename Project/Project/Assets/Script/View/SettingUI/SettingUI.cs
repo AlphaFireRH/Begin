@@ -61,10 +61,10 @@ public class SettingUI : UIViewBase
         AdController.Instance.ShowInsertAd((int value) =>
         {
             clickLock = false;
-
-            GameController.Instance.StartGame();
-            Close();
         });
+
+        GameController.Instance.StartGame();
+        Close();
     }
 
     public void OnClickContinue()

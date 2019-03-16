@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -164,10 +165,49 @@ public class PlayController : IPlayController
     /// </summary>
     /// <param name="md"></param>
     /// <returns></returns>
-    public MapData UseBoom()
+    public void UseBoom(Action<MapData> action)
     {
-        if (!isPause)
+        if (IsCanUseBoom())
         {
+
+            AdController.Instance.ShowRewardVideoAd((int value) =>
+            {
+
+                if (value == 1)
+                {
+                    MapData mapData = new MapData();
+                    if (mapDatas == null)
+                    {
+                        mapDatas = new List<MapData>();
+                    }
+                    state = GameState.Play;
+                    mapData = Boom();
+                    RecoradOperate(mapData);
+                    if (action != null)
+                    {
+                        action(curMapData);
+                    }
+                    //return curMapData.Clone();
+                }
+            });
+
+        }
+        else
+        {
+            //return curMapData.Clone();
+        }
+    }
+
+    /// <summary>
+    /// 移动地图
+    /// </summary>
+    /// <param name="md"></param>
+    /// <returns></returns>
+    public void UseBoomImmediately()
+    {
+        if (IsCanUseBoom())
+        {
+
             MapData mapData = new MapData();
             if (mapDatas == null)
             {
@@ -176,11 +216,12 @@ public class PlayController : IPlayController
             state = GameState.Play;
             mapData = Boom();
             RecoradOperate(mapData);
-            return curMapData.Clone();
+            playUIController.Refresh();
+
         }
         else
         {
-            return curMapData.Clone();
+            //return curMapData.Clone();
         }
     }
 
@@ -188,9 +229,9 @@ public class PlayController : IPlayController
     /// 使用退步道具
     /// </summary>
     /// <returns></returns>
-    public MapData UseGoBack()
+    public void UseGoBackmImmediately()
     {
-        if (!isPause)
+        if (IsCanUseGoBack())
         {
             MapData mapData = new MapData();
             if (mapDatas == null)
@@ -202,11 +243,46 @@ public class PlayController : IPlayController
                 state = GameState.Play;
             }
             curMapData = GoBack();
-            return curMapData.Clone();
+            playUIController.Refresh();
         }
         else
         {
-            return curMapData.Clone();
+        }
+    }
+
+    /// <summary>
+    /// 使用退步道具
+    /// </summary>
+    /// <returns></returns>
+    public void UseGoBack(Action<MapData> action)
+    {
+        if (IsCanUseGoBack())
+        {
+            AdController.Instance.ShowRewardVideoAd((int value) =>
+            {
+
+                if (value == 1)
+                {
+                    MapData mapData = new MapData();
+                    if (mapDatas == null)
+                    {
+                        mapDatas = new List<MapData>();
+                    }
+                    if (mapDatas != null && mapDatas.Count > 0)
+                    {
+                        state = GameState.Play;
+                    }
+                    curMapData = GoBack();
+                    if (action != null)
+                    {
+                        action(curMapData);
+                    }
+                }
+            });
+
+        }
+        else
+        {
         }
     }
 
@@ -278,9 +354,12 @@ public class PlayController : IPlayController
             //随机插入一个位置
             if (position.Count > 0)
             {
-                int index = Random.Range(0, position.Count);
+                int index = UnityEngine.Random.Range(0, position.Count);
                 GridData gridData = new GridData(position[index].x, position[index].y);
-                gridData.Ladder = 1;
+
+                int ladder = 1;
+
+                gridData.Ladder = ladder;
                 curMapData.gridDatas.Add(gridData);
 
                 List<int> allID = new List<int>();
@@ -684,7 +763,7 @@ public class PlayController : IPlayController
             {
                 if (minGridData[0].Count > 0)
                 {
-                    int index = Random.Range(0, minGridData[0].Count);
+                    int index = UnityEngine.Random.Range(0, minGridData[0].Count);
                     deletGridData.Add(minGridData[0][index].Clone());
 
                     var item = minGridData[0][index];
@@ -843,6 +922,11 @@ public class PlayController : IPlayController
             return null;
         }
         return mapDatas;
+    }
+    IPlayUIController playUIController;
+    public void Resister(IPlayUIController playUIController)
+    {
+        this.playUIController = playUIController;
     }
     #endregion
 }

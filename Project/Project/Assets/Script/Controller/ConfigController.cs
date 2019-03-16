@@ -41,6 +41,16 @@ public class ConfigController : SingleMono<ConfigController>
                     gridConfigDataDic[gridConfigData.Ladder] = gridConfigData;
                 }
             }
+            //int index = 1;
+            //do
+            //{
+            //    if (!gridConfigDataDic.ContainsKey(index))
+            //    {
+            //        break;
+            //    }
+            //    index++;
+            //} while (true);
+            //Debug.Log(index);
         }
     }
 

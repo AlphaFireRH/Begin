@@ -333,8 +333,6 @@ public class GameController : SingleMono<GameController>
             mapData = playCtrl.GetCurSaveData();
             historyMap = playCtrl.GetCurSaveDatas();
         }
-        isOpenMusic = true;
-        isOpenSound = true;
     }
 
     /// <summary>

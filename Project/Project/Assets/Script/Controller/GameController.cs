@@ -301,7 +301,7 @@ public class GameController : SingleMono<GameController>
         }
         return 0.ToString();
     }
-
+    private bool clickLock;
     /// <summary>
     /// Uses the boom.
     /// </summary>
@@ -309,7 +309,15 @@ public class GameController : SingleMono<GameController>
     {
         if (playCtrl != null)
         {
-            playCtrl.UseBoom();
+            clickLock = true;
+            AdController.Instance.ShowRewardVideoAd((int value) =>
+            {
+                clickLock = false;
+                if (value == 1)
+                {
+                    playCtrl.UseBoom();
+                }
+            });
         }
     }
 
@@ -320,7 +328,15 @@ public class GameController : SingleMono<GameController>
     {
         if (playCtrl != null)
         {
-            playCtrl.UseGoBack();
+            clickLock = true;
+            AdController.Instance.ShowRewardVideoAd((int value) =>
+            {
+                clickLock = false;
+                if (value == 1)
+                {
+                    playCtrl.UseGoBack();
+                }
+            });
         }
     }
 

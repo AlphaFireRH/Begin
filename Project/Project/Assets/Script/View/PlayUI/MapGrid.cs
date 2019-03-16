@@ -73,6 +73,8 @@ public class MapGrid : MonoBehaviour
                     rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
                     RefreshData();
                 }
+                var item = ConfigController.Instance.GetGridConfigData(gridData.Ladder);
+                gridImage.color = item.GridColor;
             }
             else
             {
@@ -111,6 +113,7 @@ public class MapGrid : MonoBehaviour
                 }
             }
         }
+
     }
 
     /// <summary>

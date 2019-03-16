@@ -121,6 +121,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         boomBtn.onClick.RemoveAllListeners();
         boomBtn.onClick.AddListener(() =>
         {
+            AudioController.Instance.PlaySound(AudioType.click);
             if (playCtrl.IsCanUseBoom())
             {
                 AudioController.Instance.PlaySound(AudioType.click);
@@ -140,6 +141,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         gobackBtn.onClick.RemoveAllListeners();
         gobackBtn.onClick.AddListener(() =>
         {
+            AudioController.Instance.PlaySound(AudioType.click);
             if (playCtrl.IsCanUseGoBack())
             {
                 AudioController.Instance.PlaySound(AudioType.click);

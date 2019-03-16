@@ -104,6 +104,7 @@ public class PlayUI : UIViewBase, IPlayUIController
     public void Init(IPlayController IPlayController)
     {
         playCtrl = IPlayController;
+        playCtrl.Resister(this);
         InitMapBG();
         BindBtnEvent();
         InitMapBG();
@@ -159,7 +160,8 @@ public class PlayUI : UIViewBase, IPlayUIController
         });
     }
 
-    public void Refresh() {
+    public void Refresh()
+    {
         mapData = playCtrl.GetMapDatas();
         RefreshMap(mapData.gridDatas, false);
 

@@ -318,10 +318,16 @@ public class AdController
     private string _status = string.Empty;
     public void UpdateConsentValues()
     {
-        _canCollectPersonalInfo = MoPub.CanCollectPersonalInfo;
-        _currentConsentStatus = MoPub.CurrentConsentStatus;
+        bool canCollect = PlayerPrefs.HasKey("privateState");
+        if (canCollect)
+        {
+            canCollect = (PlayerPrefs.GetString("privateState")=="1");
+        }
+
+        _canCollectPersonalInfo = MoPub.CanCollectPersonalInfo= canCollect;
+        _currentConsentStatus = MoPub.CurrentConsentStatus= canCollect;
         _shouldShowConsentDialog = MoPub.ShouldShowConsentDialog;
-        _isGdprApplicable = MoPub.IsGdprApplicable;
+        _isGdprApplicable = MoPub.IsGdprApplicable= true;
     }
 
     /// <summary>

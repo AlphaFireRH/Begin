@@ -880,11 +880,11 @@ public class PlayController : IPlayController
             }
 
         }
-        if (curMapData.Score > 10)
-        {
-            state = GameState.GameOver;
-            UIManager.Instance.ShowUI(ViewID.CompleteUI);
-        }
+        //if (curMapData.Score > 10)
+        //{
+        //    state = GameState.GameOver;
+        //    UIManager.Instance.ShowUI(ViewID.CompleteUI);
+        //}
     }
 
     /// <summary>

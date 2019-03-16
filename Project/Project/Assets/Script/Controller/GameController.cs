@@ -90,9 +90,9 @@ public class GameController : SingleMono<GameController>
             ConfigController.Instance.Init();
             uiManager.Init();
 
-            
+
             AdController.Instance.Init();
-            
+
             StartGame();
 
             isInit = true;
@@ -301,7 +301,7 @@ public class GameController : SingleMono<GameController>
     {
         if (playCtrl != null)
         {
-            playCtrl.Score().ToString();
+            return playCtrl.Score().ToString();
         }
         return 0.ToString();
     }

@@ -22,15 +22,11 @@ public class CompleteUI : UIViewBase
     /// <summary>
     /// 初始化
     /// </summary>
-    public void Init(ViewData viewData)
+    public override  void Init(ViewData viewData)
     {
+        base.Init(viewData);
         clickLock = false;
         scoreLabel.text = GameController.Instance.CurScore4Show();
-    }
-
-    private void Close()
-    {
-        UIManager.Instance.CloseUI(this);
     }
 
     public void OnClickAgain()

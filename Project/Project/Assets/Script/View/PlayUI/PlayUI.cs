@@ -131,7 +131,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         settingBtn.onClick.RemoveAllListeners();
         settingBtn.onClick.AddListener(() =>
         {
-            playCtrl.StartGame();
+            UIManager.Instance.ShowUI(ViewID.SettingUI);
         });
 
 
@@ -307,5 +307,6 @@ public class PlayUI : UIViewBase, IPlayUIController
         mapGrids.Clear();
     }
     #endregion
+
 
 }

@@ -71,6 +71,7 @@ public class GameController : SingleMono<GameController>
                 //读取存档失败,设置默认存档
                 SetDefaultSave();
             }
+            PlayerPrefs.DeleteAll();
             SaveController.Instance.Register(SaveData);
 
             if (uimanager == null)
@@ -84,11 +85,13 @@ public class GameController : SingleMono<GameController>
 
             uimanager.Init();
 
-            CheckPrivateState();
+            
             AdController.Instance.Init();
+            
             StartGame();
 
             isInit = true;
+            CheckPrivateState();
 
         } while (false);
     }

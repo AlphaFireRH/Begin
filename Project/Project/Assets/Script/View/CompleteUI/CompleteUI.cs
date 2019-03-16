@@ -40,11 +40,9 @@ public class CompleteUI : UIViewBase
         AdController.Instance.ShowInsertAd((int value) =>
         {
             clickLock = false;
-            if (value == 1)
-            {
-                GameController.Instance.StartGame();
-                Close();
-            }
+
+            GameController.Instance.StartGame();
+            Close();
         });
     }
 

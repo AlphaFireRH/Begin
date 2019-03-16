@@ -88,6 +88,8 @@ public class GameController : SingleMono<GameController>
             isInit = true;
             CheckPrivateState();
 
+            Invoke("FretchAd", 5);
+
         } while (false);
     }
 
@@ -158,6 +160,12 @@ public class GameController : SingleMono<GameController>
         AdController.Instance.RequestBanner();
     }
 
+   private void FretchAd()
+    {
+        AdController.Instance.FetchInsertAd();
+
+        AdController.Instance.FetchRewardVideoAd();
+    }
 
 
     /// <summary>

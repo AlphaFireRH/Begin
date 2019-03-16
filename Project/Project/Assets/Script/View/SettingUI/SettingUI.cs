@@ -61,11 +61,9 @@ public class SettingUI : UIViewBase
         AdController.Instance.ShowInsertAd((int value) =>
         {
             clickLock = false;
-            if (value == 1)
-            {
-                GameController.Instance.StartGame();
-                Close();
-            }
+
+            GameController.Instance.StartGame();
+            Close();
         });
     }
 
@@ -98,5 +96,66 @@ public class SettingUI : UIViewBase
     private void Close()
     {
         UIManager.Instance.CloseUI(this);
+    }
+
+    private void OnGUI()
+    {
+            GUILayout.BeginHorizontal();
+
+            GUILayout.Space(10);
+            if (GUILayout.Button("RequestBanner", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
+            {
+                AdController.Instance.RequestBanner();
+            }
+            GUILayout.Space(10);
+            //if (GUILayout.Button("HideBanner", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
+            //{
+            //    AdController.Instance.HideBanner();
+            //}
+            GUILayout.EndHorizontal();
+
+
+
+            GUILayout.Space(10);
+
+
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("FetchInsertAd", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
+            {
+                AdController.Instance.FetchInsertAd();
+            }
+            GUILayout.Space(10);
+            GUILayout.Label(AdController.Instance.InsertAdCanShow().ToString());
+            GUILayout.Space(10);
+            if (GUILayout.Button("ShowInsertAd", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
+            {
+                AdController.Instance.ShowInsertAd((int result) => {
+                    Debug.Log("Insert:   " + result.ToString());
+                });
+            }
+            GUILayout.EndHorizontal();
+
+
+
+            GUILayout.Space(10);
+
+
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("FetchRewardVideoAd", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
+            {
+                AdController.Instance.FetchRewardVideoAd();
+            }
+            GUILayout.Space(10);
+            GUILayout.Label(AdController.Instance.RewardVideoAdCanShow().ToString());
+            GUILayout.Space(10);
+            if (GUILayout.Button("ShowRewardVideoAd", GUILayout.Width(Screen.width * 0.2f), GUILayout.Height(Screen.height * 0.08f)))
+            {
+                AdController.Instance.ShowRewardVideoAd((int result) => {
+                    Debug.Log("RewardVideo:   " + result.ToString());
+                });
+            }
+            GUILayout.EndHorizontal();
     }
 }

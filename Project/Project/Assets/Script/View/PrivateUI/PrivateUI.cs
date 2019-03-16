@@ -15,14 +15,21 @@ public class PrivateUI : UIViewBase
 		
 	}
 
-    public void OnClickTrems()
+    public void OnClickClose()
     {
-        GameController.Instance.StartGame();
+        Close();
     }
 
-    public void OnClickOK()
+    public void OnClickBtn0()
     {
+        Application.OpenURL("https://youradchoices.com/");
+        Close();
+    }
 
+    public void OnClickBtn1()
+    {
+        Application.OpenURL("http://www.networkadvertising.org/");
+        Close();
     }
 
     private void Close()

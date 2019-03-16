@@ -49,25 +49,37 @@ public class UIManager : MonoBehaviour
                 break;
             case ViewID.CompleteUI:
                 {
-                    path = "UIPrefab/PlayWindowUI/CompleteUI";
+                    path = "UIPrefab/CompleteUI/CompleteUI";
                     viewData.UIType = UIType.Tip;
                 }
                 break;
             case ViewID.PrivateUI:
                 {
-                    path = "UIPrefab/PlayWindowUI/PrivateUI";
+                    path = "UIPrefab/PrivateUI/PrivateUI";
                     viewData.UIType = UIType.Tip;
                 }
                 break;
             case ViewID.SettingUI:
                 {
-                    path = "UIPrefab/PlayWindowUI/SettingUI";
+                    path = "UIPrefab/SettingUI/SettingUI";
                     viewData.UIType = UIType.Tip;
                 }
                 break;
             case ViewID.WebViewUI:
                 {
-                    path = "UIPrefab/PlayWindowUI/WebViewUI";
+                    path = "UIPrefab/WebViewUI/WebViewUI";
+                    viewData.UIType = UIType.Tip;
+                }
+                break;
+            case ViewID.PrivateFirstUI:
+                {
+                    path = "UIPrefab/PrivateUI/PrivateFirstUI";
+                    viewData.UIType = UIType.Tip;
+                }
+                break;
+            case ViewID.WebViewAgreeUI:
+                {
+                    path = "UIPrefab/WebViewUI/WebViewAgreeUI";
                     viewData.UIType = UIType.Tip;
                 }
                 break;

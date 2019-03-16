@@ -35,6 +35,7 @@ public class CompleteUI : UIViewBase
 
     public void OnClickAgain()
     {
+        AudioController.Instance.PlaySound(AudioType.click);
         GameController.Instance.StartGame();
         Close();
     }
@@ -42,6 +43,7 @@ public class CompleteUI : UIViewBase
     private bool clickLock = false;
     public void OnClickContinue()
     {
+        AudioController.Instance.PlaySound(AudioType.click);
         clickLock = true;
         AdController.Instance.ShowRewardVideoAd((int value) =>
         {

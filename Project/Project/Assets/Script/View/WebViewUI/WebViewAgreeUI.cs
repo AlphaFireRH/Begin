@@ -64,12 +64,14 @@ public class WebViewAgreeUI : UIViewBase
 
     public void OnClickAccept()
     {
+        AudioController.Instance.PlaySound(AudioType.click);
         AdController.Instance.SetUserPrivateChoose(true);
         UIManager.Instance.CloseUI(this);
     }
 
     public void OnClickBack()
     {
+        AudioController.Instance.PlaySound(AudioType.click);
         AdController.Instance.SetUserPrivateChoose(false);
         UIManager.Instance.CloseUI(this);
     }

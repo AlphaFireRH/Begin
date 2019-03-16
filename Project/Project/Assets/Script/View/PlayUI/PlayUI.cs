@@ -123,6 +123,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         {
             if (playCtrl.IsCanUseBoom())
             {
+                AudioController.Instance.PlaySound(AudioType.click);
                 mapData = playCtrl.UseBoom();
                 RefreshMap(mapData.gridDatas, false);
             }
@@ -131,6 +132,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         settingBtn.onClick.RemoveAllListeners();
         settingBtn.onClick.AddListener(() =>
         {
+            AudioController.Instance.PlaySound(AudioType.click);
             UIManager.Instance.ShowUI(ViewID.SettingUI);
         });
 
@@ -140,6 +142,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         {
             if (playCtrl.IsCanUseGoBack())
             {
+                AudioController.Instance.PlaySound(AudioType.click);
                 mapData = playCtrl.UseGoBack();
                 RefreshMap(mapData.gridDatas, false);
             }

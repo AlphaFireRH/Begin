@@ -64,6 +64,7 @@ public class WebViewUI : UIViewBase
 
     public void OnClickBack()
     {
+        AudioController.Instance.PlaySound(AudioType.click);
         UIManager.Instance.CloseUI(this);
     }
 

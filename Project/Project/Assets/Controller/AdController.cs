@@ -324,10 +324,10 @@ public class AdController
             canCollect = (PlayerPrefs.GetString("privateState")=="1");
         }
 
-        _canCollectPersonalInfo = MoPub.CanCollectPersonalInfo= canCollect;
+        _canCollectPersonalInfo = MoPub.CanCollectPersonalInfo;
         _currentConsentStatus = MoPub.CurrentConsentStatus;
         _shouldShowConsentDialog = MoPub.ShouldShowConsentDialog;
-        _isGdprApplicable = MoPub.IsGdprApplicable= true;
+        _isGdprApplicable = MoPub.IsGdprApplicable;
     }
 
     /// <summary>

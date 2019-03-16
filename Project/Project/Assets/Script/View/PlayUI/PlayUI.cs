@@ -132,7 +132,6 @@ public class PlayUI : UIViewBase, IPlayUIController
         settingBtn.onClick.AddListener(() =>
         {
             UIManager.Instance.ShowUI(ViewID.SettingUI);
-            //playCtrl.StartGame();
         });
 
 
@@ -239,7 +238,7 @@ public class PlayUI : UIViewBase, IPlayUIController
     {
         if (maxScore != null)
         {
-            maxScore.text = GameController.Instance.MaxScore4Show();
+            maxScore.text = GameController.Instance.MaxScore().ToString();
         }
 
         if (curScore != null)
@@ -308,5 +307,6 @@ public class PlayUI : UIViewBase, IPlayUIController
         mapGrids.Clear();
     }
     #endregion
+
 
 }

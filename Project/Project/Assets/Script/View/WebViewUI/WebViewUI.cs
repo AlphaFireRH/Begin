@@ -22,6 +22,7 @@ public class WebViewUI : UIViewBase
     // Use this for initialization
     void Start()
     {
+        SetInfo();
     }
 
     // Update is called once per frame
@@ -35,7 +36,7 @@ public class WebViewUI : UIViewBase
     /// </summary>
     public void Init(ViewData viewData)
     {
-        SetInfo();
+        
     }
 
     private void OnApplicationPause(bool pauseStatus)
@@ -94,13 +95,13 @@ public class WebViewUI : UIViewBase
     {
         float tempH = Screen.safeArea.yMin;
 #if UNITY_ANDROID
-        AndroidJavaObject activity = new AndroidJavaClass("com.example.myjar.MyActivity").GetStatic<AndroidJavaObject>("currentActivity");
-        int realScreenH = activity.Call<int>("getScreentHeight");
+        //AndroidJavaObject activity = new AndroidJavaClass("com.example.myjar.MyActivity").GetStatic<AndroidJavaObject>("currentActivity");
+        //int realScreenH = activity.Call<int>("getScreentHeight");
 
-        if (Mathf.Abs(realScreenH - Screen.height) > 10)
-        {
-            tempH = Mathf.Abs(realScreenH - Screen.height);
-        }
+        //if (Mathf.Abs(realScreenH - Screen.height) > 10)
+        //{
+        //    tempH = Mathf.Abs(realScreenH - Screen.height);
+        //}
 #elif UNITY_iOS
         tempH = Screen.safeArea.yMin;
 #endif

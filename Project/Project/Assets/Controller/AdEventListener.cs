@@ -155,7 +155,7 @@ public class AdEventListener : MonoBehaviour
         ShowError(error);
         if (bannerWait != null)
         {
-            StopCoroutine(insertWait);
+            StopCoroutine(bannerWait);
         }
         bannerWait =StartCoroutine(WaitTryFetch(adUnitId, 10));
     }

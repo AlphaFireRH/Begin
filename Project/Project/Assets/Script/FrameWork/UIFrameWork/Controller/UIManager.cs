@@ -111,6 +111,8 @@ public class UIManager : MonoBehaviour
                 obj.transform.localPosition = Vector3.zero;
                 obj.transform.localRotation = Quaternion.identity;
 
+                obj.transform.SetAsLastSibling();
+
                 RectTransform rect = obj.GetComponent<RectTransform>();
                 if (rect != null)
                 {

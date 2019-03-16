@@ -76,6 +76,7 @@ public class GameController : SingleMono<GameController>
                 //读取存档失败,设置默认存档
                 SetDefaultSave();
             }
+
             SaveController.Instance.Register(SaveData);
 
             if (uiManager == null)
@@ -89,11 +90,13 @@ public class GameController : SingleMono<GameController>
             ConfigController.Instance.Init();
             uiManager.Init();
 
-            CheckPrivateState();
+            
             AdController.Instance.Init();
+            
             StartGame();
 
             isInit = true;
+            CheckPrivateState();
 
         } while (false);
     }
@@ -135,6 +138,12 @@ public class GameController : SingleMono<GameController>
     {
         EndGame();
 
+        if (bannerWait != null)
+        {
+            StopCoroutine(bannerWait);
+        }
+        bannerWait = StartCoroutine(WaitBanner());
+
         playCtrl = new PlayController();
         if (mapData == null)
         {
@@ -145,7 +154,18 @@ public class GameController : SingleMono<GameController>
 
             playCtrl.StartGame(mapData, historyMap);
         }
+    }
 
+    /// <summary>
+    /// rv加载请求队列
+    /// </summary>
+    private Coroutine bannerWait = null;
+    WaitForSeconds loadWait = new WaitForSeconds(3.0f);
+    IEnumerator WaitBanner()
+    {
+        yield return loadWait;
+
+        AdController.Instance.RequestBanner();
     }
 
 

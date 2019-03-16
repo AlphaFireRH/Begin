@@ -393,7 +393,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: CANCEL
+  m_Text: BACK
 --- !u!222 &222049492170937278
 CanvasRenderer:
   m_ObjectHideFlags: 1

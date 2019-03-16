@@ -133,6 +133,12 @@ public class GameController : SingleMono<GameController>
     {
         EndGame();
 
+        if (bannerWait != null)
+        {
+            StopCoroutine(bannerWait);
+        }
+        bannerWait = StartCoroutine(WaitBanner());
+
         playCtrl = new PlayController();
         if (mapData == null)
         {
@@ -143,6 +149,16 @@ public class GameController : SingleMono<GameController>
 
             playCtrl.StartGame(mapData, historyMap);
         }
+    }
+
+    /// <summary>
+    /// rv加载请求队列
+    /// </summary>
+    private Coroutine bannerWait = null;
+    WaitForSeconds loadWait = new WaitForSeconds(3.0f);
+    IEnumerator WaitBanner()
+    {
+        yield return loadWait;
 
         AdController.Instance.RequestBanner();
     }

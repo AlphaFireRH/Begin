@@ -71,7 +71,7 @@ public class GameController : SingleMono<GameController>
                 //读取存档失败,设置默认存档
                 SetDefaultSave();
             }
-            PlayerPrefs.DeleteAll();
+
             SaveController.Instance.Register(SaveData);
 
             if (uimanager == null)
@@ -144,6 +144,7 @@ public class GameController : SingleMono<GameController>
             playCtrl.StartGame(mapData, historyMap);
         }
 
+        AdController.Instance.RequestBanner();
     }
 
     public void Continue() 

@@ -22,6 +22,7 @@ public class WebViewAgreeUI : UIViewBase
     // Use this for initialization
     void Start()
     {
+        SetInfo();
     }
 
     // Update is called once per frame
@@ -35,7 +36,7 @@ public class WebViewAgreeUI : UIViewBase
     /// </summary>
     public void Init(ViewData viewData)
     {
-        SetInfo();
+        
     }
 
     private void OnApplicationPause(bool pauseStatus)

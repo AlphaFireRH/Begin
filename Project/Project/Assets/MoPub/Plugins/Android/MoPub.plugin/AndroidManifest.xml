@@ -7,7 +7,7 @@
           android:name="org.apache.http.legacy"
           android:required="false" />
 
-        <activity android:name="com.example.myjar.MyActivity" android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <!--<activity android:name="com.example.myjar.MyActivity" android:configChanges="keyboardHidden|orientation|screenSize"/>-->
       
         <!-- MoPub SDK activities. -->
         <activity android:name="com.mopub.mobileads.MoPubActivity"

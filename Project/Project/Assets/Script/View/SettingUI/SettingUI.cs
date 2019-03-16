@@ -28,11 +28,12 @@ public class SettingUI : UIViewBase
     public void OnClickAgain()
     {
         GameController.Instance.StartGame();
+        Close();
     }
 
     public void OnClickContinue()
     {
-
+        Close();
     }
 
     public void OnClickPrivate()
@@ -44,6 +45,11 @@ public class SettingUI : UIViewBase
     public void OnClickMyData()
     {
         UIManager.Instance.ShowUI(ViewID.WebViewUI);
+        Close();
+    }
+
+    public void OnClickClose()
+    {
         Close();
     }
 

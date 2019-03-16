@@ -800,7 +800,7 @@ public class PlayController : IPlayController
     /// <returns><c>true</c>, if can use boom was ised, <c>false</c> otherwise.</returns>
     public bool IsCanUseBoom()
     {
-        return state == GameState.Play && curMapData.gridDatas.Count >= ConfigData.BOOM_MIN_GRID;
+        return curMapData.gridDatas.Count >= ConfigData.BOOM_MIN_GRID;
     }
 
     /// <summary>
@@ -809,7 +809,7 @@ public class PlayController : IPlayController
     /// <returns><c>true</c>, if can use go back was ised, <c>false</c> otherwise.</returns>
     public bool IsCanUseGoBack()
     {
-        return state == GameState.Play && mapDatas.Count > 0;
+        return mapDatas.Count > 0;
     }
 
     /// <summary>
@@ -878,6 +878,12 @@ public class PlayController : IPlayController
                 state = GameState.GameOver;
                 UIManager.Instance.ShowUI(ViewID.CompleteUI);
             }
+
+        }
+        if (curMapData.Score > 10)
+        {
+            state = GameState.GameOver;
+            UIManager.Instance.ShowUI(ViewID.CompleteUI);
         }
     }
 

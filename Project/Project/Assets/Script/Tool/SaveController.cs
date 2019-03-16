@@ -91,10 +91,7 @@ public class SaveController : SingleMono<SaveController>
         }
         else
         {
-            AdController.Instance.ShowInsertAd((int call) =>
-            {
-
-            });
+         
         }
 
     }
@@ -108,6 +105,13 @@ public class SaveController : SingleMono<SaveController>
         if (focus)
         {
             CallBackAction();
+        }
+        else
+        {
+            AdController.Instance.ShowInsertAd((int call) =>
+            {
+
+            });
         }
     }
 

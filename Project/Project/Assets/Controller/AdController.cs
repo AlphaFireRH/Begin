@@ -470,8 +470,6 @@ public class AdController
     /// </summary>
     public void ShowRewardVideoAd(Action<int> playResult)
     {
-        playResult(1);
-        return;
         RVPlayResult = playResult;
 
         if (RewardVideoAdCanShow())

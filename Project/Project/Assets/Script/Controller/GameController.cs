@@ -40,16 +40,6 @@ public class GameController : SingleMono<GameController>
     private int maxScore;
 
     /// <summary>
-    /// 
-    /// </summary>
-    public bool isOpenMusic;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public bool isOpenSound;
-
-    /// <summary>
     /// 触控类型
     /// </summary>
     /// <value>The type of the touch.</value>
@@ -225,8 +215,7 @@ public class GameController : SingleMono<GameController>
             saveData.historyMap = playCtrl.GetCurSaveDatas();
         }
         saveData.MaxScore = maxScore;
-        saveData.isOpenMusic = isOpenMusic;
-        saveData.isOpenSound = isOpenSound;
+        saveData.isOpenSound = AudioController.Instance.soundState;
         saveData.touchType = TouchType;
         string saveInfo = JsonConvert.SerializeObject(saveData, JsonSerializerSettings);
         File.WriteAllText(path, saveInfo);
@@ -249,8 +238,7 @@ public class GameController : SingleMono<GameController>
                 mapData = saveData.mapData;
                 historyMap = saveData.historyMap;
                 maxScore = saveData.MaxScore;
-                isOpenMusic = saveData.isOpenMusic;
-                isOpenSound = saveData.isOpenSound;
+                AudioController.Instance.soundState = saveData.isOpenSound;
                 TouchType = saveData.touchType;
                 return true;
             }

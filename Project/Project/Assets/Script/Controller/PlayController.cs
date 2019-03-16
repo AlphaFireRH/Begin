@@ -769,6 +769,10 @@ public class PlayController : IPlayController
                     var item = minGridData[0][index];
                     minGridData[0].Remove(item);
                     mapData.gridDatas.Remove(item);
+                    if (mapData.gridDatas.Count <= 1)
+                    {
+                        break;
+                    }
                 }
                 else
                 {

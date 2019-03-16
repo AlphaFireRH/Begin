@@ -36,7 +36,6 @@ public class PlayController : IPlayController
     private GameState state = GameState.None;
 
     #region 接口
-
     /// <summary>
     /// 开始游戏
     /// </summary>

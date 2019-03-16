@@ -12,9 +12,12 @@ public class SettingUI : UIViewBase
 	// Use this for initialization
 	void Start () {
         ShowSoundState();
-
+        clickLock = false;
     }
-	
+	void OnEnable()
+    {
+        clickLock = false;
+    }
 	// Update is called once per frame
 	void Update () {
 		
@@ -46,11 +49,24 @@ public class SettingUI : UIViewBase
         }
     }
 
+    private bool clickLock = false;
     public void OnClickAgain()
     {
+        if (clickLock)
+        {
+            return;
+        }
         AudioController.Instance.PlaySound(AudioType.click);
-        GameController.Instance.StartGame();
-        Close();
+        clickLock = true;
+        AdController.Instance.ShowInsertAd((int value) =>
+        {
+            clickLock = false;
+            if (value == 1)
+            {
+                GameController.Instance.StartGame();
+                Close();
+            }
+        });
     }
 
     public void OnClickContinue()

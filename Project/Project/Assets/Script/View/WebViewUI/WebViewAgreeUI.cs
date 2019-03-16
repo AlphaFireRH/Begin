@@ -63,11 +63,13 @@ public class WebViewAgreeUI : UIViewBase
 
     public void OnClickAccept()
     {
+        AdController.Instance.SetUserPrivateChoose(true);
         UIManager.Instance.CloseUI(this);
     }
 
     public void OnClickBack()
     {
+        AdController.Instance.SetUserPrivateChoose(false);
         UIManager.Instance.CloseUI(this);
     }
 

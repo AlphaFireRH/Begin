@@ -22,13 +22,13 @@ public class PrivateFirstUI : UIViewBase
 
     public void OnClickOk()
     {
-
+        AdController.Instance.SetUserPrivateChoose(true);
         Close();
     }
 
     public void OnClickTerms()
     {
-
+        UIManager.Instance.ShowUI(ViewID.WebViewAgreeUI);
 
         Close();
     }

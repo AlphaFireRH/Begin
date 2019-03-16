@@ -84,12 +84,24 @@ public class GameController : SingleMono<GameController>
 
             uimanager.Init();
 
+            CheckPrivateState();
             AdController.Instance.Init();
             StartGame();
 
             isInit = true;
 
         } while (false);
+    }
+
+    /// <summary>
+    /// 检测 是否需要展示 隐私界面
+    /// </summary>
+    public void CheckPrivateState()
+    {
+        if (AdController.Instance.NeedShowPrivateFirstUI())
+        {
+            uimanager.ShowUI(ViewID.PrivateFirstUI);
+        }
     }
 
     /// <summary>

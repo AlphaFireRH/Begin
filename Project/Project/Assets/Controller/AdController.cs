@@ -427,16 +427,23 @@ public class AdController
     {
         InsertPlayResult = playResult;
 
-        if (InsertAdCanShow())
+        if (insertWait>0)
         {
-            MoPub.ShowInterstitialAd(currentInterstitialAdUnits);
-            AdUnLoad(currentInterstitialAdUnits);
+            insertWait = 0;
+            PlayAction(InsertPlayResult, 0);
         }
         else
         {
-            PlayAction(InsertPlayResult, 0);
+            if (InsertAdCanShow())
+            {
+                MoPub.ShowInterstitialAd(currentInterstitialAdUnits);
+                AdUnLoad(currentInterstitialAdUnits);
+            }
+            else
+            {
+                PlayAction(InsertPlayResult, 0);
+            }
         }
-
     }
 
     private string GetInsertId()
@@ -446,6 +453,7 @@ public class AdController
 
     #endregion
 
+    private int insertWait = 0;
     #region RewardVideo
 
     private string currentRewardedVideoAdUnits = string.Empty;
@@ -474,6 +482,7 @@ public class AdController
 
         if (RewardVideoAdCanShow())
         {
+            insertWait = 1;
             MoPub.ShowRewardedVideo(currentRewardedVideoAdUnits);
             AdUnLoad(currentRewardedVideoAdUnits);
         }

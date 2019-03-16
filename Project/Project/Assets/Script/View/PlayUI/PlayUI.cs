@@ -124,8 +124,13 @@ public class PlayUI : UIViewBase, IPlayUIController
             AudioController.Instance.PlaySound(AudioType.click);
             if (playCtrl.IsCanUseBoom())
             {
-                mapData = playCtrl.UseBoom();
-                RefreshMap(mapData.gridDatas, false);
+                playCtrl.UseBoom(
+                (MapData m) =>
+                {
+                    mapData = m;
+                    RefreshMap(m.gridDatas, false);
+                }
+                    );
             }
         });
 
@@ -143,10 +148,21 @@ public class PlayUI : UIViewBase, IPlayUIController
             AudioController.Instance.PlaySound(AudioType.click);
             if (playCtrl.IsCanUseGoBack())
             {
-                mapData = playCtrl.UseGoBack();
-                RefreshMap(mapData.gridDatas, false);
+                playCtrl.UseGoBack(
+             (MapData m) =>
+             {
+                 mapData = m;
+                 RefreshMap(m.gridDatas, false);
+             }
+                 );
             }
         });
+    }
+
+    public void Refresh() {
+        mapData = playCtrl.GetMapDatas();
+        RefreshMap(mapData.gridDatas, false);
+
     }
 
     /// <summary>

@@ -7,4 +7,9 @@ public interface IPlayUIController
     /// 初始化
     /// </summary>
     void Init(IPlayController IPlayController);
+
+    /// <summary>
+    /// Refresh this instance.
+    /// </summary>
+    void Refresh();
 }

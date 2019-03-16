@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public interface IPlayController
 {
@@ -13,6 +14,12 @@ public interface IPlayController
     /// </summary>
     /// <returns></returns>
     bool IsEnd();
+
+    /// <summary>
+    /// Resister the specified playUIController.
+    /// </summary>
+    /// <param name="playUIController">Play UIC ontroller.</param>
+    void Resister(IPlayUIController playUIController);
 
     /// <summary>
     /// 移动方向
@@ -48,7 +55,7 @@ public interface IPlayController
     /// 移动地图
     /// </summary>
     /// <returns></returns>
-    MapData UseBoom();
+    void UseBoom(Action<MapData> action);
 
     /// <summary>
     /// 能否使用炸弹
@@ -66,7 +73,7 @@ public interface IPlayController
     /// 使用退步道具
     /// </summary>
     /// <returns></returns>
-    MapData UseGoBack();
+    void UseGoBack(Action<MapData> action);
 
     /// <summary>
     /// 获取存档数据

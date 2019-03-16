@@ -301,15 +301,7 @@ public class GameController : SingleMono<GameController>
     {
         if (playCtrl != null)
         {
-            clickLock = true;
-            AdController.Instance.ShowRewardVideoAd((int value) =>
-            {
-                clickLock = false;
-                if (value == 1)
-                {
-                    playCtrl.UseBoom();
-                }
-            });
+            playCtrl.UseBoomImmediately();
         }
     }
 
@@ -320,15 +312,7 @@ public class GameController : SingleMono<GameController>
     {
         if (playCtrl != null)
         {
-            clickLock = true;
-            AdController.Instance.ShowRewardVideoAd((int value) =>
-            {
-                clickLock = false;
-                if (value == 1)
-                {
-                    playCtrl.UseGoBack();
-                }
-            });
+            playCtrl.UseGoBackmImmediately();
         }
     }
 

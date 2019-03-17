@@ -169,27 +169,45 @@ public class PlayController : IPlayController
     {
         if (IsCanUseBoom())
         {
-
-            AdController.Instance.ShowRewardVideoAd((int value) =>
+            if (GameController.Instance.GetItemCount(ItemID.Boom) > 0)
             {
-
-                if (value == 1)
+                GameController.Instance.UseItem(ItemID.Boom);
+                MapData mapData = new MapData();
+                if (mapDatas == null)
                 {
-                    MapData mapData = new MapData();
-                    if (mapDatas == null)
-                    {
-                        mapDatas = new List<MapData>();
-                    }
-                    state = GameState.Play;
-                    mapData = Boom();
-                    RecoradOperate(mapData);
-                    if (action != null)
-                    {
-                        action(curMapData);
-                    }
-                    //return curMapData.Clone();
+                    mapDatas = new List<MapData>();
                 }
-            });
+                state = GameState.Play;
+                mapData = Boom();
+                RecoradOperate(mapData);
+                if (action != null)
+                {
+                    action(curMapData);
+                }
+            }
+            else
+            {
+                AdController.Instance.ShowRewardVideoAd((int value) =>
+                {
+
+                    if (value == 1)
+                    {
+                        MapData mapData = new MapData();
+                        if (mapDatas == null)
+                        {
+                            mapDatas = new List<MapData>();
+                        }
+                        state = GameState.Play;
+                        mapData = Boom();
+                        RecoradOperate(mapData);
+                        if (action != null)
+                        {
+                            action(curMapData);
+                        }
+                        //return curMapData.Clone();
+                    }
+                });
+            }
 
         }
         else
@@ -258,27 +276,48 @@ public class PlayController : IPlayController
     {
         if (IsCanUseGoBack())
         {
-            AdController.Instance.ShowRewardVideoAd((int value) =>
+            if (GameController.Instance.GetItemCount(ItemID.Goback) > 0)
             {
-
-                if (value == 1)
+                GameController.Instance.UseItem(ItemID.Goback);
+                MapData mapData = new MapData();
+                if (mapDatas == null)
                 {
-                    MapData mapData = new MapData();
-                    if (mapDatas == null)
-                    {
-                        mapDatas = new List<MapData>();
-                    }
-                    if (mapDatas != null && mapDatas.Count > 0)
-                    {
-                        state = GameState.Play;
-                    }
-                    curMapData = GoBack();
-                    if (action != null)
-                    {
-                        action(curMapData);
-                    }
+                    mapDatas = new List<MapData>();
                 }
-            });
+                if (mapDatas != null && mapDatas.Count > 0)
+                {
+                    state = GameState.Play;
+                }
+                curMapData = GoBack();
+                if (action != null)
+                {
+                    action(curMapData);
+                }
+            }
+            else
+            {
+                AdController.Instance.ShowRewardVideoAd((int value) =>
+                {
+
+                    if (value == 1)
+                    {
+                        MapData mapData = new MapData();
+                        if (mapDatas == null)
+                        {
+                            mapDatas = new List<MapData>();
+                        }
+                        if (mapDatas != null && mapDatas.Count > 0)
+                        {
+                            state = GameState.Play;
+                        }
+                        curMapData = GoBack();
+                        if (action != null)
+                        {
+                            action(curMapData);
+                        }
+                    }
+                });
+            }
 
         }
         else
@@ -313,10 +352,6 @@ public class PlayController : IPlayController
         curMapData.lastMoveDirection = PlayerOperate.None;
         InsertANumber();
         InsertANumber();
-        //for (int i = 0; i < 14; i++)
-        //{
-        //    InsertANumber();
-        //}
     }
 
     /// <summary>
@@ -927,11 +962,6 @@ public class PlayController : IPlayController
             state = GameState.GameOver;
             UIManager.Instance.ShowUI(ViewID.CompleteUI);
         }
-        //if (curMapData.Score > 10)
-        //{
-        //    state = GameState.GameOver;
-        //    UIManager.Instance.ShowUI(ViewID.CompleteUI);
-        //}
     }
 
     /// <summary>

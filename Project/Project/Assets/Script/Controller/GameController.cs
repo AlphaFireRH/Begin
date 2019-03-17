@@ -22,17 +22,17 @@ public class GameController : SingleMono<GameController>
     /// <summary>
     /// 道具数量
     /// </summary>
-    public Dictionary<int, int> itemDic = new Dictionary<int, int>();
+    private Dictionary<int, int> itemDic = new Dictionary<int, int>();
 
     /// <summary>
     /// 当前地图
     /// </summary>
-    public MapData mapData = null;
+    private MapData mapData = null;
 
     /// <summary>
     /// 历史低于
     /// </summary>
-    public List<MapData> historyMap = null;
+    private List<MapData> historyMap = null;
 
     /// <summary>
     /// 最高分数
@@ -160,7 +160,7 @@ public class GameController : SingleMono<GameController>
         AdController.Instance.RequestBanner();
     }
 
-   private void FretchAd()
+    private void FretchAd()
     {
         AdController.Instance.FetchInsertAd();
 
@@ -301,7 +301,7 @@ public class GameController : SingleMono<GameController>
         }
         return 0.ToString();
     }
-    private bool clickLock;
+
     /// <summary>
     /// Uses the boom.
     /// </summary>
@@ -324,7 +324,34 @@ public class GameController : SingleMono<GameController>
         }
     }
 
+    /// <summary>
+    /// 获取道具数量
+    /// </summary>
+    /// <param name="itemID"></param>
+    /// <returns></returns>
+    public int GetItemCount(ItemID itemID)
+    {
+        int id = (int)itemID;
+        if (!itemDic.ContainsKey(id))
+        {
+            return 0;
+        }
+        return itemDic[(int)itemID];
+    }
 
+    /// <summary>
+    /// 获取道具数量
+    /// </summary>
+    /// <param name="itemID"></param>
+    /// <returns></returns>
+    public void UseItem(ItemID itemID)
+    {
+        int id = (int)itemID;
+        if (itemDic.ContainsKey(id) && itemDic[id] > 0)
+        {
+            itemDic[id]--;
+        }
+    }
 
     /// <summary>
     /// 设置默认存档

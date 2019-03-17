@@ -65,6 +65,18 @@ public class PlayUI : UIViewBase, IPlayUIController
     [SerializeField]
     private Button settingBtn;
 
+    [SerializeField]
+    private GameObject boomRVPoint;
+    [SerializeField]
+    private GameObject boomCountPoint;
+    [SerializeField]
+    private Text boomCountTxt;
+    [SerializeField]
+    private GameObject gobackRVPoint;
+    [SerializeField]
+    private GameObject gobackCountPoint;
+    [SerializeField]
+    private Text gobackCountTxt;
     /// <summary>
     /// 地图块
     /// </summary>
@@ -109,6 +121,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         BindBtnEvent();
         InitMapBG();
         adapt.SetBanner(BannerType.Down);
+        RefreshItemCount();
     }
 
     /// <summary>
@@ -126,12 +139,13 @@ public class PlayUI : UIViewBase, IPlayUIController
             if (playCtrl.IsCanUseBoom())
             {
                 playCtrl.UseBoom(
-                (MapData m) =>
-                {
-                    mapData = m;
-                    RefreshMap(m.gridDatas, false);
-                }
-                    );
+                    (MapData m) =>
+                    {
+                        mapData = m;
+                        RefreshMap(m.gridDatas, false);
+                        RefreshItemCount();
+                    }
+                );
             }
         });
 
@@ -150,21 +164,24 @@ public class PlayUI : UIViewBase, IPlayUIController
             if (playCtrl.IsCanUseGoBack())
             {
                 playCtrl.UseGoBack(
-             (MapData m) =>
-             {
-                 mapData = m;
-                 RefreshMap(m.gridDatas, false);
-             }
-                 );
+                    (MapData m) =>
+                    {
+                        mapData = m;
+                        RefreshMap(m.gridDatas, false);
+                        RefreshItemCount();
+                    }
+                );
             }
         });
     }
 
+    /// <summary>
+    /// 外部刷新接口
+    /// </summary>
     public void Refresh()
     {
         mapData = playCtrl.GetMapDatas();
         RefreshMap(mapData.gridDatas, false);
-
     }
 
     /// <summary>
@@ -193,6 +210,23 @@ public class PlayUI : UIViewBase, IPlayUIController
     #endregion
 
     #region 刷新
+
+    /// <summary>
+    /// 刷新道具数量
+    /// </summary>
+    private void RefreshItemCount()
+    {
+        int boomCount = GameController.Instance.GetItemCount(ItemID.Boom);
+        boomRVPoint.SetActive(boomCount <= 0);
+        boomCountPoint.SetActive(boomCount > 0);
+        boomCountTxt.text = boomCount.ToString();
+
+        int gobackCount = GameController.Instance.GetItemCount(ItemID.Goback);
+        gobackRVPoint.SetActive(gobackCount <= 0);
+        gobackCountPoint.SetActive(gobackCount > 0);
+        gobackCountTxt.text = gobackCount.ToString();
+    }
+
     /// <summary>
     /// 刷新地图
     /// </summary>

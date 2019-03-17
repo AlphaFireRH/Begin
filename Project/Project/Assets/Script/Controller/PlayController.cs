@@ -357,7 +357,35 @@ public class PlayController : IPlayController
                 int index = UnityEngine.Random.Range(0, position.Count);
                 GridData gridData = new GridData(position[index].x, position[index].y);
 
+                int maxLadder = 1;
+                for (int i = 0; i < curMapData.gridDatas.Count; i++)
+                {
+                    if (maxLadder < curMapData.gridDatas[i].Ladder)
+                    {
+                        maxLadder = curMapData.gridDatas[i].Ladder;
+                    }
+                }
                 int ladder = 1;
+                var item = ConfigController.Instance.GetGridConfigData(maxLadder);
+                if (item != null)
+                {
+                    if (item.CreateMin.Count > 1)
+                    {
+                        int r = UnityEngine.Random.Range(1, 101);
+                        if (r < 80)
+                        {
+                            ladder = item.CreateMin[0];
+                        }
+                        else
+                        {
+                            ladder = item.CreateMin[1];
+                        }
+                    }
+                    else
+                    {
+                        ladder = item.CreateMin[0];
+                    }
+                }
 
                 gridData.Ladder = ladder;
                 curMapData.gridDatas.Add(gridData);
@@ -877,12 +905,27 @@ public class PlayController : IPlayController
                     break;
                 }
             }
+
             if (!isHas)
             {
                 state = GameState.GameOver;
                 UIManager.Instance.ShowUI(ViewID.CompleteUI);
             }
 
+        }
+        int maxLadder = 1;
+        for (int i = 0; i < curMapData.gridDatas.Count; i++)
+        {
+            if (maxLadder < curMapData.gridDatas[i].Ladder)
+            {
+                maxLadder = curMapData.gridDatas[i].Ladder;
+            }
+        }
+        var configItem = ConfigController.Instance.GetGridConfigData(maxLadder);
+        if (configItem == null)
+        {
+            state = GameState.GameOver;
+            UIManager.Instance.ShowUI(ViewID.CompleteUI);
         }
         //if (curMapData.Score > 10)
         //{

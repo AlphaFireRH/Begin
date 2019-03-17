@@ -10,7 +10,8 @@ public class CompleteUI : UIViewBase
     // Use this for initialization
     void Start()
     {
-
+        clickLock = false;
+        clickInsertLock = false;
     }
 
     // Update is called once per frame
@@ -26,20 +27,22 @@ public class CompleteUI : UIViewBase
     {
         base.Init(viewData);
         clickLock = false;
+        clickInsertLock = false;
         scoreLabel.text = GameController.Instance.CurScore4Show();
     }
 
+    private bool clickInsertLock = false;
     public void OnClickAgain()
     {
-        if (clickLock)
+        if (clickInsertLock)
         {
             return;
         }
         AudioController.Instance.PlaySound(AudioType.click);
-        clickLock = true;
+        clickInsertLock = true;
         AdController.Instance.ShowInsertAd((int value) =>
         {
-            clickLock = false;
+            clickInsertLock = false;
         });
 
         GameController.Instance.StartGame();

@@ -234,7 +234,7 @@ public class AdController
     {
         if (adUnit == currentRewardedVideoAdUnits)
         {
-            PlayAction(RVPlayResult,0);
+            PlayAction(RVPlayResult, 0);
         }
         else if (adUnit == currentInterstitialAdUnits)
         {
@@ -318,6 +318,12 @@ public class AdController
     private string _status = string.Empty;
     public void UpdateConsentValues()
     {
+        bool canCollect = PlayerPrefs.HasKey("privateState");
+        if (canCollect)
+        {
+            canCollect = (PlayerPrefs.GetString("privateState") == "1");
+        }
+
         _canCollectPersonalInfo = MoPub.CanCollectPersonalInfo;
         _currentConsentStatus = MoPub.CurrentConsentStatus;
         _shouldShowConsentDialog = MoPub.ShouldShowConsentDialog;
@@ -345,7 +351,7 @@ public class AdController
     /// <returns></returns>
     public void SetUserPrivateChoose(bool state)
     {
-        PlayerPrefs.SetString("privateState", state?"1":"0");
+        PlayerPrefs.SetString("privateState", state ? "1" : "0");
         UpdateConsentValues();
     }
 
@@ -428,9 +434,9 @@ public class AdController
         }
         else
         {
-            PlayAction(InsertPlayResult,0);
+            PlayAction(InsertPlayResult, 0);
         }
-        
+
     }
 
     private string GetInsertId()
@@ -473,7 +479,7 @@ public class AdController
         }
         else
         {
-            PlayAction(RVPlayResult,0);
+            PlayAction(RVPlayResult, 0);
         }
     }
 
@@ -485,9 +491,9 @@ public class AdController
     #endregion
 
 
-    private void PlayAction(Action<int> tempAction,int result)
+    private void PlayAction(Action<int> tempAction, int result)
     {
-        if (tempAction!=null)
+        if (tempAction != null)
         {
             tempAction(result);
         }

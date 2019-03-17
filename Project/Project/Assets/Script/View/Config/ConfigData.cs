@@ -27,7 +27,7 @@ public static class ConfigData
     /// <summary>
     /// 炸弹最少需要的块数量
     /// </summary>
-    public const int BOOM_MIN_GRID = 2;
+    public const int BOOM_MIN_GRID = 1;
 
     /// <summary>
     /// 炸弹爆的块数

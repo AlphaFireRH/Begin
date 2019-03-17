@@ -126,6 +126,27 @@ public class AdController
             // Specify the mediated networks you are using here:
             MediatedNetworks = new MoPub.MediatedNetwork[]
             {
+                //new MoPub.SupportedNetwork.Vungle{
+                //    // Network adapter configuration settings (initialization).
+                //    NetworkConfiguration = {
+                //        { "key1", value },
+                //        { "key2", value },
+                //    },
+
+                //    // Global mediation settings (per ad request).
+                //    MediationSettings = {
+                //        { "key1", value },
+                //        { "key2", value },
+                //    },
+
+                //    // Additional options to pass to the MoPub servers (per ad request).
+                //    MoPubRequestOptions = {
+                //        { "key1", "value" },
+                //        { "key2", "value" },
+                //    }
+                //}
+
+
             /*
                 // Example using AdMob.  Follow this template for other supported networks as well.
                 // Note that keys must be strings, and values must be JSON-serializable (strings only, for MoPubRequestOptions).
@@ -180,6 +201,9 @@ public class AdController
             },
         });
 
+        // register for initialized callback event in the app
+        MoPubManager.OnSdkInitializedEvent += OnSdkInitializedEvent;
+
         MoPub.LoadBannerPluginsForAdUnits(bannerIdList);
         MoPub.LoadInterstitialPluginsForAdUnits(insterIdList);
         MoPub.LoadRewardedVideoPluginsForAdUnits(rvIdList);
@@ -196,11 +220,17 @@ public class AdController
         var nativeAdsGO = GameObject.Find("MoPubNativeAds");
         if (nativeAdsGO != null)
             nativeAdsGO.SetActive(false);
+
     }
 
+    private void OnSdkInitializedEvent(string info)
+    {
+        
+    }
     #endregion
 
     #region 广告状态修改
+
     public void AdLoaded(string adUnit)
     {
         _adUnitToLoadedMapping[adUnit] = true;
@@ -322,7 +352,19 @@ public class AdController
         if (canCollect)
         {
             canCollect = (PlayerPrefs.GetString("privateState") == "1");
+            
         }
+
+        //MoPub.CanCollectPersonalInfo = canCollect;
+        if (canCollect)
+        {
+            //MoPub.CurrentConsentStatus = MoPubBase.Consent.Status.Consented;
+        }
+        else
+        {
+            //MoPub.CurrentConsentStatus = MoPubBase.Consent.Status.Denied;
+        }
+
 
         _canCollectPersonalInfo = MoPub.CanCollectPersonalInfo;
         _currentConsentStatus = MoPub.CurrentConsentStatus;

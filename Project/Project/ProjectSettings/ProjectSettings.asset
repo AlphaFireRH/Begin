@@ -247,7 +247,7 @@ PlayerSettings:
   templateDefaultScene: Assets/Scenes/SampleScene.unity
   AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 2
-  androidSplashScreen: {fileID: 0}
+  androidSplashScreen: {fileID: 2800000, guid: b105b19d3dcf0f14babe7f0318c0e4e7, type: 3}
   AndroidKeystoreName: C:/WorkSpace/Begin/Project/Keystore/4159ce28745b1d0287cb114dcf9e9d6f.keystore
   AndroidKeyaliasName: sail
   AndroidBuildApkPerCpuArchitecture: 0
@@ -764,8 +764,8 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 1
   scriptingDefineSymbols:
-    4: 
-    7: 
+    4: mopub_build_menu_beta
+    7: mopub_build_menu_beta
   platformArchitecture:
     iOS: 2
   scriptingBackend:

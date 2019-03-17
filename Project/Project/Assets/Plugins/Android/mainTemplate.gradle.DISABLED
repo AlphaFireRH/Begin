@@ -4,6 +4,8 @@ buildscript {
     repositories {
         jcenter()
         google()
+		maven { url 'https://s3.amazonaws.com/moat-sdk-builds' }
+		maven { url 'https://jitpack.io' }
     }
 
     dependencies {
@@ -19,10 +21,17 @@ allprojects {
     }
 }
 
+implementation ('com.mopub:mopub-sdk:5.5.0@aar') { 
+        transitive = true 
+    }
+
 apply plugin: 'com.android.application'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+	// Vungle
+implementation 'com.github.vungle:vungle-android-sdk:6.3.24'
+implementation 'com.mopub.mediation:vungle:6.3.24.1'
 **DEPS**}
 
 android {

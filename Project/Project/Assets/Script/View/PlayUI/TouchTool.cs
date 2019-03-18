@@ -18,7 +18,7 @@ public enum TouchType
 
 public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-    private TouchType touchType = TouchType.Auto;
+    //private TouchType touchType = TouchType.Auto;
 
     /// <summary>
     /// 屏幕距离
@@ -39,6 +39,11 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
     /// 屏幕距离
     /// </summary>
     private float yAutoDistance = 0.06f;
+
+    /// <summary>
+    /// 计算距离
+    /// </summary>
+    private float moveDistance = 140f * 0.75f;
 
     /// <summary>
     /// 这一次按下的屏幕坐标
@@ -103,14 +108,27 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
     {
 
         float dictance = 0;
-        if (touchType == TouchType.Normal)
+        //if (GameController.Instance.TouchType == TouchType.Normal)
+        //{
+        //    dictance = Mathf.Min(Mathf.Max(0, xNormalDistance) * Screen.width, Mathf.Max(0, yNormalDistance) * Screen.height);
+        //}
+        //else if (GameController.Instance.TouchType == TouchType.Auto)
+        //{
+        //    dictance = Mathf.Min(Mathf.Max(0, xAutoDistance) * Screen.width, Mathf.Max(0, yAutoDistance) * Screen.height);
+        //}
+        if (Screen.height / Screen.width > 1334f / 750f)
         {
-            Mathf.Min(Mathf.Max(0, xNormalDistance) * Screen.width, Mathf.Max(0, yNormalDistance) * Screen.height);
+            dictance = Screen.width * moveDistance / 750f;
         }
-        else if (touchType == TouchType.Auto)
+        else
         {
-            Mathf.Min(Mathf.Max(0, xAutoDistance) * Screen.width, Mathf.Max(0, yAutoDistance) * Screen.height);
+            dictance = Screen.height * moveDistance / 1334f;
         }
+        //if (log)
+        //{
+        //    Debug.Log(dictance + "  " + delaMove.x);
+        //}
+
         PlayerOperate operate = PlayerOperate.None;
         if ((Mathf.Abs(delaMove.x) >= dictance || Mathf.Abs(delaMove.y) >= dictance))
         {
@@ -149,7 +167,7 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (touchType == TouchType.Auto && finishTouch == false)
+        if (GameController.Instance.TouchType == TouchType.Auto && finishTouch == false)
         {
             var delaMove = eventData.position - pointerEventDataPosition;
             SendDir(delaMove);

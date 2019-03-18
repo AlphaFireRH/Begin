@@ -64,30 +64,15 @@ public class AdController
     /// <summary>
     /// bannerID
     /// </summary>
-    public string[] bannerIdList = new string[] { "c1391aa68a6940b1bed2048a5e2031a1" };
+    public string[] bannerIdList = new string[] { "e02f3328546442a0b57c36e49f29a1b1" };
     /// <summary>
     /// 激励视频ID
     /// </summary>
-    public string[] rvIdList = new string[] { "6d9dfd073d0a483fa6552dc86b1fb8f6" };
+    public string[] rvIdList = new string[] { "031f925cb81642d7b9e8a0c40c806930" };
     /// <summary>
     /// 插屏ID
     /// </summary>
-    public string[] insterIdList = new string[] { "daec5a34709f4a13b6094ebef0b389e0" };
-
-
-
-    ///// <summary>
-    ///// bannerID
-    ///// </summary>
-    //public string[] bannerIdList = new string[] { "e02f3328546442a0b57c36e49f29a1b1" };
-    ///// <summary>
-    ///// 激励视频ID
-    ///// </summary>
-    //public string[] rvIdList = new string[] { "031f925cb81642d7b9e8a0c40c806930" };
-    ///// <summary>
-    ///// 插屏ID
-    ///// </summary>
-    //public string[] insterIdList = new string[] { "a2ff4eadef394ed39387e50c5dc84f9e" };
+    public string[] insterIdList = new string[] { "a2ff4eadef394ed39387e50c5dc84f9e" };
 
     #region Init
     public void Init()

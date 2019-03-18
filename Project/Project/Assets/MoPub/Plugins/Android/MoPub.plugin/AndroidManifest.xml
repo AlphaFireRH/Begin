@@ -21,7 +21,7 @@
         <activity android:name="com.mopub.common.privacy.ConsentDialogActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"/>
 
-      <![CDATA[
+      
       <!-- AdColony network SDK activities.  You may remove if unused. -->
         <activity android:name="com.adcolony.sdk.AdColonyInterstitialActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"
@@ -94,7 +94,7 @@
                   android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
                   android:hardwareAccelerated="true"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
-      ]]>
+      <![CDATA[ ]]>
 
       <!-- Vungle network SDK activities.  You may remove if unused. -->
       <!--Vungle Activities-->

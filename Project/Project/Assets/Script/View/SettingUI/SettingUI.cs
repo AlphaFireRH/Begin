@@ -76,14 +76,15 @@ public class SettingUI : UIViewBase
     public void OnClickPrivate()
     {
         AudioController.Instance.PlaySound(AudioType.click);
-        UIManager.Instance.ShowUI(ViewID.PrivateUI);
+        UIManager.Instance.ShowUI(ViewID.WebViewUI);
         Close();
     }
 
     public void OnClickMyData()
     {
         AudioController.Instance.PlaySound(AudioType.click);
-        UIManager.Instance.ShowUI(ViewID.WebViewUI);
+        
+        UIManager.Instance.ShowUI(ViewID.PrivateUI);
         Close();
     }
 

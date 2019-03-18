@@ -96,13 +96,13 @@ public class WebViewUI : UIViewBase
     {
         float tempH = Screen.safeArea.yMin;
 #if UNITY_ANDROID
-        //AndroidJavaObject activity = new AndroidJavaClass("com.example.myjar.MyActivity").GetStatic<AndroidJavaObject>("currentActivity");
-        //int realScreenH = activity.Call<int>("getScreentHeight");
+        AndroidJavaClass nativeInfo = new AndroidJavaClass("com.example.myjar.ScreenInfo");
+        int realScreenH = nativeInfo.CallStatic<int>("getScreentHeight");
 
-        //if (Mathf.Abs(realScreenH - Screen.height) > 10)
-        //{
-        //    tempH = Mathf.Abs(realScreenH - Screen.height);
-        //}
+        if (Mathf.Abs(realScreenH - Screen.height) > 10)
+        {
+            tempH = Mathf.Abs(realScreenH - Screen.height);
+        }
 #elif UNITY_iOS
         tempH = Screen.safeArea.yMin;
 #endif

@@ -15,23 +15,29 @@ buildscript {
 
 allprojects {
     repositories {
+		jcenter()
+        google()
+		maven { url 'https://s3.amazonaws.com/moat-sdk-builds' }
+		maven { url 'https://jitpack.io' }
         flatDir {
             dirs 'libs'
         }
     }
 }
 
-implementation ('com.mopub:mopub-sdk:5.5.0@aar') { 
-        transitive = true 
-    }
-
 apply plugin: 'com.android.application'
 
 dependencies {
+	compile 'com.android.support:multidex:1.0.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+
 	// Vungle
-implementation 'com.github.vungle:vungle-android-sdk:6.3.24'
-implementation 'com.mopub.mediation:vungle:6.3.24.1'
+	implementation ('com.mopub:mopub-sdk:5.5.0@aar') { 
+        transitive = true 
+    }
+	implementation 'com.github.vungle:vungle-android-sdk:6.3.24'
+	implementation 'com.mopub.mediation:vungle:6.3.24.1'
 **DEPS**}
 
 android {
@@ -39,6 +45,7 @@ android {
     buildToolsVersion '**BUILDTOOLS**'
 
     defaultConfig {
+		multiDexEnabled true
         minSdkVersion **MINSDKVERSION**
         targetSdkVersion **TARGETSDKVERSION**
         applicationId '**APPLICATIONID**'

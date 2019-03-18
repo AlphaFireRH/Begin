@@ -7,8 +7,6 @@
           android:name="org.apache.http.legacy"
           android:required="false" />
 
-        <!--<activity android:name="com.example.myjar.MyActivity" android:configChanges="keyboardHidden|orientation|screenSize"/>-->
-      
         <!-- MoPub SDK activities. -->
         <activity android:name="com.mopub.mobileads.MoPubActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"/>
@@ -23,7 +21,8 @@
         <activity android:name="com.mopub.common.privacy.ConsentDialogActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"/>
 
-        <!-- AdColony network SDK activities.  You may remove if unused. -->
+      <![CDATA[
+      <!-- AdColony network SDK activities.  You may remove if unused. -->
         <activity android:name="com.adcolony.sdk.AdColonyInterstitialActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"
                   android:hardwareAccelerated="true"/>
@@ -95,10 +94,12 @@
                   android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
                   android:hardwareAccelerated="true"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+      ]]>
 
-        <!-- Vungle network SDK activities.  You may remove if unused. -->
-        <service  android:name="com.vungle.publisher.VungleService"
-                  android:exported="false"/>
+      <!-- Vungle network SDK activities.  You may remove if unused. -->
+      <!--Vungle Activities-->
+      <activity android:name="com.vungle.warren.ui.VungleActivity" android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+      <activity android:name="com.vungle.warren.ui.VungleFlexViewActivity" android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize" android:hardwareAccelerated="true" android:launchMode="singleTop" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
     </application>
 

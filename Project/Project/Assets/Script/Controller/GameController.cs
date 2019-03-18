@@ -37,7 +37,7 @@ public class GameController : SingleMono<GameController>
     /// <summary>
     /// 最高分数
     /// </summary>
-    private int maxScore;
+    private MyInt maxScore = new MyInt();
 
     /// <summary>
     /// 触控类型
@@ -108,7 +108,7 @@ public class GameController : SingleMono<GameController>
     /// 设置最高分数
     /// </summary>
     /// <param name="curScore"></param>
-    public void SetScore(int curScore)
+    public void SetScore(MyInt curScore)
     {
         if (maxScore < curScore)
         {
@@ -222,7 +222,7 @@ public class GameController : SingleMono<GameController>
             saveData.mapData = playCtrl.GetCurSaveData();
             saveData.historyMap = playCtrl.GetCurSaveDatas();
         }
-        saveData.MaxScore = maxScore;
+        saveData.MaxstringScore = maxScore;
         saveData.isOpenSound = AudioController.Instance.soundState;
         saveData.touchType = TouchType;
         string saveInfo = JsonConvert.SerializeObject(saveData, JsonSerializerSettings);
@@ -245,7 +245,7 @@ public class GameController : SingleMono<GameController>
                 itemDic = saveData.itemDic;
                 mapData = saveData.mapData;
                 historyMap = saveData.historyMap;
-                maxScore = saveData.MaxScore;
+                maxScore = saveData.MaxstringScore;
                 AudioController.Instance.soundState = saveData.isOpenSound;
                 TouchType = saveData.touchType;
                 return true;
@@ -258,14 +258,6 @@ public class GameController : SingleMono<GameController>
         return false;
     }
 
-    /// <summary>
-    /// 最大分数
-    /// </summary>
-    /// <returns>The score.</returns>
-    public int MaxScore()
-    {
-        return maxScore;
-    }
 
     /// <summary>
     /// 最大分数
@@ -273,21 +265,13 @@ public class GameController : SingleMono<GameController>
     /// <returns>The score.</returns>
     public string MaxScore4Show()
     {
-        return maxScore.ToString();
+        if (maxScore != null)
+        {
+            return maxScore.ToString();
+        }
+        return "0";
     }
 
-    /// <summary>
-    /// 当前分数
-    /// </summary>
-    /// <returns>The score.</returns>
-    public int CurScore()
-    {
-        if (playCtrl != null)
-        {
-            playCtrl.Score();
-        }
-        return 0;
-    }
 
     /// <summary>
     /// 当前分数

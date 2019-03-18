@@ -22,7 +22,7 @@ public class SaveData
     /// <summary>
     /// 最高分数
     /// </summary>
-    public int MaxScore;
+    public MyInt MaxstringScore;
 
     /// <summary>
     /// 

@@ -204,7 +204,6 @@ public class PlayController : IPlayController
                         {
                             action(curMapData);
                         }
-                        //return curMapData.Clone();
                     }
                 });
             }
@@ -772,7 +771,11 @@ public class PlayController : IPlayController
     /// <param name="ladder">Ladder.</param>
     private void AddScore(MapData data, int ladder)
     {
-        data.Score += (1 << ladder);
+        string old = data.Score.ToString();
+        data.Score += MyInt.Pow2(ladder);
+        string newValue = data.Score.ToString();
+        Debug.LogError(string.Format("{0} + {1} = {2}", old, 1 << ladder, newValue));
+
         GameController.Instance.SetScore(data.Score);
     }
 
@@ -883,7 +886,7 @@ public class PlayController : IPlayController
     /// 分数
     /// </summary>
     /// <returns>The score.</returns>
-    public int Score()
+    public MyInt Score()
     {
         return curMapData.Score;
     }

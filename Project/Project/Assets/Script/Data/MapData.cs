@@ -20,7 +20,7 @@ public class MapData
     /// <summary>
     /// 当前分数
     /// </summary>
-    public int Score = 0;
+    public MyInt Score = new MyInt();
 
     /// <summary>
     /// 克隆数据

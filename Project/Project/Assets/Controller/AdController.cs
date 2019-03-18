@@ -95,7 +95,6 @@ public class AdController
         AddUnitToList();
 
         SDKInit();
-
         FetchInsertAd();
         FetchRewardVideoAd();
     }
@@ -133,97 +132,97 @@ public class AdController
     {
         // NOTE: the MoPub SDK needs to be initialized on Start() to ensure all other objects have been enabled first.
         var anyAdUnitId = bannerIdList[0];
-        MoPub.InitializeSdk(anyAdUnitId);
-
-        
-        //MoPub.InitializeSdk(new MoPub.SdkConfiguration
-        //{
-        //    AdUnitId = anyAdUnitId,
-
-        //    // Set desired log level here to override default level of MPLogLevelNone
-        //    LogLevel = MoPubBase.LogLevel.MPLogLevelDebug,
-
-        //    // Uncomment the following line to allow supported SDK networks to collect user information on the basis
-        //    // of legitimate interest.
-        //    //AllowLegitimateInterest = true,
-
-        //    // Specify the mediated networks you are using here:
-        //    MediatedNetworks = new MoPub.MediatedNetwork[]
-        //    {
-        //        //new MoPub.SupportedNetwork.Vungle{
-        //        //    // Network adapter configuration settings (initialization).
-        //        //    NetworkConfiguration = {
-        //        //        { "key1", value },
-        //        //        { "key2", value },
-        //        //    },
-
-        //        //    // Global mediation settings (per ad request).
-        //        //    MediationSettings = {
-        //        //        { "key1", value },
-        //        //        { "key2", value },
-        //        //    },
-
-        //        //    // Additional options to pass to the MoPub servers (per ad request).
-        //        //    MoPubRequestOptions = {
-        //        //        { "key1", "value" },
-        //        //        { "key2", "value" },
-        //        //    }
-        //        //}
+        //MoPub.InitializeSdk(anyAdUnitId);
 
 
-        //    /*
-        //        // Example using AdMob.  Follow this template for other supported networks as well.
-        //        // Note that keys must be strings, and values must be JSON-serializable (strings only, for MoPubRequestOptions).
-        //        new MoPub.SupportedNetwork.AdMob
-        //        {
-        //            // Network adapter configuration settings (initialization).
-        //            NetworkConfiguration = {
-        //                { "key1", value },
-        //                { "key2", value },
-        //            },
+        MoPub.InitializeSdk(new MoPub.SdkConfiguration
+        {
+            AdUnitId = anyAdUnitId,
 
-        //            // Global mediation settings (per ad request).
-        //            MediationSettings = {
-        //                { "key1", value },
-        //                { "key2", value },
-        //            },
+            // Set desired log level here to override default level of MPLogLevelNone
+            LogLevel = MoPubBase.LogLevel.MPLogLevelDebug,
 
-        //            // Additional options to pass to the MoPub servers (per ad request).
-        //            MoPubRequestOptions = {
-        //                { "key1", "value" },
-        //                { "key2", "value" },
-        //            }
-        //        },
+            // Uncomment the following line to allow supported SDK networks to collect user information on the basis
+            // of legitimate interest.
+            //AllowLegitimateInterest = true,
 
-        //        // Example using a custom network adapter:
-        //        new MoPub.MediatedNetwork
-        //        {
-        //            // Specify the class name that implements the AdapterConfiguration interface.
-        //        #if UNITY_ANDROID
-        //            AdapterConfigurationClassName = "classname",  // include the full package name
-        //        #else // UNITY_IOS
-        //            AdapterConfigurationClassName = "classname",
-        //        #endif
+            // Specify the mediated networks you are using here:
+            MediatedNetworks = new MoPub.MediatedNetwork[]
+            {
+                //new MoPub.SupportedNetwork.Vungle{
+                //    // Network adapter configuration settings (initialization).
+                //    NetworkConfiguration = {
+                //        { "key1", value },
+                //        { "key2", value },
+                //    },
 
-        //            // Specify the class name that implements the MediationSettings interface.
-        //            // Note: Custom network mediation settings are currently not supported on Android.
-        //        #if UNITY_IOS
-        //            MediationSettingsClassName = "classname",
-        //        #endif
+                //    // Global mediation settings (per ad request).
+                //    MediationSettings = {
+                //        { "key1", value },
+                //        { "key2", value },
+                //    },
 
-        //            // Fill in settings and configuration options the same way as for supported networks:
+                //    // Additional options to pass to the MoPub servers (per ad request).
+                //    MoPubRequestOptions = {
+                //        { "key1", "value" },
+                //        { "key2", "value" },
+                //    }
+                //}
 
-        //            NetworkConfiguration = { ... },
 
-        //        #if UNITY_IOS  // See note above.
-        //            MediationSettings    = { ... },
-        //        #endif
+            /*
+                // Example using AdMob.  Follow this template for other supported networks as well.
+                // Note that keys must be strings, and values must be JSON-serializable (strings only, for MoPubRequestOptions).
+                new MoPub.SupportedNetwork.AdMob
+                {
+                    // Network adapter configuration settings (initialization).
+                    NetworkConfiguration = {
+                        { "key1", value },
+                        { "key2", value },
+                    },
 
-        //            MoPubRequestOptions  = { ... },
-        //        }
-        //    */
-        //    },
-        //});
+                    // Global mediation settings (per ad request).
+                    MediationSettings = {
+                        { "key1", value },
+                        { "key2", value },
+                    },
+
+                    // Additional options to pass to the MoPub servers (per ad request).
+                    MoPubRequestOptions = {
+                        { "key1", "value" },
+                        { "key2", "value" },
+                    }
+                },
+
+                // Example using a custom network adapter:
+                new MoPub.MediatedNetwork
+                {
+                    // Specify the class name that implements the AdapterConfiguration interface.
+                #if UNITY_ANDROID
+                    AdapterConfigurationClassName = "classname",  // include the full package name
+                #else // UNITY_IOS
+                    AdapterConfigurationClassName = "classname",
+                #endif
+
+                    // Specify the class name that implements the MediationSettings interface.
+                    // Note: Custom network mediation settings are currently not supported on Android.
+                #if UNITY_IOS
+                    MediationSettingsClassName = "classname",
+                #endif
+
+                    // Fill in settings and configuration options the same way as for supported networks:
+
+                    NetworkConfiguration = { ... },
+
+                #if UNITY_IOS  // See note above.
+                    MediationSettings    = { ... },
+                #endif
+
+                    MoPubRequestOptions  = { ... },
+                }
+            */
+            },
+        });
 
 
         // register for initialized callback event in the app
@@ -250,7 +249,8 @@ public class AdController
 
     private void OnSdkInitializedEvent(string info)
     {
-        
+        //FetchInsertAd();
+        //FetchRewardVideoAd();
     }
     #endregion
 
@@ -383,10 +383,12 @@ public class AdController
         //MoPub.CanCollectPersonalInfo = canCollect;
         if (canCollect)
         {
+            MoPubAndroid.PartnerApi.GrantConsent();
             //MoPub.CurrentConsentStatus = MoPubBase.Consent.Status.Consented;
         }
         else
         {
+            MoPubAndroid.PartnerApi.RevokeConsent();
             //MoPub.CurrentConsentStatus = MoPubBase.Consent.Status.Denied;
         }
 

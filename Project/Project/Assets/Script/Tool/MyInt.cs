@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 只能做加法
+/// </summary>
 public class MyInt
 {
     public MyInt()
@@ -131,48 +134,48 @@ public class MyInt
         return ret;
     }
 
-    public static bool operator ==(MyInt lhs, MyInt rhs)
-    {
-        try
-        {
-            lhs.IntValue = lhs.IntValue + "";
-        }
-        catch (Exception)
-        {
-            lhs = new MyInt();
-        }
-        try
-        {
-            rhs.IntValue = lhs.IntValue + "";
-        }
-        catch (Exception)
-        {
-            rhs = new MyInt();
-        }
-        return lhs.IntValue == rhs.IntValue;
-    }
+    //public static bool operator ==(MyInt lhs, MyInt rhs)
+    //{
+    //    try
+    //    {
+    //        lhs.IntValue = lhs.IntValue + "";
+    //    }
+    //    catch (Exception)
+    //    {
+    //        lhs = new MyInt();
+    //    }
+    //    try
+    //    {
+    //        rhs.IntValue = lhs.IntValue + "";
+    //    }
+    //    catch (Exception)
+    //    {
+    //        rhs = new MyInt();
+    //    }
+    //    return lhs.IntValue == rhs.IntValue;
+    //}
 
-    public static bool operator !=(MyInt lhs, MyInt rhs)
-    {
-        if (lhs == null)
-        {
-            lhs = new MyInt();
-        }
-        if (rhs == null)
-        {
-            rhs = new MyInt();
-        }
-        try
-        {
+    //public static bool operator !=(MyInt lhs, MyInt rhs)
+    //{
+    //    if (lhs == null)
+    //    {
+    //        lhs = new MyInt();
+    //    }
+    //    if (rhs == null)
+    //    {
+    //        rhs = new MyInt();
+    //    }
+    //    try
+    //    {
 
-            return lhs.IntValue != rhs.IntValue;
-        }
-        catch (Exception)
-        {
-        }
-        return false;
+    //        return lhs.IntValue != rhs.IntValue;
+    //    }
+    //    catch (Exception)
+    //    {
+    //    }
+    //    return false;
 
-    }
+    //}
 
     public static bool operator <=(MyInt lhs, MyInt rhs)
     {
@@ -312,6 +315,10 @@ public class MyInt
 
     public override bool Equals(object obj)
     {
+        if (obj == null)
+        {
+            obj = new MyInt();
+        }
         return IntValue == ((MyInt)obj).IntValue;
     }
 
@@ -320,6 +327,49 @@ public class MyInt
         return base.GetHashCode();
     }
 
+    string[] units = new string[] { "M", "G", "T", "E", "Z", "Y", "B", "aa", "bb", "cc", "dd", "ee", "ff",
+        "gg", "hh", "ii", "jj", "kk", "ll", "mm", "nn", "oo", "pp", "qq", "rr", "ss", "tt", "uu", "vv", "ww", "xx", "yy", "zz",
+        "AA", "BB", "CC", "DD", "EE", "FF", "GG", "HH", "II", "JJ", "KK", "LL", "MM", "NN", "OO", "PP", "QQ", "RR", "SS", "TT",
+        "UU", "VV", "WW", "XX", "YY", "ZZ" };
+
+    public string ShowString()
+    {
+        int remain = 2;
+        string show = "";
+        int lenght = IntValue.Length;
+        if (lenght > 6)
+        {
+            float indexFloat = (lenght - 7) / 3f;
+            int indexInt = Mathf.FloorToInt(indexFloat);
+            indexInt = Mathf.Min(indexInt, units.Length - 1);
+            for (int i = 0; i < IntValue.Length - indexInt * 3 - 6; i++)
+            {
+                show += IntValue[i];
+            }
+            string smallNumber = "";
+            bool lastZero = false;
+            for (int i = Mathf.Min(IntValue.Length - indexInt * 3 - 6 + remain - 1, IntValue.Length); i >= IntValue.Length - indexInt * 3 - 6; i--)
+            {
+                if (!lastZero && IntValue[i] == '0')
+                {
+                    continue;
+                }
+                lastZero = true;
+                smallNumber = IntValue[i] + smallNumber;
+            }
+            if (!string.IsNullOrEmpty(smallNumber))
+            {
+                show += ("." + smallNumber);
+            }
+
+            show += units[indexInt];
+        }
+        else
+        {
+            show = IntValue;
+        }
+        return show;
+    }
 
     #region 计算2的N次方
 

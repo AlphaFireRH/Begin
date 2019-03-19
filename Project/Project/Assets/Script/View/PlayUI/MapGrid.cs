@@ -42,6 +42,11 @@ public class MapGrid : MonoBehaviour
     private GridData gridData;
 
     /// <summary>
+    /// 
+    /// </summary>
+    private GridData lastGridData;
+
+    /// <summary>
     /// 是否正在播放动画
     /// </summary>
     private bool isPlayAnimation;
@@ -57,62 +62,102 @@ public class MapGrid : MonoBehaviour
     /// <param name="showAnimation">是否有动画</param>
     public void RefreshData(GridData grid, ref Dictionary<int, MapGrid> gridMaps, bool isNew = false, bool showAnimation = true)
     {
-        if (gridData == null || true)
+        //if (gridData == null)
+        //{
+        lastGridData = gridData;
+        gridData = grid;
+        if (isNew)
         {
-            gridData = grid;
-            if (isNew)
+            if (showAnimation)
             {
-                if (showAnimation)
-                {
-                    StartCoroutine(DelayCall(ConfigData.GRID_MOVE_TIME));
-                }
-                else
-                {
-                    //新的直接展示出来就行
-                    var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
-                    rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
-                    RefreshData();
-                }
-                var item = ConfigController.Instance.GetGridConfigData(gridData.Ladder);
-                gridImage.color = item.GridColor;
+                StartCoroutine(DelayCall(ConfigData.GRID_MOVE_TIME));
             }
             else
             {
-                if (showAnimation)
+                //新的直接展示出来就行
+                var vec = MapTool.GetPosition(gridData.Position.x, gridData.Position.y);
+                rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
+                RefreshData();
+            }
+            var item = ConfigController.Instance.GetGridConfigData(gridData.Ladder);
+            gridImage.color = item.GridColor;
+        }
+        else
+        {
+            if (showAnimation)
+            {
+                gameObject.SetActive(true);
+                //之前的可能需要移动位子，需要判断
+                var vec = MapTool.GetPosition(gridData.Position.x, gridData.Position.y);
+                if (showAnimation && lastGridData != null)
                 {
-                    gameObject.SetActive(true);
-                    //之前的可能需要移动位子，需要判断
-                    var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
-                    if (showAnimation)
+                    isPlayAnimation = true;
+                    if (lastGridData.Position.x != gridData.Position.x || lastGridData.Position.y != gridData.Position.y)
                     {
-                        isPlayAnimation = true;
                         rectTransform.DOAnchorPos(new Vector2(vec.x, vec.y), ConfigData.GRID_MOVE_TIME).onComplete +=
                         () =>
                         {
-                            isPlayAnimation = false;
-                            RefreshData();
+                            if (lastGridData.ID == gridData.ID && lastGridData.Ladder < gridData.Ladder)
+                            {
+                                rectTransform.SetAsLastSibling();
+                                RefreshData();
+                                rectTransform.DOScale(ConfigData.MERGE_BIG_SCALE, ConfigData.MERGE_BIG_SCALE_TIME).onComplete += () =>
+                                {
+                                    rectTransform.DOScale(1f, ConfigData.MERGE_SMALL_SCALE_TIME).onComplete += () =>
+                                    {
+                                        isPlayAnimation = false;
+                                    };
+                                };
+                            }
+                            else
+                            {
+                                isPlayAnimation = false;
+                                RefreshData();
+                            }
                         };
-                        if (grid.MergeID > 0 && gridMaps.ContainsKey(grid.MergeID))
-                        {
-                            var gridItem = gridMaps[grid.MergeID];
-                            gridItem.DoTweenAndDestroy(new Vector2(vec.x, vec.y));
-                            gridMaps.Remove(grid.MergeID);
-                        }
                     }
                     else
                     {
-                        rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
+                        if (lastGridData.ID == gridData.ID && lastGridData.Ladder < gridData.Ladder)
+                        {
+                            rectTransform.SetAsLastSibling();
+                            RefreshData();
+                            rectTransform.DOScale(ConfigData.MERGE_BIG_SCALE, ConfigData.MERGE_BIG_SCALE_TIME).onComplete += () =>
+                            {
+                                rectTransform.DOScale(1f, ConfigData.MERGE_SMALL_SCALE_TIME).onComplete += () =>
+                                {
+                                    isPlayAnimation = false;
+                                };
+                            };
+                        }
+                        else
+                        {
+                            isPlayAnimation = false;
+                            RefreshData();
+                            rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
+                        }
+                    }
+
+                    if (gridData.MergeID > 0 && gridMaps.ContainsKey(gridData.MergeID))
+                    {
+                        var gridItem = gridMaps[gridData.MergeID];
+                        gridItem.DoTweenAndDestroy(new Vector2(vec.x, vec.y));
+                        gridMaps.Remove(gridData.MergeID);
                     }
                 }
                 else
                 {
-                    var vec = MapTool.GetPosition(grid.Position.x, grid.Position.y);
                     rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
-                    gridData = grid;
-                    RefreshData();
                 }
             }
+            else
+            {
+                var vec = MapTool.GetPosition(gridData.Position.x, gridData.Position.y);
+                rectTransform.anchoredPosition = new Vector2(vec.x, vec.y);
+                RefreshData();
+            }
         }
+        //}
 
     }
 

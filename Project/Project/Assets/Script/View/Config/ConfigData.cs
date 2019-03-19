@@ -21,6 +21,21 @@ public static class ConfigData
     /// 动画块缩放时间
     /// </summary>
     public const float GRID_SHOW_TIME = 0.1f;
+
+    /// <summary>
+    /// 合并放大动画
+    /// </summary>
+    public const float MERGE_BIG_SCALE_TIME = 0.1f;
+
+    /// <summary>
+    /// 合并缩小动画
+    /// </summary>
+    public const float MERGE_SMALL_SCALE_TIME = 0.2f;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float MERGE_BIG_SCALE = 1.2f;
     #endregion
 
     #region 玩法相关

@@ -18,8 +18,6 @@ public enum TouchType
 
 public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-    //private TouchType touchType = TouchType.Auto;
-
     /// <summary>
     /// 屏幕距离
     /// </summary>
@@ -104,6 +102,10 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="delaMove"></param>
     private void SendDir(Vector2 delaMove)
     {
 
@@ -163,8 +165,15 @@ public class TouchTool : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     private bool finishTouch = true;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
         if (GameController.Instance.TouchType == TouchType.Auto && finishTouch == false)

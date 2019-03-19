@@ -392,7 +392,7 @@ public class PlayController : IPlayController
                 int index = UnityEngine.Random.Range(0, position.Count);
                 GridData gridData = new GridData(position[index].x, position[index].y);
 
-                int maxLadder = 0;
+                int maxLadder = 1;
 
                 //取出来应该插入的阶级
                 for (int i = 0; i < curMapData.gridDatas.Count; i++)

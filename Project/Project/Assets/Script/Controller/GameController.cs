@@ -52,6 +52,16 @@ public class GameController : SingleMono<GameController>
     {
         do
         {
+            //MyInt myInt = new MyInt();
+            //myInt.IntValue = "";
+            //string show = "";
+            //for (int i = 1; i <= 610; i++)
+            //{
+            //    myInt.IntValue += i.ToString()[i.ToString().Length - 1];
+            //    show += (myInt.ShowString() + "\n");
+            //}
+            //Debug.LogError(show);
+            //return;
             if (isInit) break;
 
             /*
@@ -267,7 +277,7 @@ public class GameController : SingleMono<GameController>
     {
         if (maxScore != null)
         {
-            return maxScore.ToString();
+            return maxScore.ShowString();
         }
         return "0";
     }
@@ -281,7 +291,7 @@ public class GameController : SingleMono<GameController>
     {
         if (playCtrl != null)
         {
-            return playCtrl.Score().ToString();
+            return playCtrl.Score().ShowString();
         }
         return 0.ToString();
     }

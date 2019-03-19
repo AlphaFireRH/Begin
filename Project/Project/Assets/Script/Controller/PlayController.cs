@@ -384,6 +384,7 @@ public class PlayController : IPlayController
                     }
                 }
             }
+            //-------
 
             //随机插入一个位置
             if (position.Count > 0)
@@ -391,7 +392,9 @@ public class PlayController : IPlayController
                 int index = UnityEngine.Random.Range(0, position.Count);
                 GridData gridData = new GridData(position[index].x, position[index].y);
 
-                int maxLadder = 1;
+                int maxLadder = 0;
+
+                //取出来应该插入的阶级
                 for (int i = 0; i < curMapData.gridDatas.Count; i++)
                 {
                     if (maxLadder < curMapData.gridDatas[i].Ladder)
@@ -422,8 +425,28 @@ public class PlayController : IPlayController
                 }
 
                 gridData.Ladder = ladder;
-                curMapData.gridDatas.Add(gridData);
+                //-------
 
+
+                //把地图中太小的元素升级
+                int min = item.CreateMin[0];
+                for (int i = 0; i < item.CreateMin.Count; i++)
+                {
+                    if (min > item.CreateMin[i])
+                    {
+                        min = item.CreateMin[i];
+                    }
+                }
+                for (int i = 0; i < curMapData.gridDatas.Count; i++)
+                {
+                    if (min > curMapData.gridDatas[i].Ladder)
+                    {
+                        curMapData.gridDatas[i].Ladder = min;
+                    }
+                }
+                //-------
+
+                //设置ID,去除和当前ID与上一步的ID
                 List<int> allID = new List<int>();
 
                 for (int i = 0; i < curMapData.gridDatas.Count; i++)
@@ -456,6 +479,10 @@ public class PlayController : IPlayController
                 } while (true);
 
                 gridData.ID = id;
+                //-------
+
+
+                curMapData.gridDatas.Add(gridData);
             }
         }
     }
@@ -771,10 +798,10 @@ public class PlayController : IPlayController
     /// <param name="ladder">Ladder.</param>
     private void AddScore(MapData data, int ladder)
     {
-        string old = data.Score.ToString();
+        //string old = data.Score.ToString();
         data.Score += MyInt.Pow2(ladder);
-        string newValue = data.Score.ToString();
-        Debug.LogError(string.Format("{0} + {1} = {2}", old, 1 << ladder, newValue));
+        //string newValue = data.Score.ToString();
+        //Debug.LogError(string.Format("{0} + {1} = {2}", old, 1 << ladder, newValue));
 
         GameController.Instance.SetScore(data.Score);
     }

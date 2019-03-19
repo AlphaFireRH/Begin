@@ -8,20 +8,25 @@ public class SettingUI : UIViewBase
     public List<Sprite> centerBg = new List<Sprite>();
     public Image centerBgImage;
     public RectTransform centerObj;
+    public Image centerSliderBgImage;
+    public RectTransform centerSliderObj;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         ShowSoundState();
+        ShowSilderState();
         clickLock = false;
     }
-	void OnEnable()
+    void OnEnable()
     {
         clickLock = false;
     }
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     //public void OnClickMusic()
     //{
@@ -35,17 +40,47 @@ public class SettingUI : UIViewBase
         ShowSoundState();
     }
 
+
     private void ShowSoundState()
     {
         if (AudioController.Instance.soundState)
         {
             centerBgImage.sprite = centerBg[0];
-            centerObj.localPosition = new Vector3(29, -7.5f,0);
+            centerObj.localPosition = new Vector3(29, -7.5f, 0);
         }
         else
         {
             centerBgImage.sprite = centerBg[1];
             centerObj.localPosition = new Vector3(-29, -7.5f, 0);
+        }
+    }
+
+    public void OnClickSilder()
+    {
+        if (GameController.Instance.TouchType == TouchType.Auto)
+        {
+            GameController.Instance.TouchType = TouchType.Normal;
+        }
+        else
+        {
+            GameController.Instance.TouchType = TouchType.Auto;
+        }
+
+        AudioController.Instance.PlaySound(AudioType.click);
+        ShowSilderState();
+    }
+
+    private void ShowSilderState()
+    {
+        if (GameController.Instance.TouchType == TouchType.Auto)
+        {
+            centerSliderBgImage.sprite = centerBg[0];
+            centerSliderObj.localPosition = new Vector3(29, -7.5f, 0);
+        }
+        else
+        {
+            centerSliderBgImage.sprite = centerBg[1];
+            centerSliderObj.localPosition = new Vector3(-29, -7.5f, 0);
         }
     }
 

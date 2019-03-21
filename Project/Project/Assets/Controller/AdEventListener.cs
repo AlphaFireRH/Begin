@@ -357,7 +357,7 @@ public class AdEventListener : MonoBehaviour
     #endregion
 
 
-    WaitForSeconds loadWait = new WaitForSeconds(10.0f);
+    WaitForSeconds loadWait = new WaitForSeconds(60.0f);
     IEnumerator WaitTryFetch(string adUnitId)
     {
         yield return loadWait;
@@ -365,7 +365,7 @@ public class AdEventListener : MonoBehaviour
         _ctrl.TryFetch(adUnitId);
     }
 
-    WaitForSeconds playWait = new WaitForSeconds(60.0f);
+    WaitForSeconds playWait = new WaitForSeconds(90.0f);
     IEnumerator WaitTryFetch(string adUnitId, float waitTime)
     {
         yield return playWait;

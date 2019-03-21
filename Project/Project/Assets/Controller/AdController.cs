@@ -64,15 +64,15 @@ public class AdController
     /// <summary>
     /// bannerID
     /// </summary>
-    public string[] bannerIdList = new string[] { "e02f3328546442a0b57c36e49f29a1b1" };
+    public string[] bannerIdList = new string[] { "3e035df8457443c0b415e514b021e6f7" };
     /// <summary>
     /// 激励视频ID
     /// </summary>
-    public string[] rvIdList = new string[] { "031f925cb81642d7b9e8a0c40c806930" };
+    public string[] rvIdList = new string[] { "ed81ff36bfe74789bd3a5cde06053ef8" };
     /// <summary>
     /// 插屏ID
     /// </summary>
-    public string[] insterIdList = new string[] { "a2ff4eadef394ed39387e50c5dc84f9e" };
+    public string[] insterIdList = new string[] { "83e342e9da7248fbb5ea929ddd3f333a" };
 
     #region Init
     public void Init()

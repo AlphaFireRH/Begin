@@ -127,10 +127,6 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// </summary>
     private float timer;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public const float TIME_CD = 5f;
     #endregion
 
     #region 初始化
@@ -267,7 +263,7 @@ public class PlayUI : UIViewBase, IPlayUIController
     private void UpdateRefreshBtn()
     {
         timer += Time.deltaTime;
-        if (timer > TIME_CD)
+        if (timer > ConfigData.REWARD_VIDEO_CHECK_TIME)
         {
             timer = 0;
             RefreshBtnState();

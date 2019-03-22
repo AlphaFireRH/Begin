@@ -64,7 +64,7 @@ public class CompleteUI : UIViewBase
     private void UpdateRefreshBtn()
     {
         timer += Time.deltaTime;
-        if (timer > TIME_CD)
+        if (timer > ConfigData.REWARD_VIDEO_CHECK_TIME)
         {
             timer = 0;
             RefreshBtnState();

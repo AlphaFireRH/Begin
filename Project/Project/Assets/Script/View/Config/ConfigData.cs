@@ -38,6 +38,13 @@ public static class ConfigData
     public const float MERGE_BIG_SCALE = 1.2f;
     #endregion
 
+    #region 检测相关
+    /// <summary>
+    /// RV检测间隔
+    /// </summary>
+    public const float REWARD_VIDEO_CHECK_TIME = 5f;
+    #endregion
+
     #region 玩法相关
     /// <summary>
     /// 炸弹最少需要的块数量

@@ -366,6 +366,8 @@ public class GameController : SingleMono<GameController>
         itemDic.Add((int)ItemID.Goback, ConfigData.DEFAULT_GOBACK_COUNT);
         mapData = null;
         historyMap = new List<MapData>();
+        TouchType = TouchType.Auto;
+        AudioController.Instance.soundState = true;
         if (playCtrl != null)
         {
             mapData = playCtrl.GetCurSaveData();

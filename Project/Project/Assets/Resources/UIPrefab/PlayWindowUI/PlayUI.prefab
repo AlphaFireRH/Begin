@@ -1639,6 +1639,8 @@ MonoBehaviour:
   boomBtn: {fileID: 114778867571502012}
   gobackBtnBG: {fileID: 114163291389286258}
   boomBtnBG: {fileID: 114549892727875972}
+  gobackBtnIcon: {fileID: 114714583854834266}
+  boomBtnIcon: {fileID: 114182713403786910}
   adapt: {fileID: 114068517211824122}
   settingBtn: {fileID: 114553749767076326}
   boomRVPoint: {fileID: 1496023628591434}
@@ -1647,12 +1649,14 @@ MonoBehaviour:
   gobackRVPoint: {fileID: 1078776741975374}
   gobackCountPoint: {fileID: 1919633585180096}
   gobackCountTxt: {fileID: 114230287264196068}
-  btnStateSprite:
-  - {fileID: 21300000, guid: 05e81ea56f570419d9b976936648f0c8, type: 3}
-  - {fileID: 21300000, guid: 77accb846b716274d8dba6b4114856d6, type: 3}
+  gobackStateSprite:
+  - {fileID: 21300000, guid: 569eec5a77c0340c1b63fa02ccc7822f, type: 3}
+  - {fileID: 21300000, guid: 2e5f36910eb3c49719d0fa30831c0204, type: 3}
+  boomStateSprite:
+  - {fileID: 21300000, guid: c0c87e5c2d71846e4a21cb142fc0de35, type: 3}
+  - {fileID: 21300000, guid: d8da02cf110ef403ab8f1250ca6d1332, type: 3}
   point: {fileID: 224495116008080326}
   bgPoint: {fileID: 224363640992765566}
-  timer: 0
 --- !u!114 &114963364676593372
 MonoBehaviour:
   m_ObjectHideFlags: 1

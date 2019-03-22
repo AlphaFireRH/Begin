@@ -34,9 +34,9 @@
         <activity android:name="com.google.android.gms.ads.AdActivity"
                   android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
                   android:theme="@android:style/Theme.Translucent"/>
-      <!--<meta-data
+      <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8281295310156735~6276788410"/> -->
+            android:value="ca-app-pub-8281295310156735~6276788410"/> 
       <!-- AppLovin network SDK activities.  You may remove if unused. -->
         <activity android:name="com.applovin.adview.AppLovinInterstitialActivity"
                   android:configChanges="orientation|screenSize" />

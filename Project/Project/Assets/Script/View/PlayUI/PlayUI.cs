@@ -171,46 +171,55 @@ public class PlayUI : UIViewBase, IPlayUIController
         boomBtn.onClick.RemoveAllListeners();
         boomBtn.onClick.AddListener(() =>
         {
-            RefreshBtnState();
-            AudioController.Instance.PlaySound(AudioType.click);
-            if (playCtrl.IsCanUseBoom())
+            //RefreshBtnState();
+            if (GameController.Instance.GetGameState() == GameState.Play)
             {
-                playCtrl.UseBoom(
-                    (MapData m) =>
-                    {
-                        mapData = m;
-                        RefreshMap(m.gridDatas, false);
-                        RefreshItemCount();
-                        RefreshBtnState();
-                    }
-                );
+                AudioController.Instance.PlaySound(AudioType.click);
+                if (playCtrl.IsCanUseBoom())
+                {
+                    playCtrl.UseBoom(
+                        (MapData m) =>
+                        {
+                            mapData = m;
+                            RefreshMap(m.gridDatas, false);
+                            RefreshItemCount();
+                            RefreshBtnState();
+                        }
+                    );
+                }
             }
         });
 
         settingBtn.onClick.RemoveAllListeners();
         settingBtn.onClick.AddListener(() =>
         {
-            AudioController.Instance.PlaySound(AudioType.click);
-            UIManager.Instance.ShowUI(ViewID.SettingUI);
+            if (GameController.Instance.GetGameState() == GameState.Play)
+            {
+                AudioController.Instance.PlaySound(AudioType.click);
+                UIManager.Instance.ShowUI(ViewID.SettingUI);
+            }
         });
 
 
         gobackBtn.onClick.RemoveAllListeners();
         gobackBtn.onClick.AddListener(() =>
         {
-            RefreshBtnState();
-            AudioController.Instance.PlaySound(AudioType.click);
-            if (playCtrl.IsCanUseGoBack())
+            //RefreshBtnState();
+            if (GameController.Instance.GetGameState() == GameState.Play)
             {
-                playCtrl.UseGoBack(
-                    (MapData m) =>
-                    {
-                        mapData = m;
-                        RefreshMap(m.gridDatas, false);
-                        RefreshItemCount();
-                        RefreshBtnState();
-                    }
-                );
+                AudioController.Instance.PlaySound(AudioType.click);
+                if (playCtrl.IsCanUseGoBack())
+                {
+                    playCtrl.UseGoBack(
+                        (MapData m) =>
+                        {
+                            mapData = m;
+                            RefreshMap(m.gridDatas, false);
+                            RefreshItemCount();
+                            RefreshBtnState();
+                        }
+                    );
+                }
             }
         });
     }
@@ -380,7 +389,7 @@ public class PlayUI : UIViewBase, IPlayUIController
 
         if (curScore != null)
         {
-            curScore.text = mapData.Score.ToString();
+            curScore.text = mapData.Score.ShowString();
         }
     }
     #endregion

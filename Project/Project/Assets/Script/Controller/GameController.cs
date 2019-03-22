@@ -140,7 +140,7 @@ public class GameController : SingleMono<GameController>
     /// </summary>
     public void StartGame()
     {
-        EndGame();
+        ImmediatelyEndGame();
 
         if (bannerWait != null)
         {
@@ -160,31 +160,6 @@ public class GameController : SingleMono<GameController>
         }
     }
 
-    /// <summary>
-    /// rv加载请求队列
-    /// </summary>
-    private Coroutine bannerWait = null;
-    WaitForSeconds loadWait = new WaitForSeconds(3.0f);
-    IEnumerator WaitBanner()
-    {
-        yield return loadWait;
-
-        AdController.Instance.RequestBanner();
-    }
-
-    IEnumerator WaitBeginAd()
-    {
-        yield return loadWait;
-
-        FretchAd();
-    }
-
-    private void FretchAd()
-    {
-        AdController.Instance.FetchInsertAd();
-
-        AdController.Instance.FetchRewardVideoAd();
-    }
 
 
     /// <summary>
@@ -210,7 +185,19 @@ public class GameController : SingleMono<GameController>
     /// <summary>
     /// 结束游戏
     /// </summary>
-    public void EndGame()
+    public void EndGame(PlayController play)
+    {
+        if (playCtrl != null && playCtrl == play)
+        {
+            mapData = null;
+            historyMap = new List<MapData>();
+        }
+    }
+
+    /// <summary>
+    /// 立即结束游戏
+    /// </summary>
+    private void ImmediatelyEndGame()
     {
         if (playCtrl != null)
         {
@@ -385,5 +372,45 @@ public class GameController : SingleMono<GameController>
         return Score.ToString();
     }
 
+    /// <summary>
+    /// 获取游戏状态
+    /// </summary>
+    /// <returns>The game state.</returns>
+    public GameState GetGameState()
+    {
+        if (playCtrl != null)
+        {
+            return playCtrl.GetGameState();
+        }
+        return GameState.None;
+    }
+    #endregion
+
+    #region RV相关
+    /// <summary>
+    /// rv加载请求队列
+    /// </summary>
+    private Coroutine bannerWait = null;
+    WaitForSeconds loadWait = new WaitForSeconds(3.0f);
+    IEnumerator WaitBanner()
+    {
+        yield return loadWait;
+
+        AdController.Instance.RequestBanner();
+    }
+
+    IEnumerator WaitBeginAd()
+    {
+        yield return loadWait;
+
+        FretchAd();
+    }
+
+    private void FretchAd()
+    {
+        AdController.Instance.FetchInsertAd();
+
+        AdController.Instance.FetchRewardVideoAd();
+    }
     #endregion
 }

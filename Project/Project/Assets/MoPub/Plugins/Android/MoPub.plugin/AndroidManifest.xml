@@ -36,9 +36,7 @@
                   android:theme="@android:style/Theme.Translucent"/>
       <!--<meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8281295310156735~6344592249"/> -->
-      <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
-      <!-- ca-app-pub-8281295310156735/4484715667 ca-app-pub-8281295310156735/6344592249 ca-app-pub-8281295310156735/7398298398-->
+            android:value="ca-app-pub-8281295310156735~6276788410"/> -->
       <!-- AppLovin network SDK activities.  You may remove if unused. -->
         <activity android:name="com.applovin.adview.AppLovinInterstitialActivity"
                   android:configChanges="orientation|screenSize" />

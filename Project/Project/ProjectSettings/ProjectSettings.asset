@@ -160,7 +160,7 @@ PlayerSettings:
   buildNumber:
     iOS: 137
   AndroidBundleVersionCode: 101
-  AndroidMinSdkVersion: 16
+  AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
@@ -248,7 +248,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 2
   androidSplashScreen: {fileID: 2800000, guid: b105b19d3dcf0f14babe7f0318c0e4e7, type: 3}
-  AndroidKeystoreName: E:/WorkSpace/Begin/Begin/Project/Keystore/4159ce28745b1d0287cb114dcf9e9d6f.keystore
+  AndroidKeystoreName: E:/WordSpace/Project/Keystore/4159ce28745b1d0287cb114dcf9e9d6f.keystore
   AndroidKeyaliasName: sail
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1

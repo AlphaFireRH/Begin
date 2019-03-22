@@ -54,6 +54,18 @@ public class PlayUI : UIViewBase, IPlayUIController
     private Button boomBtn;
 
     /// <summary>
+    /// 回退按钮
+    /// </summary>
+    [SerializeField]
+    private Image gobackBtnBG;
+
+    /// <summary>
+    /// 爆炸按钮
+    /// </summary>
+    [SerializeField]
+    private Image boomBtnBG;
+
+    /// <summary>
     /// 适配脚本
     /// </summary>
     [SerializeField]
@@ -86,6 +98,9 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// 所有地块背景
     /// </summary>
     private List<RectTransform> mapBgs = new List<RectTransform>();
+
+    [SerializeField]
+    private List<Sprite> btnStateSprite;
     #endregion
 
     #region 挂点
@@ -107,6 +122,15 @@ public class PlayUI : UIViewBase, IPlayUIController
     /// 当前地图信息
     /// </summary>
     private MapData mapData;
+    /// <summary>
+    /// 
+    /// </summary>
+    private float timer;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float TIME_CD = 5f;
     #endregion
 
     #region 初始化
@@ -122,6 +146,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         InitMapBG();
         adapt.SetBanner(BannerType.Down);
         RefreshItemCount();
+        RefreshBtnState();
     }
 
     /// <summary>
@@ -135,6 +160,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         boomBtn.onClick.RemoveAllListeners();
         boomBtn.onClick.AddListener(() =>
         {
+            RefreshBtnState();
             AudioController.Instance.PlaySound(AudioType.click);
             if (playCtrl.IsCanUseBoom())
             {
@@ -144,6 +170,7 @@ public class PlayUI : UIViewBase, IPlayUIController
                         mapData = m;
                         RefreshMap(m.gridDatas, false);
                         RefreshItemCount();
+                        RefreshBtnState();
                     }
                 );
             }
@@ -160,6 +187,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         gobackBtn.onClick.RemoveAllListeners();
         gobackBtn.onClick.AddListener(() =>
         {
+            RefreshBtnState();
             AudioController.Instance.PlaySound(AudioType.click);
             if (playCtrl.IsCanUseGoBack())
             {
@@ -169,6 +197,7 @@ public class PlayUI : UIViewBase, IPlayUIController
                         mapData = m;
                         RefreshMap(m.gridDatas, false);
                         RefreshItemCount();
+                        RefreshBtnState();
                     }
                 );
             }
@@ -207,6 +236,44 @@ public class PlayUI : UIViewBase, IPlayUIController
         }
         RefreshMap(mapData.gridDatas, false);
     }
+
+    private void RefreshBtnState()
+    {
+        bool isCanShowRV = AdController.Instance.RewardVideoAdCanShow();
+        if (isCanShowRV || GameController.Instance.GetItemCount(ItemID.Boom) > 0)
+        {
+            boomBtnBG.sprite = btnStateSprite[0];
+        }
+        else
+        {
+            boomBtnBG.sprite = btnStateSprite[1];
+        }
+
+        if (isCanShowRV || GameController.Instance.GetItemCount(ItemID.Goback) > 0)
+        {
+            gobackBtnBG.sprite = btnStateSprite[0];
+        }
+        else
+        {
+            gobackBtnBG.sprite = btnStateSprite[1];
+        }
+    }
+
+    public void Update()
+    {
+        UpdateRefreshBtn();
+    }
+
+    private void UpdateRefreshBtn()
+    {
+        timer += Time.deltaTime;
+        if (timer > TIME_CD)
+        {
+            timer = 0;
+            RefreshBtnState();
+        }
+    }
+
     #endregion
 
     #region 刷新

@@ -13,6 +13,11 @@ public class MyInt
         IntValue = "0";
     }
 
+    public MyInt(string v)
+    {
+        IntValue = v;
+    }
+
     public string IntValue { get; set; }
 
     public static MyInt operator -(MyInt lhs, MyInt rhs)
@@ -208,6 +213,10 @@ public class MyInt
                     status = true;
                     break;
                 }
+                else if (Convert.ToInt32(lhs.IntValue[i].ToString()) > Convert.ToInt32(rhs.IntValue[i].ToString()))
+                {
+                    break;
+                }
             }
         }
         return status;
@@ -238,6 +247,10 @@ public class MyInt
                     status = true;
                     break;
                 }
+                else if (Convert.ToInt32(lhs.IntValue[i].ToString()) > Convert.ToInt32(rhs.IntValue[i].ToString()))
+                {
+                    break;
+                }
             }
         }
         return status;
@@ -266,6 +279,10 @@ public class MyInt
                 if (Convert.ToInt32(lhs.IntValue[i].ToString()) > Convert.ToInt32(rhs.IntValue[i].ToString()))
                 {
                     status = true;
+                    break;
+                }
+                else if (Convert.ToInt32(lhs.IntValue[i].ToString()) < Convert.ToInt32(rhs.IntValue[i].ToString()))
+                {
                     break;
                 }
             }
@@ -301,6 +318,10 @@ public class MyInt
                     && Convert.ToInt32(lhs.IntValue[i].ToString()) >= Convert.ToInt32(rhs.IntValue[i].ToString()))
                 {
                     status = true;
+                    break;
+                }
+                else if (Convert.ToInt32(lhs.IntValue[i].ToString()) > Convert.ToInt32(rhs.IntValue[i].ToString()))
+                {
                     break;
                 }
             }

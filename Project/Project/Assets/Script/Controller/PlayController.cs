@@ -986,11 +986,14 @@ public class PlayController : IPlayController
                 maxLadder = curMapData.gridDatas[i].Ladder;
             }
         }
-        var configItem = ConfigController.Instance.GetGridConfigData(maxLadder);
+
+        //判断胜利
+        var configItem = ConfigController.Instance.GetGridConfigData(maxLadder + 1);
+
         if (configItem == null)
         {
-            state = GameState.GameOver;
-            UIManager.Instance.ShowUI(ViewID.CompleteUI);
+            state = GameState.Victory;
+            UIManager.Instance.ShowUI(ViewID.CompleteFinish);
         }
     }
 

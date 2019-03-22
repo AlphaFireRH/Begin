@@ -15,12 +15,17 @@ public class GridConfigData
     public List<int> CreateMin;
 
     /// <summary>
-    /// The color of the grid.
+    /// 背景块颜色
     /// </summary>
     public Color GridColor;
 
     /// <summary>
-    /// The show info.
+    /// 展示信息
     /// </summary>
     public string ShowInfo;
+
+    /// <summary>
+    /// 字体颜色
+    /// </summary>
+    public Color FontColor;
 }

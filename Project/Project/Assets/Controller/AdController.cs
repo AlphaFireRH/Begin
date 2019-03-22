@@ -114,15 +114,22 @@ public class AdController
             // of legitimate interest.
             //AllowLegitimateInterest = true,
 
-            
-
             // Specify the mediated networks you are using here:
             MediatedNetworks = new MoPub.MediatedNetwork[]
             {
-                //new MoPub.SupportedNetwork.AdMob
+                //new MoPub.SupportedNetwork.AdMob()
                 //{
+                //    // Network adapter configuration settings (initialization).
+                //    NetworkConfiguration = {
+                //        {"npa", "1"}
+                //    },
+                //    // Global mediation settings (per ad request).
                 //    MediationSettings =
                 //    {
+                //        {"npa", "1"}
+                //    },
+                //     // Additional options to pass to the MoPub servers (per ad request).
+                //    MoPubRequestOptions = {
                 //        {"npa", "1"}
                 //    }
                 //},
@@ -189,7 +196,6 @@ public class AdController
         MoPub.LoadBannerPluginsForAdUnits(bannerIdList);
         MoPub.LoadInterstitialPluginsForAdUnits(insterIdList);
         MoPub.LoadRewardedVideoPluginsForAdUnits(rvIdList);
-
 
 #if !(UNITY_ANDROID || UNITY_IOS)
         Debug.LogError("Please switch to either Android or iOS platforms to run sample app!");

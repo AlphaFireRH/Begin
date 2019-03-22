@@ -34,8 +34,12 @@
         <activity android:name="com.google.android.gms.ads.AdActivity"
                   android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
                   android:theme="@android:style/Theme.Translucent"/>
-
-        <!-- AppLovin network SDK activities.  You may remove if unused. -->
+      <!-- <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8281295310156735~4484715667"/> -->
+      <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+      <!-- ca-app-pub-8281295310156735/4484715667 ca-app-pub-8281295310156735/6344592249 ca-app-pub-8281295310156735/7398298398-->
+      <!-- AppLovin network SDK activities.  You may remove if unused. -->
         <activity android:name="com.applovin.adview.AppLovinInterstitialActivity"
                   android:configChanges="orientation|screenSize" />
         <activity android:name="com.applovin.adview.AppLovinConfirmationActivity"

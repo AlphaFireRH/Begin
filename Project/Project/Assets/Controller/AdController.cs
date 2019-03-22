@@ -42,26 +42,6 @@ public class AdController
     private readonly Dictionary<string, List<MoPub.Reward>> _adUnitToRewardsMapping =
         new Dictionary<string, List<MoPub.Reward>>();
 
-    ///// <summary>
-    ///// bannerID
-    ///// </summary>
-    //public string[] bannerIdList = new string[] { "b195f8dd8ded45fe847ad89ed1d016da" };
-    ///// <summary>
-    ///// 激励视频ID
-    ///// </summary>
-    //public string[] rvIdList = new string[] { "920b6145fb1546cf8b5cf2ac34638bb7" };
-    ///// <summary>
-    ///// 插屏ID
-    ///// </summary>
-    //public string[] insterIdList = new string[] { "24534e1901884e398f1253216226017e" };
-
-    /*
-     private string[] _bannerAdUnits = { "c1391aa68a6940b1bed2048a5e2031a1", "3b78f65809c64eb5853aae82cd1b27f8" };
-    private string[] _interstitialAdUnits = { "daec5a34709f4a13b6094ebef0b389e0", "f83c6e07244b46c08afc5aabfe484107" };
-    private string[] _rewardedVideoAdUnits = { "6d9dfd073d0a483fa6552dc86b1fb8f6", "b18b87c0f3754afd97aaeaf923b6de1d" };
-     */
-
-
     /// <summary>
     /// bannerID
     /// </summary>
@@ -74,6 +54,8 @@ public class AdController
     /// 插屏ID
     /// </summary>
     public string[] insterIdList = new string[] { "83e342e9da7248fbb5ea929ddd3f333a" };
+
+    private int insertWait = 0;
 
     #region Init
     public void Init()
@@ -132,28 +114,18 @@ public class AdController
             // of legitimate interest.
             //AllowLegitimateInterest = true,
 
+            
+
             // Specify the mediated networks you are using here:
             MediatedNetworks = new MoPub.MediatedNetwork[]
             {
-                //new MoPub.SupportedNetwork.Vungle{
-                //    // Network adapter configuration settings (initialization).
-                //    NetworkConfiguration = {
-                //        { "key1", value },
-                //        { "key2", value },
-                //    },
-
-                //    // Global mediation settings (per ad request).
-                //    MediationSettings = {
-                //        { "key1", value },
-                //        { "key2", value },
-                //    },
-
-                //    // Additional options to pass to the MoPub servers (per ad request).
-                //    MoPubRequestOptions = {
-                //        { "key1", "value" },
-                //        { "key2", "value" },
+                //new MoPub.SupportedNetwork.AdMob
+                //{
+                //    MediationSettings =
+                //    {
+                //        {"npa", "1"}
                 //    }
-                //}
+                //},
 
 
             /*
@@ -516,7 +488,7 @@ public class AdController
 
     #endregion
 
-    private int insertWait = 0;
+    
     #region RewardVideo
 
     private string currentRewardedVideoAdUnits = string.Empty;

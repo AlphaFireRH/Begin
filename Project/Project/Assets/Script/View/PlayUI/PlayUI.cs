@@ -65,6 +65,19 @@ public class PlayUI : UIViewBase, IPlayUIController
     [SerializeField]
     private Image boomBtnBG;
 
+
+    /// <summary>
+    /// 回退按钮
+    /// </summary>
+    [SerializeField]
+    private Image gobackBtnIcon;
+
+    /// <summary>
+    /// 爆炸按钮
+    /// </summary>
+    [SerializeField]
+    private Image boomBtnIcon;
+
     /// <summary>
     /// 适配脚本
     /// </summary>
@@ -100,7 +113,9 @@ public class PlayUI : UIViewBase, IPlayUIController
     private List<RectTransform> mapBgs = new List<RectTransform>();
 
     [SerializeField]
-    private List<Sprite> btnStateSprite;
+    private List<Sprite> gobackStateSprite;
+    [SerializeField]
+    private List<Sprite> boomStateSprite;
     #endregion
 
     #region 挂点
@@ -238,20 +253,24 @@ public class PlayUI : UIViewBase, IPlayUIController
         bool isCanShowRV = AdController.Instance.RewardVideoAdCanShow();
         if (isCanShowRV || GameController.Instance.GetItemCount(ItemID.Boom) > 0)
         {
-            boomBtnBG.sprite = btnStateSprite[0];
+            boomBtnIcon.sprite = boomStateSprite[0];
+            boomBtnBG.color = new Color(1, 1, 1, 1);
         }
         else
         {
-            boomBtnBG.sprite = btnStateSprite[1];
+            boomBtnIcon.sprite = boomStateSprite[1];
+            boomBtnBG.color = new Color(1, 1, 1, 0.3f);
         }
 
         if (isCanShowRV || GameController.Instance.GetItemCount(ItemID.Goback) > 0)
         {
-            gobackBtnBG.sprite = btnStateSprite[0];
+            gobackBtnIcon.sprite = gobackStateSprite[0];
+            gobackBtnBG.color = new Color(1, 1, 1, 1);
         }
         else
         {
-            gobackBtnBG.sprite = btnStateSprite[1];
+            gobackBtnIcon.sprite = gobackStateSprite[1];
+            gobackBtnBG.color = new Color(1, 1, 1, 0.3f);
         }
     }
 

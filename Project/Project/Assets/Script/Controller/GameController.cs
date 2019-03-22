@@ -95,6 +95,8 @@ public class GameController : SingleMono<GameController>
 
             StartGame();
 
+            StartCoroutine(WaitBeginAd());
+
             isInit = true;
             CheckPrivateState();
 
@@ -168,6 +170,13 @@ public class GameController : SingleMono<GameController>
         yield return loadWait;
 
         AdController.Instance.RequestBanner();
+    }
+
+    IEnumerator WaitBeginAd()
+    {
+        yield return loadWait;
+
+        FretchAd();
     }
 
     private void FretchAd()

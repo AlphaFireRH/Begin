@@ -24,6 +24,9 @@ public class SelfTest : MonoBehaviour {
             {
                 AdController.Instance.Init();
                 init = true;
+
+                StartCoroutine(WaitBanner());
+                StartCoroutine(WaitBeginAd());
             }
         }
         else
@@ -86,5 +89,27 @@ public class SelfTest : MonoBehaviour {
             }
             GUILayout.EndHorizontal();
         }
+    }
+
+    WaitForSeconds loadWait = new WaitForSeconds(3.0f);
+    IEnumerator WaitBanner()
+    {
+        yield return loadWait;
+
+        AdController.Instance.RequestBanner();
+    }
+
+    IEnumerator WaitBeginAd()
+    {
+        yield return loadWait;
+
+        FretchAd();
+    }
+
+    private void FretchAd()
+    {
+        AdController.Instance.FetchInsertAd();
+
+        AdController.Instance.FetchRewardVideoAd();
     }
 }

@@ -42,6 +42,19 @@ public class AdController
     private readonly Dictionary<string, List<MoPub.Reward>> _adUnitToRewardsMapping =
         new Dictionary<string, List<MoPub.Reward>>();
 
+    ///// <summary>
+    ///// bannerID
+    ///// </summary>
+    //public string[] bannerIdList = new string[] { "b195f8dd8ded45fe847ad89ed1d016da" };
+    ///// <summary>
+    ///// 激励视频ID
+    ///// </summary>
+    //public string[] rvIdList = new string[] { "920b6145fb1546cf8b5cf2ac34638bb7" };
+    ///// <summary>
+    ///// 插屏ID
+    ///// </summary>
+    //public string[] insterIdList = new string[] { "24534e1901884e398f1253216226017e" };
+
     /// <summary>
     /// bannerID
     /// </summary>
@@ -442,15 +455,16 @@ public class AdController
     public void FetchInsertAd()
     {
         currentInterstitialAdUnits = GetInsertId();
-        if (tempListener!=null)
-        {
-            tempListener.FetchInsertAd(currentInterstitialAdUnits);
-        }
-        else
-        {
+        //if (tempListener!=null)
+        //{
+        //    tempListener.FetchInsertAd(currentInterstitialAdUnits);
+        //}
+        //else
+        //{
             
-            MoPub.RequestInterstitialAd(currentInterstitialAdUnits);
-        }
+        //    MoPub.RequestInterstitialAd(currentInterstitialAdUnits);
+        //}
+        MoPub.RequestInterstitialAd(currentInterstitialAdUnits);
     }
 
     /// <summary>
@@ -507,15 +521,16 @@ public class AdController
     {
         currentRewardedVideoAdUnits = GetRVId();
         
-        if (tempListener != null)
-        {
-            tempListener.FetchRVAd(currentRewardedVideoAdUnits);
-        }
-        else
-        {
+        //if (tempListener != null)
+        //{
+        //    tempListener.FetchRVAd(currentRewardedVideoAdUnits);
+        //}
+        //else
+        //{
 
-            MoPub.RequestRewardedVideo(currentRewardedVideoAdUnits);
-        }
+        //    MoPub.RequestRewardedVideo(currentRewardedVideoAdUnits);
+        //}
+        MoPub.RequestRewardedVideo(currentRewardedVideoAdUnits);
     }
 
     public bool RewardVideoAdCanShow()

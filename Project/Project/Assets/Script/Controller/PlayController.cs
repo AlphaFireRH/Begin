@@ -987,6 +987,7 @@ public class PlayController : IPlayController
             }
         }
         var configItem = ConfigController.Instance.GetGridConfigData(maxLadder);
+
         if (configItem == null)
         {
             state = GameState.GameOver;

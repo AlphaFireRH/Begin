@@ -172,6 +172,7 @@ public class MapGrid : MonoBehaviour
             var item = ConfigController.Instance.GetGridConfigData(gridData.Ladder);
             gridImage.color = item.GridColor;
             text.text = item.ShowInfo;
+            text.color = item.FontColor;
         }
     }
     #endregion

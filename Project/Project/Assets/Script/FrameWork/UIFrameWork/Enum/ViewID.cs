@@ -32,5 +32,9 @@ public enum ViewID
     /// 网页确认界面
     /// </summary>
     WebViewAgreeUI = 7,
+    /// <summary>
+    /// 完成界面
+    /// </summary>
+    CompleteFinish = 8,
 
 }

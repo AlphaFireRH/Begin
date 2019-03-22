@@ -53,6 +53,12 @@ public class UIManager : MonoBehaviour
                     viewData.UIType = UIType.Tip;
                 }
                 break;
+            case ViewID.CompleteFinish:
+                {
+                    path = "UIPrefab/CompleteUI/CompleteFinish";
+                    viewData.UIType = UIType.Tip;
+                }
+                break;
             case ViewID.PrivateUI:
                 {
                     path = "UIPrefab/PrivateUI/PrivateUI";

@@ -21,8 +21,8 @@ public enum GameState
     /// </summary>
     GameOver = 3,
 
-    ///// <summary>
-    ///// 胜利(没用)
-    ///// </summary>
-    //Victory = 4,
+    /// <summary>
+    /// 胜利(没用)
+    /// </summary>
+    Victory = 4,
 }

@@ -463,16 +463,16 @@ public class AdController
     /// </summary>
     public void FetchInsertAd()
     {
+        currentInterstitialAdUnits = GetInsertId();
         if (tempListener!=null)
         {
-
+            tempListener.FetchInsertAd(currentInterstitialAdUnits);
         }
         else
         {
-            currentInterstitialAdUnits = GetInsertId();
+            
             MoPub.RequestInterstitialAd(currentInterstitialAdUnits);
         }
-        
     }
 
     /// <summary>
@@ -528,7 +528,16 @@ public class AdController
     public void FetchRewardVideoAd()
     {
         currentRewardedVideoAdUnits = GetRVId();
-        MoPub.RequestRewardedVideo(currentRewardedVideoAdUnits);
+        
+        if (tempListener != null)
+        {
+            tempListener.FetchRVAd(currentRewardedVideoAdUnits);
+        }
+        else
+        {
+
+            MoPub.RequestRewardedVideo(currentRewardedVideoAdUnits);
+        }
     }
 
     public bool RewardVideoAdCanShow()

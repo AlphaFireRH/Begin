@@ -26,6 +26,7 @@ public class AdController
         GameObject go = GameObject.Instantiate(Resources.Load<GameObject>("AdEventListner")) as GameObject;
     }
 
+    public AdEventListener tempListener = null;
 
     /// <summary>
     /// 广告加载状态
@@ -462,8 +463,16 @@ public class AdController
     /// </summary>
     public void FetchInsertAd()
     {
-        currentInterstitialAdUnits = GetInsertId();
-        MoPub.RequestInterstitialAd(currentInterstitialAdUnits);
+        if (tempListener!=null)
+        {
+
+        }
+        else
+        {
+            currentInterstitialAdUnits = GetInsertId();
+            MoPub.RequestInterstitialAd(currentInterstitialAdUnits);
+        }
+        
     }
 
     /// <summary>

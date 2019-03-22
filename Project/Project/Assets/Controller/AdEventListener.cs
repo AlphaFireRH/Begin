@@ -16,6 +16,7 @@ public class AdEventListener : MonoBehaviour
         if (_ctrl == null)
         {
             _ctrl = AdController.Instance;
+            _ctrl.tempListener = this;
         }
 
         if (_ctrl == null)
@@ -153,11 +154,7 @@ public class AdEventListener : MonoBehaviour
     private void OnAdFailedEvent(string adUnitId, string error)
     {
         ShowError(error);
-        if (bannerWait != null)
-        {
-            StopCoroutine(bannerWait);
-        }
-        bannerWait =StartCoroutine(WaitTryFetch(adUnitId, 10));
+        FetchBannerAdWithTime(adUnitId);
     }
     #endregion
 
@@ -184,11 +181,7 @@ public class AdEventListener : MonoBehaviour
     {
         ShowError(error);
 
-        if (insertWait != null)
-        {
-            StopCoroutine(insertWait);
-        }
-        insertWait =StartCoroutine(WaitTryFetch(adUnitId, 10));
+        FetchInsertAdWithTime(adUnitId);
     }
 
     /// <summary>
@@ -199,11 +192,7 @@ public class AdEventListener : MonoBehaviour
     {
         _ctrl.PlayFinish(adUnitId);
 
-        if (insertWait != null)
-        {
-            StopCoroutine(insertWait);
-        }
-        insertWait =StartCoroutine(WaitTryFetch(adUnitId));
+        FetchInsertAd(adUnitId);
     }
     #endregion
 
@@ -249,11 +238,7 @@ public class AdEventListener : MonoBehaviour
     private void OnRewardedVideoFailedEvent(string adUnitId, string error)
     {
         ShowError(error);
-        if (rvWait != null)
-        {
-            StopCoroutine(rvWait);
-        }
-        rvWait = StartCoroutine(WaitTryFetch(adUnitId, 10));
+        FetchRVAdWithTime(adUnitId);
     }
 
     /// <summary>
@@ -346,16 +331,56 @@ public class AdEventListener : MonoBehaviour
                     break;
             }
 
-            if (rvWait != null)
-            {
-                StopCoroutine(rvWait);
-            }
-            rvWait = StartCoroutine(WaitTryFetch(adUnitId));
+            FetchRVAd(adUnitId);
         }
     }
 
     #endregion
 
+    public void FetchBannerAdWithTime(string adUnitId)
+    {
+        if (bannerWait != null)
+        {
+            StopCoroutine(bannerWait);
+        }
+        bannerWait = StartCoroutine(WaitTryFetchWithTime(adUnitId));
+    }
+
+    public void FetchInsertAd(string adUnitId)
+    {
+        if (insertWait != null)
+        {
+            StopCoroutine(insertWait);
+        }
+        insertWait = StartCoroutine(WaitTryFetch(adUnitId));
+    }
+
+    public void FetchInsertAdWithTime(string adUnitId)
+    {
+        if (insertWait != null)
+        {
+            StopCoroutine(insertWait);
+        }
+        insertWait = StartCoroutine(WaitTryFetchWithTime(adUnitId));
+    }
+
+    public void FetchRVAd(string adUnitId)
+    {
+        if (rvWait != null)
+        {
+            StopCoroutine(rvWait);
+        }
+        rvWait = StartCoroutine(WaitTryFetch(adUnitId));
+    }
+
+    public void FetchRVAdWithTime(string adUnitId)
+    {
+        if (rvWait != null)
+        {
+            StopCoroutine(rvWait);
+        }
+        rvWait = StartCoroutine(WaitTryFetchWithTime(adUnitId));
+    }
 
     WaitForSeconds loadWait = new WaitForSeconds(60.0f);
     IEnumerator WaitTryFetch(string adUnitId)
@@ -366,7 +391,7 @@ public class AdEventListener : MonoBehaviour
     }
 
     WaitForSeconds playWait = new WaitForSeconds(90.0f);
-    IEnumerator WaitTryFetch(string adUnitId, float waitTime)
+    IEnumerator WaitTryFetchWithTime(string adUnitId)
     {
         yield return playWait;
 

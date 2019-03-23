@@ -137,7 +137,7 @@ public class PlayController : IPlayController
     /// <returns></returns>
     public MapData Move(PlayerOperate md)
     {
-        if (!isPause)
+        if (!isPause && state == GameState.Play)
         {
             MapData mapData = new MapData();
             if (mapDatas == null)
@@ -169,7 +169,11 @@ public class PlayController : IPlayController
     {
         if (IsCanUseBoom())
         {
-            if (GameController.Instance.GetItemCount(ItemID.Boom) > 0)
+            if (GameController.Instance.GetItemCount(ItemID.Boom) > 0
+#if UNITY_EDITOR
+                || true
+#endif
+                )
             {
                 GameController.Instance.UseItem(ItemID.Boom);
                 MapData mapData = new MapData();
@@ -336,6 +340,15 @@ public class PlayController : IPlayController
     public int MapSize()
     {
         return mapSize;
+    }
+
+    /// <summary>
+    /// 获取游戏状态
+    /// </summary>
+    /// <returns>The game state.</returns>
+    public GameState GetGameState()
+    {
+        return state;
     }
     #endregion
 
@@ -533,7 +546,7 @@ public class PlayController : IPlayController
                                     && allMapData[x][y].Ladder > 0)
                                 {
                                     AddScore(ret, allMapData[x][y].Ladder);
-                                    allMapData[x][y].Ladder++;
+                                    allMapData[x][y].Ladder = AddLevel(allMapData[x][y].Ladder);
                                     allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
                                     allMapData[targetX][y] = null;
@@ -592,7 +605,7 @@ public class PlayController : IPlayController
                                     && allMapData[x][y].Ladder > 0)
                                 {
                                     AddScore(ret, allMapData[x][y].Ladder);
-                                    allMapData[x][y].Ladder++;
+                                    allMapData[x][y].Ladder = AddLevel(allMapData[x][y].Ladder);
                                     allMapData[x][y].MergeID = allMapData[targetX][y].ID;
                                     mergeIDs.Add(allMapData[targetX][y].ID);
                                     allMapData[targetX][y] = null;
@@ -652,7 +665,7 @@ public class PlayController : IPlayController
                                     && allMapData[x][y].Ladder > 0)
                                 {
                                     AddScore(ret, allMapData[x][y].Ladder);
-                                    allMapData[x][y].Ladder++;
+                                    allMapData[x][y].Ladder = AddLevel(allMapData[x][y].Ladder);
                                     allMapData[x][y].MergeID = allMapData[x][targetY].ID;
                                     mergeIDs.Add(allMapData[x][targetY].ID);
                                     //mergeIDs.Add(allMapData[x][y].ID);
@@ -713,7 +726,7 @@ public class PlayController : IPlayController
                                     && allMapData[x][y].Ladder > 0)
                                 {
                                     AddScore(ret, allMapData[x][y].Ladder);
-                                    allMapData[x][y].Ladder++;
+                                    allMapData[x][y].Ladder = AddLevel(allMapData[x][y].Ladder);
                                     allMapData[x][y].MergeID = allMapData[x][targetY].ID;
                                     mergeIDs.Add(allMapData[x][targetY].ID);
                                     allMapData[x][targetY] = null;
@@ -785,6 +798,11 @@ public class PlayController : IPlayController
         }
 
         return ret;
+    }
+
+    public int AddLevel(int level)
+    {
+        return level + 1;
     }
 
     private int GetID()
@@ -974,7 +992,8 @@ public class PlayController : IPlayController
             if (!isHas)
             {
                 state = GameState.GameOver;
-                UIManager.Instance.ShowUI(ViewID.CompleteUI);
+                GameController.Instance.EndGame(this);
+                GameController.Instance.StartCoroutine(ShowUI(ViewID.CompleteUI));
             }
 
         }
@@ -993,8 +1012,16 @@ public class PlayController : IPlayController
         if (configItem == null)
         {
             state = GameState.Victory;
-            UIManager.Instance.ShowUI(ViewID.CompleteFinish);
+            GameController.Instance.EndGame(this);
+
+            GameController.Instance.StartCoroutine(ShowUI(ViewID.CompleteFinish));
         }
+    }
+
+    public IEnumerator ShowUI(ViewID viewID)
+    {
+        yield return new WaitForSeconds(1.5f);
+        UIManager.Instance.ShowUI(ViewID.CompleteFinish);
     }
 
     /// <summary>

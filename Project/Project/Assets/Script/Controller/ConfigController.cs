@@ -74,5 +74,12 @@ public class ConfigController : SingleMono<ConfigController>
         return null;
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="ladder">Ladder.</param>
+    public Dictionary<int, GridConfigData> GetGridConfigDataDic()
+    {
+        return gridConfigDataDic;
+    }
 }

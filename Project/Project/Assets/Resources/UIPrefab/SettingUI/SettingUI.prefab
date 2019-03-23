@@ -1488,7 +1488,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: v1.0.1
+  m_Text: 
 --- !u!114 &114736001649225936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2143,6 +2143,7 @@ MonoBehaviour:
   centerObj: {fileID: 224029023174158284}
   centerSliderBgImage: {fileID: 114956934590082680}
   centerSliderObj: {fileID: 224541816325098936}
+  versionLabel: {fileID: 114723753352395216}
 --- !u!114 &114956934590082680
 MonoBehaviour:
   m_ObjectHideFlags: 1

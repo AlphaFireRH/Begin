@@ -10,6 +10,7 @@ public class SettingUI : UIViewBase
     public RectTransform centerObj;
     public Image centerSliderBgImage;
     public RectTransform centerSliderObj;
+    public Text versionLabel;
 
     // Use this for initialization
     void Start()
@@ -17,6 +18,8 @@ public class SettingUI : UIViewBase
         ShowSoundState();
         ShowSilderState();
         clickLock = false;
+
+        versionLabel.text = UIManager.nowVersion;
     }
     void OnEnable()
     {

@@ -59,8 +59,13 @@ public class CommonUtil : Editor
             throw;
         }
     }
-    
-    
+
+    [MenuItem("Tool/SetVersion")]
+    public static void SetVersion()
+    {
+        PlayerSettings.bundleVersion = UIManager.nowVersion;
+        PlayerSettings.Android.bundleVersionCode = UIManager.nowBundle;
+    }
 
 
     /// <summary>

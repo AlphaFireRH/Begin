@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    public static string nowVersion = "1.0.2";
+    public static int nowBundle = 102;
     /// <summary>
     /// 单例
     /// </summary>

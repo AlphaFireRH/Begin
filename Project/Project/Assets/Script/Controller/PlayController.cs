@@ -997,6 +997,8 @@ public class PlayController : IPlayController
             }
 
         }
+
+        //判断胜利
         int maxLadder = 1;
         for (int i = 0; i < curMapData.gridDatas.Count; i++)
         {
@@ -1006,22 +1008,41 @@ public class PlayController : IPlayController
             }
         }
 
-        //判断胜利
-        var configItem = ConfigController.Instance.GetGridConfigData(maxLadder + 1);
+        bool isMax = true;
+        var dic = ConfigController.Instance.GetGridConfigDataDic();
 
-        if (configItem == null)
+        foreach (var item in dic)
+        {
+            if (item.Value.Ladder > maxLadder)
+            {
+                isMax = false;
+                break;
+            }
+        }
+
+        if (isMax)
         {
             state = GameState.Victory;
             GameController.Instance.EndGame(this);
 
             GameController.Instance.StartCoroutine(ShowUI(ViewID.CompleteFinish));
         }
+        ////判断胜利
+        //var configItem = ConfigController.Instance.GetGridConfigData(maxLadder + 1);
+
+        //if (configItem == null)
+        //{
+        //    state = GameState.Victory;
+        //    GameController.Instance.EndGame(this);
+
+        //    GameController.Instance.StartCoroutine(ShowUI(ViewID.CompleteFinish));
+        //}
     }
 
     public IEnumerator ShowUI(ViewID viewID)
     {
         yield return new WaitForSeconds(1.5f);
-        UIManager.Instance.ShowUI(ViewID.CompleteFinish);
+        UIManager.Instance.ShowUI(viewID);
     }
 
     /// <summary>

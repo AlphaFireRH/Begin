@@ -84,4 +84,7 @@ public static class ConfigData
     public const string SAVE_FILE_PATH = "/Save.txt";
 
     #endregion
+
+    public const string nowVersion = "1.0.2";
+    public const int nowBundle = 102;
 }

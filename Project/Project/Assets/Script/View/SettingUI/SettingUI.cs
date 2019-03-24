@@ -19,7 +19,7 @@ public class SettingUI : UIViewBase
         ShowSilderState();
         clickLock = false;
 
-        versionLabel.text = UIManager.nowVersion;
+        versionLabel.text = ConfigData.nowVersion;
     }
     void OnEnable()
     {

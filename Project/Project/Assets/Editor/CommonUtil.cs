@@ -63,8 +63,8 @@ public class CommonUtil : Editor
     [MenuItem("Tool/SetVersion")]
     public static void SetVersion()
     {
-        PlayerSettings.bundleVersion = UIManager.nowVersion;
-        PlayerSettings.Android.bundleVersionCode = UIManager.nowBundle;
+        PlayerSettings.bundleVersion = ConfigData.nowVersion;
+        PlayerSettings.Android.bundleVersionCode = ConfigData.nowBundle;
     }
 
 

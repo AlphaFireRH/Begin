@@ -12,4 +12,9 @@ public interface IPlayUIController
     /// Refresh this instance.
     /// </summary>
     void Refresh();
+
+    /// <summary>
+    /// Refresh Btn UI
+    /// </summary>
+    void RefreshBtnState();
 }

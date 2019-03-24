@@ -85,6 +85,6 @@ public static class ConfigData
 
     #endregion
 
-    public const string nowVersion = "1.0.2";
-    public const int nowBundle = 102;
+    public const string nowVersion = "1.0.3";
+    public const int nowBundle = 103;
 }

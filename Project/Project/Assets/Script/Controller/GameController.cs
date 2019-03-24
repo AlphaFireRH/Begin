@@ -168,6 +168,17 @@ public class GameController : SingleMono<GameController>
     public void Continue()
     {
         UseBoom();
+        if (playCtrl != null)
+        {
+            try
+            {
+                playCtrl.RefreshButtonState();
+            }
+            catch
+            {
+
+            }
+        }
     }
 
     /// <summary>

@@ -935,6 +935,11 @@ public class PlayController : IPlayController
     {
         return curMapData.Score;
     }
+
+    public void RefreshButtonState()
+    {
+        playUI.RefreshBtnState();
+    }
     #endregion
 
     #region 其他

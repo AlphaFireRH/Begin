@@ -257,7 +257,7 @@ public class PlayUI : UIViewBase, IPlayUIController
         RefreshMap(mapData.gridDatas, false);
     }
 
-    private void RefreshBtnState()
+    public void RefreshBtnState()
     {
         bool isCanShowRV = AdController.Instance.RewardVideoAdCanShow();
         if (isCanShowRV || GameController.Instance.GetItemCount(ItemID.Boom) > 0)
